@@ -11,6 +11,7 @@ module.exports = {
         white: {
           DEFAULT: 'rgba(255, 255, 255, 0.6)',
           high: 'rgba(255, 255, 255, 0.87)',
+          true: '#fff',
         },
         primary: {
           100: 'rgba(112, 239, 222, 1)',
