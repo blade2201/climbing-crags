@@ -1,15 +1,41 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/layout';
+import * as Realm from 'realm-web';
 
 export default function Home() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
+  const [routes, setRoutes] = useState([]);
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    router.push(`/${searchTerm}`);
+    router.push(`/?search=${searchTerm}`);
   };
+
+  useEffect(() => {
+    const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
+    const app = new Realm.App({ id: REALM_APP_ID });
+    const credentials = Realm.Credentials.anonymous();
+
+    async function connectDB() {
+      try {
+        const user = await app.logIn(credentials);
+        // const client = app.currentUser.mongoClient('mongodb-atlas');
+        // const cragsDb = client.db('Climbing-crags').collection('Crags');
+        // const crags = await cragsDb.find();
+        if (router.query.search) {
+          const allRoutes = await user.functions.searchRoutes(router.query.search);
+          console.log(allRoutes);
+          setRoutes(() => allRoutes);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    connectDB();
+  }, [router.query]);
 
   return (
     <>
