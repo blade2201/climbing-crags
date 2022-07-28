@@ -4,14 +4,43 @@ import Layout from '../components/layout';
 import * as Realm from 'realm-web';
 import ListSection from '../components/listSection';
 
-export default function Home({ allRoutes }) {
+export default function Home() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [allAreas, setAllAreas] = useState([]);
+  const [allCrags, setAllCrags] = useState([]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    router.push(`/?search=${searchTerm}`);
+    router.push(`/?search=${searchTerm.toLowerCase()}`);
   };
+
+  useEffect(() => {
+    console.log('query changed');
+    async function getRoutes() {
+      const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
+      const app = new Realm.App({ id: REALM_APP_ID });
+      const credentials = Realm.Credentials.anonymous();
+      const user = await app.logIn(credentials);
+      // const client = app.currentUser.mongoClient('mongodb-atlas');
+      // const cragsDb = client.db('Climbing-crags').collection('Crags');
+      // const crags = await cragsDb.find({limit: 6});
+      if (router.query.search) {
+        const crags = await user.functions.searchCrags(router.query.search);
+        const areas = await user.functions.searchAreas(router.query.search);
+        const routes = await user.functions.searchRoutes(router.query.search);
+        setAllCrags(crags);
+        setAllAreas(areas);
+        setAllRoutes(routes);
+        document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    getRoutes();
+    // (async () => {
+    // })();
+  }, [router.query.search]);
 
   return (
     <>
@@ -37,32 +66,14 @@ export default function Home({ allRoutes }) {
           </button>
         </form>
       </div>
-      <div className="md:px-36 px-4 mb-40">
-        <ListSection title={'Crags'} items={[]} />
-        <ListSection title={'Areas'} items={[]} />
+      <div id="content" className="md:px-36 px-4 mb-40">
+        <ListSection title={'Crags'} items={allCrags} />
+        <ListSection title={'Areas'} items={allAreas} />
         <ListSection title={'Routes'} items={allRoutes} />
       </div>
     </>
   );
 }
-
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
-
-export async function getServerSideProps(ctx) {
-  // Fetch data from external API
-  let allRoutes = [];
-  if (ctx.query.search) {
-    const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
-    const app = new Realm.App({ id: REALM_APP_ID });
-    const credentials = Realm.Credentials.anonymous();
-    const user = await app.logIn(credentials);
-    // const client = app.currentUser.mongoClient('mongodb-atlas');
-    // const cragsDb = client.db('Climbing-crags').collection('Crags');
-    // const crags = await cragsDb.find();
-    allRoutes = await user.functions.searchRoutes(ctx.query.search);
-  }
-
-  return { props: { allRoutes } };
-}
