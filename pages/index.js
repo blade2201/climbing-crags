@@ -84,8 +84,8 @@ Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export const getServerSideProps = async (ctx) => {
-  let grades = await realmAppUtil.gradesObj();
+export const getServerSideProps = (ctx) => {
+  let grades = realmAppUtil.gradesObj();
 
   return {
     props: {
