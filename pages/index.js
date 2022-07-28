@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Layout from '../components/layout';
 import * as Realm from 'realm-web';
-import ListSection from '../components/listSection';
+import ListSection from '../components/ListSection';
 
-export default function Home() {
+export default function Home({ grades }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [allRoutes, setAllRoutes] = useState([]);
@@ -17,29 +17,30 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log('query changed');
-    async function getRoutes() {
+    async function getData() {
       const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
       const app = new Realm.App({ id: REALM_APP_ID });
       const credentials = Realm.Credentials.anonymous();
       const user = await app.logIn(credentials);
       // const client = app.currentUser.mongoClient('mongodb-atlas');
-      // const cragsDb = client.db('Climbing-crags').collection('Crags');
-      // const crags = await cragsDb.find({limit: 6});
+      // const gradesDb = client.db('Climbing-crags').collection('grades');
+      // const grade = await gradesDb.find();
       if (router.query.search) {
         const crags = await user.functions.searchCrags(router.query.search);
-        const areas = await user.functions.searchAreas(router.query.search);
-        const routes = await user.functions.searchRoutes(router.query.search);
         setAllCrags(crags);
+        const areas = await user.functions.searchAreas(router.query.search);
         setAllAreas(areas);
+        const routes = await user.functions.searchRoutes(router.query.search);
         setAllRoutes(routes);
         document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
       }
     }
 
-    getRoutes();
-    // (async () => {
-    // })();
+    try {
+      getData();
+    } catch (e) {
+      console.log(e);
+    }
   }, [router.query.search]);
 
   return (
@@ -67,13 +68,33 @@ export default function Home() {
         </form>
       </div>
       <div id="content" className="md:px-36 px-4 mb-40">
-        <ListSection title={'Crags'} items={allCrags} />
-        <ListSection title={'Areas'} items={allAreas} />
-        <ListSection title={'Routes'} items={allRoutes} />
+        <ListSection title={'Crags'} items={allCrags} grades={grades} />
+        <ListSection title={'Sectors'} items={allAreas} grades={grades} />
+        <ListSection title={'Routes'} items={allRoutes} grades={grades} />
       </div>
     </>
   );
 }
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
+};
+
+export const getServerSideProps = async (ctx) => {
+  const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
+  const app = new Realm.App({ id: REALM_APP_ID });
+  const credentials = Realm.Credentials.anonymous();
+  const user = await app.logIn(credentials);
+  const client = app.currentUser.mongoClient('mongodb-atlas');
+  const gradesDb = client.db('Climbing-crags').collection('grades');
+  const grades = await gradesDb.find({});
+  const gradesObj = {};
+  grades.forEach((grade) => {
+    gradesObj[grade.id] = [grade.fra_routes, grade.usa_routes];
+  });
+
+  return {
+    props: {
+      grades: gradesObj,
+    },
+  };
 };

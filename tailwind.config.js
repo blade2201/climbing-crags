@@ -7,6 +7,9 @@ module.exports = {
         8: '0px 8px 10px rgba(0, 0, 0, 0.14), 0px 3px 14px rgba(0, 0, 0, 0.12), 0px 5px 5px rgba(0, 0, 0, 0.2)',
         16: '0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2)',
       },
+      borderRadius: {
+        '4xl': '2rem',
+      },
       colors: {
         white: {
           DEFAULT: 'rgba(255, 255, 255, 0.6)',
