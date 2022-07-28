@@ -12,23 +12,33 @@ function Card({ item, type, grades }) {
       switch (type) {
         case 'crags':
           setRoutesCount(item.sectors.length);
-          let lowestDifficulty = 1000;
-          let HighestDifficulty = 0;
+          let difficulties;
           item.sectors.forEach((sector) => {
-            let lowest = sector.routes.reduce(function (prev, curr) {
-              return prev.grade_id < curr.grade_id ? prev : curr;
-            });
-            if (parseInt(lowest.grade_id) < lowestDifficulty) {
-              lowestDifficulty = parseInt(lowest.grade_id);
-            }
-            let highest = sector.routes.reduce(function (prev, curr) {
-              return prev.grade_id > curr.grade_id ? prev : curr;
-            });
-            if (parseInt(highest.grade_id) > HighestDifficulty) {
-              HighestDifficulty = parseInt(highest.grade_id);
+            let sectorDifficulties = sector.routes.reduce(
+              (prev, curr) => {
+                if (prev.high < parseInt(curr.grade_id)) {
+                  prev.high = curr.grade_id;
+                }
+                if (prev.low > parseInt(curr.grade_id)) {
+                  prev.low = curr.grade_id;
+                }
+                return prev;
+              },
+              { high: 0, low: 1000 },
+            );
+
+            if (!difficulties) {
+              difficulties = { ...sectorDifficulties };
+            } else {
+              difficulties = {
+                high: Math.max(difficulties.high, sectorDifficulties.high),
+                low: Math.min(difficulties.low, sectorDifficulties.low),
+              };
             }
           });
-          setDifficulty(`${grades[lowestDifficulty][0]} - ${grades[HighestDifficulty][0]}`);
+          setDifficulty(
+            `${grades[parseInt(difficulties.low)][0]} - ${grades[parseInt(difficulties.high)][0]}`,
+          );
           break;
         case 'sectors':
           setRoutesCount(item.routes.length + '+');
