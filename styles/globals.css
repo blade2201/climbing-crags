@@ -26,4 +26,8 @@
   html {
     font-family: Montserrat;
   }
+
+  body {
+    @apply bg-dark;
+  }
 }

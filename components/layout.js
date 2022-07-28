@@ -10,8 +10,8 @@ export default function Layout({ children }) {
         <meta name="description" content="Trip advisor for climbing crags" />
         <link rel="icon" href="/logo.svg" />
       </Head>
-      <header className="bg-dark shadow-16 fixed w-screen top-0">
-        <div className="max-width-7xl lg:px-36 px-4 h-16 py-2">
+      <header className="bg-dark shadow-16 fixed w-screen top-0 z-50">
+        <div className="max-width-7xl lg:px-36 px-4 h-16 py-2 flex items-center">
           <Link href="/">
             <a className="gap-x-4 flex items-center">
               <Image src="/logo.svg" alt="logo" width={44} height={44} />
