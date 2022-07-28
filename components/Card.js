@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { calcRoutesAndDifficulty } from '../utils/infoCalc';
 import Tag from './ui/Tag';
 function Card({ item, type, grades }) {
   const [routesCount, setRoutesCount] = useState('');
@@ -11,40 +12,10 @@ function Card({ item, type, grades }) {
     if (item) {
       switch (type) {
         case 'crags':
-          setRoutesCount(item.sectors.length);
-          let numberOfRoutes = 0;
-          let rating = 0;
-          let difficulties;
-          item.sectors.forEach((sector) => {
-            let sectorDifficulties = sector.routes.reduce(
-              (prev, curr) => {
-                if (prev.high < parseInt(curr.grade_id)) {
-                  prev.high = curr.grade_id;
-                }
-                if (prev.low > parseInt(curr.grade_id)) {
-                  prev.low = curr.grade_id;
-                }
-                return prev;
-              },
-              { high: 0, low: 1000 },
-            );
-            if (!difficulties) {
-              difficulties = { ...sectorDifficulties };
-            } else {
-              difficulties = {
-                high: Math.max(difficulties.high, sectorDifficulties.high),
-                low: Math.min(difficulties.low, sectorDifficulties.low),
-              };
-            }
-            sector.routes.forEach((route) => {
-              numberOfRoutes++;
-              rating += parseInt(route.rating);
-            });
-          });
-          setRating((rating / numberOfRoutes).toFixed(1));
-          setDifficulty(
-            `${grades[parseInt(difficulties.low)][0]} - ${grades[parseInt(difficulties.high)][0]}`,
-          );
+          const { routes, rating, difficulties } = calcRoutesAndDifficulty(item, type);
+          setRoutesCount(routes);
+          setRating(rating);
+          setDifficulty(difficulties);
           break;
         case 'sectors':
           setRoutesCount(item.routes.length + '+');
