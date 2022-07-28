@@ -17,6 +17,10 @@ export default function Home({ grades }) {
   };
 
   useEffect(() => {
+    document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+  }, [allCrags]);
+
+  useEffect(() => {
     async function getData() {
       const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
       const app = new Realm.App({ id: REALM_APP_ID });
@@ -28,11 +32,14 @@ export default function Home({ grades }) {
       if (router.query.search) {
         const crags = await user.functions.searchCrags(router.query.search);
         setAllCrags(crags);
-        document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
         const areas = await user.functions.searchAreas(router.query.search);
         setAllAreas(areas);
         const routes = await user.functions.searchRoutes(router.query.search);
         setAllRoutes(routes);
+      } else {
+        setAllCrags([]);
+        setAllAreas([]);
+        setAllRoutes([]);
       }
     }
     try {
