@@ -12,6 +12,8 @@ function Card({ item, type, grades }) {
       switch (type) {
         case 'crags':
           setRoutesCount(item.sectors.length);
+          let numberOfRoutes = 0;
+          let rating = 0;
           let difficulties;
           item.sectors.forEach((sector) => {
             let sectorDifficulties = sector.routes.reduce(
@@ -26,7 +28,6 @@ function Card({ item, type, grades }) {
               },
               { high: 0, low: 1000 },
             );
-
             if (!difficulties) {
               difficulties = { ...sectorDifficulties };
             } else {
@@ -35,7 +36,12 @@ function Card({ item, type, grades }) {
                 low: Math.min(difficulties.low, sectorDifficulties.low),
               };
             }
+            sector.routes.forEach((route) => {
+              numberOfRoutes++;
+              rating += parseInt(route.rating);
+            });
           });
+          setRating((rating / numberOfRoutes).toFixed(1));
           setDifficulty(
             `${grades[parseInt(difficulties.low)][0]} - ${grades[parseInt(difficulties.high)][0]}`,
           );
@@ -66,18 +72,17 @@ function Card({ item, type, grades }) {
           {type === 'crags' ? item.crag : type === 'sectors' ? item.sector : item.name}
         </h4>
         <h5>
-          {type === 'crags'
-            ? item.country
-            : type === 'sectors'
-            ? item.crag + ', ' + item.country
-            : item.sector + ', ' + item.crag}
+          {type === 'crags' ? item.country : type === 'sectors' ? item.crag + ', ' : item.sector}
+          {(type === 'sectors' || type === 'routes') && <br />}
+          {type === 'sectors' ? item.country : type === 'sectors' ? item.crag : ''}
+          <br />
         </h5>
         <div className="pt-3 flex gap-x-2.5">
           {difficulty ? <Tag text={difficulty} /> : null}
           {routesCount ? (
             <Tag text={routesCount + (type === 'crags' ? ' sectors' : ' routes')} />
           ) : null}
-          {true ? <Tag text={'1'} star={true} /> : null}
+          {true ? <Tag text={rating} star={true} /> : null}
         </div>
         <Link
           href={
@@ -88,7 +93,7 @@ function Card({ item, type, grades }) {
               : '/route/' + item._id.toString()
           }
         >
-          <a className="h-min absolute bottom-0 right-0 button">see more </a>
+          <a className="h-min absolute bottom-0 right-0 button">see more</a>
         </Link>
       </div>
     </div>
