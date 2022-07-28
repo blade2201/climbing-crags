@@ -28,11 +28,11 @@ export default function Home({ grades }) {
       if (router.query.search) {
         const crags = await user.functions.searchCrags(router.query.search);
         setAllCrags(crags);
+        document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
         const areas = await user.functions.searchAreas(router.query.search);
         setAllAreas(areas);
         const routes = await user.functions.searchRoutes(router.query.search);
         setAllRoutes(routes);
-        document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
       }
     }
     try {
