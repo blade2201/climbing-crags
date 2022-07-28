@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/layout';
 import * as Realm from 'realm-web';
 import ListSection from '../components/ListSection';
+import * as realmAppUtil from '../utils/realmApp';
 
 export default function Home({ grades }) {
   const router = useRouter();
@@ -22,13 +23,7 @@ export default function Home({ grades }) {
 
   useEffect(() => {
     async function getData() {
-      const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
-      const app = new Realm.App({ id: REALM_APP_ID });
-      const credentials = Realm.Credentials.anonymous();
-      const user = await app.logIn(credentials);
-      // const client = app.currentUser.mongoClient('mongodb-atlas');
-      // const gradesDb = client.db('Climbing-crags').collection('grades');
-      // const grade = await gradesDb.find();
+      const { user } = await realmAppUtil.connectToRealm();
       if (router.query.search) {
         const crags = await user.functions.searchCrags(router.query.search);
         setAllCrags(crags);
@@ -90,21 +85,11 @@ Home.getLayout = function getLayout(page) {
 };
 
 export const getServerSideProps = async (ctx) => {
-  const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
-  const app = new Realm.App({ id: REALM_APP_ID });
-  const credentials = Realm.Credentials.anonymous();
-  const user = await app.logIn(credentials);
-  const client = app.currentUser.mongoClient('mongodb-atlas');
-  const gradesDb = client.db('Climbing-crags').collection('grades');
-  const grades = await gradesDb.find({});
-  const gradesObj = {};
-  grades.forEach((grade) => {
-    gradesObj[grade.id] = [grade.fra_routes, grade.usa_routes];
-  });
+  let grades = await realmAppUtil.gradesObj();
 
   return {
     props: {
-      grades: gradesObj,
+      grades,
     },
   };
 };
