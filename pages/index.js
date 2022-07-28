@@ -6,14 +6,14 @@ import ListSection from '../components/ListSection';
 
 export default function Home({ grades }) {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(router.query.search || '');
   const [allRoutes, setAllRoutes] = useState([]);
   const [allAreas, setAllAreas] = useState([]);
   const [allCrags, setAllCrags] = useState([]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    router.push(`/?search=${searchTerm.toLowerCase()}`);
+    router.push(`/?search=${searchTerm.toLowerCase()}`, null, { shallow: true });
   };
 
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function Home({ grades }) {
         document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
       }
     }
-
     try {
       getData();
     } catch (e) {
@@ -68,9 +67,13 @@ export default function Home({ grades }) {
         </form>
       </div>
       <div id="content" className="md:px-36 px-4 mb-40">
-        <ListSection title={'Crags'} items={allCrags} grades={grades} />
-        <ListSection title={'Sectors'} items={allAreas} grades={grades} />
-        <ListSection title={'Routes'} items={allRoutes} grades={grades} />
+        {allCrags.length !== 0 && <ListSection title={'Crags'} items={allCrags} grades={grades} />}
+        {allAreas.length !== 0 && (
+          <ListSection title={'Sectors'} items={allAreas} grades={grades} />
+        )}
+        {allRoutes.length !== 0 && (
+          <ListSection title={'Routes'} items={allRoutes} grades={grades} />
+        )}
       </div>
     </>
   );
