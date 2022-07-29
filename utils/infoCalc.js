@@ -65,5 +65,9 @@ export function calcRoutesAndDifficulty(item, type) {
 }
 
 function stringifyDifficulties(difficulties) {
-  return `${grades[parseInt(difficulties.low)][0]} - ${grades[parseInt(difficulties.high)][0]}`;
+  return `${getFrGrade(difficulties.low)} - ${getFrGrade(difficulties.high)}`;
+}
+
+export function getFrGrade(grade) {
+  return grades[parseInt(grade)][0];
 }

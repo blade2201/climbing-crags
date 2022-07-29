@@ -254,6 +254,7 @@ export default function CragPage({ crag, grades }) {
           routes={info.routes}
           difficulties={info.difficulties}
           rating={info.rating}
+          type={'crag'}
           classes={'absolute z-10 md:left-[23%] md:top-[40%] top-2/3 left-[10%]'}
         />
       </section>
