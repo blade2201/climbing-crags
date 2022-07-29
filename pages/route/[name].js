@@ -1,6 +1,6 @@
 import Layout from '../../components/layout';
 import Image from 'next/image';
-import clientPromise from '../../utils/mongoDb';
+import clientPromise from '../../utils/mongodb';
 import { getFrGrade } from '../../utils/infoCalc';
 import Rating from '../../components/ui/Rating';
 import Link from 'next/link';

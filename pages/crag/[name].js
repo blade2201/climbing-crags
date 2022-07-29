@@ -4,7 +4,7 @@ import { calcRoutesAndDifficulty } from '../../utils/infoCalc';
 import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
-import clientPromise from '../../utils/mongoDb';
+import clientPromise from '../../utils/mongodb';
 
 export default function CragPage({ crag }) {
   const [cragData, setCragData] = useState(crag[0]);

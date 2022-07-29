@@ -4,7 +4,7 @@ import { calcRoutesAndDifficulty } from '../../utils/infoCalc';
 import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import RoutesTable from '../../components/RoutesTable';
-import clientPromise from '../../utils/mongoDb';
+import clientPromise from '../../utils/mongodb';
 import Link from 'next/link';
 
 export default function SectorPage({ routes, sector }) {
