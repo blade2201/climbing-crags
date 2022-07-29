@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { calcRoutesAndDifficulty } from '../utils/infoCalc';
 import Tag from './ui/Tag';
-function Card({ item, type, grades }) {
+function Card({ item, type }) {
   const [routesCount, setRoutesCount] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [rating, setRating] = useState(0);
