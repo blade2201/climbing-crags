@@ -26,8 +26,8 @@ export default function Home({ grades }) {
       if (router.query.search) {
         const crags = await user.functions.searchCrags(router.query.search);
         setAllCrags(crags);
-        const areas = await user.functions.searchAreas(router.query.search);
-        setAllAreas(areas);
+        const sectors = await user.functions.searchAreas(router.query.search);
+        setAllSectors(sectors);
         const routes = await user.functions.searchRoutes(router.query.search);
         setAllRoutes(routes);
       } else {
@@ -37,7 +37,7 @@ export default function Home({ grades }) {
       }
     }
     try {
-      getData();
+      if (router.query.search) getData();
     } catch (e) {
       console.log(e);
     }
@@ -69,8 +69,8 @@ export default function Home({ grades }) {
       </div>
       <div id="content" className="md:px-36 px-4 mb-40">
         {allCrags.length !== 0 && <ListSection title={'Crags'} items={allCrags} grades={grades} />}
-        {allAreas.length !== 0 && (
-          <ListSection title={'Sectors'} items={allAreas} grades={grades} />
+        {allSectors.length !== 0 && (
+          <ListSection title={'Sectors'} items={allSectors} grades={grades} />
         )}
         {allRoutes.length !== 0 && (
           <ListSection title={'Routes'} items={allRoutes} grades={grades} />
@@ -83,7 +83,8 @@ Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export const getServerSideProps = (ctx) => {
+// TODO make realmAppUtil.getGrades() async
+export async function getServerSideProps(ctx) {
   let grades = realmAppUtil.gradesObj();
 
   return {
@@ -91,4 +92,4 @@ export const getServerSideProps = (ctx) => {
       grades,
     },
   };
-};
+}
