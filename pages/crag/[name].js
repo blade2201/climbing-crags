@@ -1,10 +1,11 @@
 import Layout from '../../components/layout';
-import { connectToRealm, gradesObj } from '../../utils/realmApp';
 import { useState } from 'react';
 import { calcRoutesAndDifficulty } from '../../utils/infoCalc';
 import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
+import clientPromise from '../../utils/mongoDb';
+import { gradesObj } from '../../utils/realmApp';
 
 export default function CragPage({ crag, grades }) {
   //const [cragData, setCragData] = useState(crag[0]);
@@ -248,6 +249,7 @@ export default function CragPage({ crag, grades }) {
             alt="crag image"
             layout="fill"
             objectFit="cover"
+            priority={true}
           />
         </div>
         <InfoCard
@@ -269,10 +271,18 @@ CragPage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-/* export async function getStaticPaths() {
-  const { client } = await connectToRealm();
-  const cragsDb = client.db('Climbing-crags').collection('crags');
-  const crags = await cragsDb.find({});
+// this preloads all the possible paths for the crag page
+export async function getStaticPaths() {
+  const client = await clientPromise;
+  const db = client.db('Climbing-crags');
+  const cragsCollection = db.collection('crags');
+  const cragsCursor = await cragsCollection.find({});
+  const crags = await cragsCursor
+    .map((crag) => {
+      return { crag: crag.crag };
+    })
+    .toArray();
+
   const paths = crags.map((crag) => ({ params: { name: crag.crag.toLowerCase() } }));
   return {
     paths,
@@ -280,21 +290,27 @@ CragPage.getLayout = function getLayout(page) {
   };
 }
 
+// this preloads all the crag info for the specific paths
 export async function getStaticProps(ctx) {
   let crag;
   let grades;
   try {
-    const { client } = await connectToRealm();
-    const cragsDb = client.db('Climbing-crags').collection('crags');
-    crag = await cragsDb.aggregate([
-      { $match: { crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') } } },
-      { $project: { _id: 0 } },
-    ]);
+    const client = await clientPromise;
+    const db = client.db('Climbing-crags');
+    const cragsCollection = db.collection('crags');
+    const cragsCursor = await cragsCollection.find({
+      crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') },
+    });
+    crag = await cragsCursor
+      .map((crag) => {
+        return { ...crag, _id: crag._id.toString() };
+      })
+      .toArray();
   } catch (error) {
     console.error(error);
   }
 
-  grades = gradesObj()
+  grades = gradesObj();
 
   return {
     props: {
@@ -302,4 +318,4 @@ export async function getStaticProps(ctx) {
       grades,
     },
   };
-} */
+}
