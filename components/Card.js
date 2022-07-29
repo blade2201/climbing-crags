@@ -42,7 +42,14 @@ function Card({ item, type, grades }) {
         />
       </div>
       <div className="relative">
-        <h4 className="pt-2 font-bold text-2xl text-white-high">
+        <div className="pt-4 flex gap-x-2.5">
+          {difficulty ? <Tag text={difficulty} /> : null}
+          {routesCount ? (
+            <Tag text={routesCount + (type === 'crags' ? ' sectors' : ' routes')} />
+          ) : null}
+          {true ? <Tag text={rating} star={true} /> : null}
+        </div>
+        <h4 className="pt-4 font-bold text-2xl text-white-high">
           {type === 'crags' ? item.crag : type === 'sectors' ? item.sector : item.name}
         </h4>
         <h5>
@@ -51,13 +58,7 @@ function Card({ item, type, grades }) {
           {type === 'sectors' ? item.country : type === 'routes' ? item.crag : ''}
           <br />
         </h5>
-        <div className="pt-3 flex gap-x-2.5">
-          {difficulty ? <Tag text={difficulty} /> : null}
-          {routesCount ? (
-            <Tag text={routesCount + (type === 'crags' ? ' sectors' : ' routes')} />
-          ) : null}
-          {true ? <Tag text={rating} star={true} /> : null}
-        </div>
+
         <Link
           href={
             type === 'crags'
