@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 function Rating({ rating }) {
   return (
-    <div className="px-4 py-2 bg-[#474747] rounded-2xl w-max flex items-center gap-x-1">
+    <div className="px-4 py-2 bg-[#474747] rounded-2xl w-max flex items-center gap-x-1 shadow-8">
       <Image
         src={`/star-${rating > 1 ? 'full' : rating > 0.5 ? 'half' : 'empty'}.svg`}
         alt="star svg"
