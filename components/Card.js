@@ -60,7 +60,7 @@ function Card({ item, type, grades }) {
             type === 'crags'
               ? '/crag/' + item.crag.toLowerCase()
               : type === 'sectors'
-              ? '/sectors/' + item.sector_id
+              ? '/sector/' + item.sector_id
               : '/route/' + item._id.toString()
           }
         >
