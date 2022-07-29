@@ -69,3 +69,4 @@ function Card({ item, type }) {
 }
 
 export default Card;
+//
