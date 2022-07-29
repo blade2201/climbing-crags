@@ -45,7 +45,7 @@ function Card({ item, type, grades }) {
         <h5>
           {type === 'crags' ? item.country : type === 'sectors' ? item.crag + ', ' : item.sector}
           {(type === 'sectors' || type === 'routes') && <br />}
-          {type === 'sectors' ? item.country : type === 'sectors' ? item.crag : ''}
+          {type === 'sectors' ? item.country : type === 'routes' ? item.crag : ''}
           <br />
         </h5>
         <div className="pt-3 flex gap-x-2.5">
