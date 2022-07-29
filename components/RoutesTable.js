@@ -15,7 +15,7 @@ export default function RoutesTable({ routes, crag, sector }) {
       </div>
       {routes.map((item, i) => {
         return (
-          <Link key={i} href={item.name + '-' + item.grade_id}>
+          <Link key={i} href={`/route/${item.name}-${item.grade_id}`}>
             <a>
               <div className="grid grid-cols-12 border-y border-white p-3 text-xl gap-6 font-semibold hover:bg-dark-card">
                 <div className="col-span-1 text-white-true flex items-center justify-center">

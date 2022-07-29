@@ -40,9 +40,9 @@ function Card({ item, type }) {
           {routesCount ? (
             <Tag text={routesCount + (type === 'crags' ? ' sectors' : ' routes')} />
           ) : null}
-          {true ? <Tag text={rating} star={true} /> : null}
+          {true ? <Tag text={rating || parseInt(item.rating).toFixed(1)} star={true} /> : null}
         </div>
-        <h4 className="pt-4 font-bold text-2xl text-white-high">
+        <h4 className="pt-4 font-bold text-2xl text-white-high max-w-[60%]">
           {type === 'crags' ? item.crag : type === 'sectors' ? item.sector : item.name}
         </h4>
         <h5>
