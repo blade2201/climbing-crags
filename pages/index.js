@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Layout from '../components/layout';
-import * as Realm from 'realm-web';
 import ListSection from '../components/ListSection';
 import * as realmAppUtil from '../utils/realmApp';
 
@@ -9,7 +8,7 @@ export default function Home({ grades }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState(router.query.search || '');
   const [allRoutes, setAllRoutes] = useState([]);
-  const [allAreas, setAllAreas] = useState([]);
+  const [allSectors, setAllSectors] = useState([]);
   const [allCrags, setAllCrags] = useState([]);
 
   const handleOnSubmit = async (e) => {
@@ -33,7 +32,7 @@ export default function Home({ grades }) {
         setAllRoutes(routes);
       } else {
         setAllCrags([]);
-        setAllAreas([]);
+        setAllSectors([]);
         setAllRoutes([]);
       }
     }
