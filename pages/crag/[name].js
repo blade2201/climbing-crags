@@ -5,7 +5,6 @@ import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongoDb';
-import { gradesObj } from '../../utils/realmApp';
 
 export default function CragPage({ crag }) {
   const [cragData, setCragData] = useState(crag[0]);
@@ -71,7 +70,6 @@ export async function getStaticPaths() {
 // this preloads all the crag info for the specific paths
 export async function getStaticProps(ctx) {
   let crag;
-  let grades;
   try {
     const client = await clientPromise;
     const db = client.db('Climbing-crags');
