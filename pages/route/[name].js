@@ -1,7 +1,9 @@
 import Layout from '../../components/layout';
 import Image from 'next/image';
 import clientPromise from '../../utils/mongoDb';
-
+import { getFrGrade } from '../../utils/infoCalc';
+import Rating from '../../components/ui/Rating';
+import Link from 'next/link';
 export default function RoutePage({ route }) {
   return (
     <>
@@ -11,8 +13,22 @@ export default function RoutePage({ route }) {
             {route.name}
           </h1>
           <h4 className="md:text-4xl text-white-high">
-            {route.sector}, {route.crag}
+            <Link href={`/sector/${route.sector_id}`}>
+              <a>{route.sector}, </a>
+            </Link>
+            <Link href={`/crag/${route.crag.toLowerCase()}`}>
+              <a>{route.crag}</a>
+            </Link>
           </h4>
+          <div className="pt-20 text-2xl text-white flex items-center gap-x-4">
+            Grade:
+            <div className="border rounded-full aspect-square p-4 border-primary-600">
+              {getFrGrade(route.grade_id)}
+            </div>
+          </div>
+          <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
+            Grade: <Rating rating={route.rating} />
+          </div>
         </div>
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
           <Image
@@ -41,11 +57,11 @@ export async function getStaticPaths() {
   const routesCursor = await routesCollection.find({});
   const routes = await routesCursor
     .map((route) => {
-      return { name: route.name.toLowerCase() + '-' + route.grade_id };
+      return { id: route.id };
     })
     .toArray();
 
-  const paths = routes.map((route) => ({ params: { name: route.name } }));
+  const paths = routes.map((route) => ({ params: { name: route.id } }));
   return {
     paths,
     fallback: false,
@@ -60,14 +76,14 @@ export async function getStaticProps(ctx) {
     const db = client.db('Climbing-crags');
     const routesCollection = db.collection('routes');
     const routesCursor = await routesCollection.find({
-      name: ctx.params.name.split('-')[0],
-      grade_id: ctx.params.name.split('-')[1],
+      id: ctx.params.name,
     });
     route = await routesCursor
       .map((route) => {
         return { ...route, _id: route._id.toString() };
       })
       .toArray();
+    console.log(route);
   } catch (error) {
     console.error(error);
   }

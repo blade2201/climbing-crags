@@ -42,7 +42,7 @@ function Card({ item, type }) {
           ) : null}
           {true ? <Tag text={rating || parseInt(item.rating).toFixed(1)} star={true} /> : null}
         </div>
-        <h4 className="pt-4 font-bold text-2xl text-white-high max-w-[60%]">
+        <h4 className="pt-4 font-bold text-2xl text-white-high max-w-[60%] capitalize">
           {type === 'crags' ? item.crag : type === 'sectors' ? item.sector : item.name}
         </h4>
         <h5>
@@ -58,7 +58,7 @@ function Card({ item, type }) {
               ? '/crag/' + item.crag.toLowerCase()
               : type === 'sectors'
               ? '/sector/' + item.sector_id
-              : '/route/' + item._id.toString()
+              : '/route/' + item.id
           }
         >
           <a className="h-min absolute bottom-0 right-0 button">see more</a>

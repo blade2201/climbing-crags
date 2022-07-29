@@ -5,6 +5,7 @@ import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import RoutesTable from '../../components/RoutesTable';
 import clientPromise from '../../utils/mongoDb';
+import Link from 'next/link';
 
 export default function SectorPage({ routes, sector }) {
   const [sectorData, setSectorData] = useState(sector);
@@ -18,7 +19,11 @@ export default function SectorPage({ routes, sector }) {
             {sectorData.sector}
           </h1>
           <h4 className="md:text-4xl text-white-high">
-            {sectorData.crag}, {sectorData.country}
+            <Link href={`/crag/${sectorData.crag.toLowerCase()}`}>
+              <a>
+                {sectorData.crag}, {sectorData.country}
+              </a>
+            </Link>
           </h4>
         </div>
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
@@ -62,7 +67,7 @@ SectorPage.getLayout = function getLayout(page) {
 export async function getStaticPaths() {
   const client = await clientPromise;
   const db = client.db('Climbing-crags');
-  const sectorsCollection = db.collection('areas');
+  const sectorsCollection = db.collection('sectors');
   const sectorsCursor = await sectorsCollection.find({});
   const sectors = await sectorsCursor
     .map((sector) => {
@@ -85,7 +90,7 @@ export async function getStaticProps(ctx) {
     const client = await clientPromise;
     const db = client.db('Climbing-crags');
     const routesCollection = db.collection('routes');
-    const sectorsCollection = db.collection('areas');
+    const sectorsCollection = db.collection('sectors');
     const sectorCursor = await sectorsCollection.find({ sector_id: ctx.params.id });
     sectors = await sectorCursor
       .map((sector) => {
