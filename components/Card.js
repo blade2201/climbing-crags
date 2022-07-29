@@ -10,14 +10,17 @@ function Card({ item, type, grades }) {
 
   useEffect(() => {
     if (item) {
+      let { routes, rating, difficulties } = calcRoutesAndDifficulty(item, type);
       switch (type) {
         case 'crags':
-          const { routes, rating, difficulties } = calcRoutesAndDifficulty(item, type);
           setRoutesCount(routes);
           setRating(rating);
           setDifficulty(difficulties);
           break;
         case 'sectors':
+          setRoutesCount(routes);
+          setRating(rating);
+          setDifficulty(difficulties);
           setRoutesCount(item.routes.length + '+');
           break;
         default:
