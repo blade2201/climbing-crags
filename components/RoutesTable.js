@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function RoutesTable({ routes, crag, sector }) {
   return (
     <div>
-      <h3 className="text-5xl pb-10 pt-16">Routes</h3>
+      <h3 className="text-5xl pb-10 pt-16 bold">Routes</h3>
       <div className="grid grid-cols-12 border-y-2 border-white px-3 py-[10px] text-xl gap-6">
         <div className="col-span-1 text-center">GRADE</div>
         <div className="col-span-5">NAME</div>

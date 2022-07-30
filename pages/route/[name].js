@@ -83,7 +83,6 @@ export async function getStaticProps(ctx) {
         return { ...route, _id: route._id.toString() };
       })
       .toArray();
-    console.log(route);
   } catch (error) {
     console.error(error);
   }

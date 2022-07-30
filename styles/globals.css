@@ -14,7 +14,7 @@
   }
 
   .button {
-    @apply bg-primary-600 md:px-6 md:py-4 px-3 py-2 rounded-full text-white-true text-xs md:text-xl uppercase font-semibold shadow-8 hover:bg-primary-300 transition-all duration-200 active:shadow-none;
+    @apply bg-primary-600 md:px-6 md:py-4 px-3 py-2 rounded-full text-white-true text-xs md:text-xl uppercase font-semibold shadow-8 hover:bg-primary-300 transition-all duration-200 active:shadow-none disabled:cursor-not-allowed disabled:bg-[#888];
   }
 
   input[type='text'] {
