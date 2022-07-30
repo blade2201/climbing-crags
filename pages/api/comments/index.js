@@ -14,10 +14,10 @@ export default async function handler(req, res) {
     try {
       const client = await clientPromise;
       const db = client.db('Climbing-crags');
-      const messagesCollection = db.collection('messages');
+      const commentsCollection = db.collection('comments');
       await res.revalidate(body.path);
-      const messageInsertion = await messagesCollection.insertOne(body);
-      return res.status(200).json(messageInsertion);
+      const commentInsertion = await commentsCollection.insertOne({ ...body, comment_rating: 0 });
+      return res.status(200).json(commentInsertion);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
@@ -26,10 +26,10 @@ export default async function handler(req, res) {
     try {
       const client = await clientPromise;
       const db = client.db('Climbing-crags');
-      const messagesCollection = db.collection('messages');
-      const messagesCursor = await messagesCollection.find({ path: body.path });
-      const messages = await messagesCursor.toArray();
-      return res.status(200).json(messages);
+      const commentsCollection = db.collection('comments');
+      const commentsCursor = await commentsCollection.find({ path: body.path });
+      const comments = await commentsCursor.toArray();
+      return res.status(200).json(comments);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
