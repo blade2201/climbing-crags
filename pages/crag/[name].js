@@ -5,10 +5,12 @@ import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongodb';
+import CommentSection from '../../components/CommentSection';
+import cragImage from '../../public/home.jpg';
 
-export default function CragPage({ crag }) {
-  const [cragData, setCragData] = useState(crag[0]);
-  const [info, setInfo] = useState(calcRoutesAndDifficulty(cragData, 'crags'));
+export default function CragPage({ crag, comments }) {
+  const [cragData] = useState(crag[0]);
+  const [info] = useState(calcRoutesAndDifficulty(cragData, 'crags'));
 
   return (
     <>
@@ -22,7 +24,7 @@ export default function CragPage({ crag }) {
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
-            src="/home.jpg"
+            src={cragImage}
             alt="crag image"
             layout="fill"
             objectFit="cover"
@@ -37,9 +39,10 @@ export default function CragPage({ crag }) {
           classes={'absolute z-10 md:left-[23%] md:top-[40%] top-2/3 left-[10%]'}
         />
       </section>
-      <section className="px-4 md:px-36 md:pt-12 pb-32">
+      <section className="px-4 md:px-36 md:pt-12 pb-16">
         <ListSection title={'Sectors'} items={cragData.sectors} />
       </section>
+      <CommentSection comments={comments} />
     </>
   );
 }
@@ -70,6 +73,7 @@ export async function getStaticPaths() {
 // this preloads all the crag info for the specific paths
 export async function getStaticProps(ctx) {
   let crag;
+  let comments;
   try {
     const client = await clientPromise;
     const db = client.db('Climbing-crags');
@@ -82,6 +86,14 @@ export async function getStaticProps(ctx) {
         return { ...crag, _id: crag._id.toString() };
       })
       .toArray();
+
+    const commentsCollection = db.collection('comments');
+    const commentsCursor = await commentsCollection.find({ path: `/crag/${ctx.params.name}` });
+    comments = await commentsCursor
+      .map((comment) => {
+        return { ...comment, _id: comment._id.toString() };
+      })
+      .toArray();
   } catch (error) {
     console.error(error);
   }
@@ -89,6 +101,7 @@ export async function getStaticProps(ctx) {
   return {
     props: {
       crag,
+      comments,
     },
   };
 }
