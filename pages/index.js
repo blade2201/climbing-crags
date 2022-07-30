@@ -6,7 +6,7 @@ import * as realmAppUtil from '../utils/realmApp';
 
 export default function Home({ grades }) {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState(router.query.search || '');
+  const [searchTerm, setSearchTerm] = useState('');
   const [allRoutes, setAllRoutes] = useState([]);
   const [allSectors, setAllSectors] = useState([]);
   const [allCrags, setAllCrags] = useState([]);
