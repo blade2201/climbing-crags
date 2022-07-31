@@ -21,7 +21,7 @@ export default function Home({ grades, crags, sectors }) {
     setAllSectors(sectors);
     const content = document.getElementById('content');
     if (content) {
-      content.scrollIntoView({ behavior: 'smooth' });
+      scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
     }
   }, [router.query.search]);
 
@@ -111,12 +111,12 @@ export default function Home({ grades, crags, sectors }) {
       {router.query.search && (
         <div id="content" className="md:px-36 px-4 mb-40">
           {allCrags.length === 0 && allSectors.length === 0 ? (
-            <h3 className="text-2xl md:text-5xl md:pb-10 md:pt-16 bold">
+            <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
               No results found for:
               <span className="font-semibold text-primary-400"> {router.query.search}</span>
             </h3>
           ) : (
-            <h3 className="text-2xl md:text-5xl md:pb-10 md:pt-16 bold">
+            <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
               Results for:
               <span className="font-semibold text-primary-400"> {router.query.search}</span>
             </h3>

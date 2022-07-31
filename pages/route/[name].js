@@ -28,7 +28,7 @@ export default function RoutePage({ route, comments }) {
             </div>
           </div>
           <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
-            Grade: <Rating rating={route.rating} />
+            Rating: <Rating rating={route.rating} />
           </div>
         </div>
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
