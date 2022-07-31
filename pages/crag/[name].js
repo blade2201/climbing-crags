@@ -94,6 +94,7 @@ export async function getStaticProps(ctx) {
         return { ...comment, _id: comment._id.toString() };
       })
       .toArray();
+    comments.sort((a, b) => b.comment_rating - a.comment_rating);
   } catch (error) {
     console.error(error);
   }
