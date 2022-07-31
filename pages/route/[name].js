@@ -4,7 +4,8 @@ import clientPromise from '../../utils/mongodb';
 import { getFrGrade } from '../../utils/infoCalc';
 import Rating from '../../components/ui/Rating';
 import Link from 'next/link';
-export default function RoutePage({ route }) {
+import CommentSection from '../../components/CommentSection';
+export default function RoutePage({ route, comments }) {
   return (
     <>
       <section className="px-4 md:px-36 pt-12 relative min-h-[70vh]">
@@ -41,6 +42,7 @@ export default function RoutePage({ route }) {
           />
         </div>
       </section>
+      <CommentSection comments={comments} />
     </>
   );
 }
@@ -71,6 +73,7 @@ export async function getStaticPaths() {
 // this preloads all the crag info for the specific paths
 export async function getStaticProps(ctx) {
   let route;
+  let comments;
   try {
     const client = await clientPromise;
     const db = client.db('Climbing-crags');
@@ -83,6 +86,14 @@ export async function getStaticProps(ctx) {
         return { ...route, _id: route._id.toString() };
       })
       .toArray();
+    const commentsCollection = db.collection('comments');
+    const commentsCursor = await commentsCollection.find({ path: `/route/${ctx.params.name}` });
+    comments = await commentsCursor
+      .map((comment) => {
+        return { ...comment, _id: comment._id.toString() };
+      })
+      .toArray();
+    comments.sort((a, b) => b.comment_rating - a.comment_rating);
   } catch (error) {
     console.error(error);
   }
@@ -90,6 +101,7 @@ export async function getStaticProps(ctx) {
   return {
     props: {
       route: route[0],
+      comments,
     },
   };
 }
