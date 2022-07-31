@@ -5,52 +5,48 @@ import CardSkeleton from '../components/cardSkeleton';
 import Layout from '../components/layout';
 import ListSection from '../components/ListSection';
 import { gradesObj } from '../utils/grades';
+import clientPromise from '../utils/mongodb';
+import Skeleton from 'react-loading-skeleton';
 
-export default function Home({ grades }) {
+export default function Home({ grades, crags, sectors }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [allRoutes, setAllRoutes] = useState([]);
   const [allSectors, setAllSectors] = useState([]);
   const [allCrags, setAllCrags] = useState([]);
   const [autocomplete, setAutocomplete] = useState([]);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
   useEffect(() => {
-    setAllCrags([]);
-    document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
-    async function getData() {
-      const { user } = await realmAppUtil.connectToRealm();
-      if (router.query.search) {
-        const crags = await user.functions.searchCrags(router.query.search);
-        setAllCrags(crags);
-        //!! TODO change searchArea to serchSectors
-        /* const sectors = await user.functions.searchAreas(router.query.search);
-        setAllSectors(sectors); */
-        /* const routes = await user.functions.searchRoutes(router.query.search);
-        setAllRoutes(routes); */
+    setAllCrags(crags);
+    setAllSectors(sectors);
+    const content = document.getElementById('content');
+    if (content) {
+      content.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [router.query.search]);
+
   useEffect(() => {
     setAutoCompleteLoading(true);
     async function getAutocomplete() {
       if (searchTerm.length > 0) {
         try {
-          const { user } = await realmAppUtil.connectToRealm();
-          const searchAutoComplete = await user.functions.searchAutocomplete(searchTerm);
-          setAutocomplete(searchAutoComplete);
+          const response = await fetch(`/api/routes/autocomplete/${searchTerm}`);
+          const autocompletedRoutes = await response.json();
+          setAutocomplete(autocompletedRoutes);
           setAutoCompleteLoading(false);
         } catch (error) {
-          console.error(error);
+          console.error('daosdoasdoiasoidoasodiaos', error);
         }
       } else {
         setAutocomplete([]);
       }
     }
-
     getAutocomplete();
   }, [searchTerm]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    router.push(`/?search=${searchTerm.toLowerCase()}`, null, { shallow: true });
+    router.push(`/?search=${searchTerm.toLowerCase()}`);
     setSearchTerm('');
   };
 
@@ -83,7 +79,6 @@ export default function Home({ grades }) {
               >
                 {autocomplete.length ? (
                   autocomplete.map((el) => {
-                    console.log(el);
                     return (
                       <Link key={el._id} href={'/route/' + el.id}>
                         <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
@@ -95,9 +90,11 @@ export default function Home({ grades }) {
                     );
                   })
                 ) : autoCompleteLoading ? (
-                  <div className="bg-dark-card hover:bg-dark py-2 md:px-6 px-3 first:pt-4 last:pb-4 last:border-0 border-b border-primary-600">
-                    Loading...
-                  </div>
+                  <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
+                    <div className="last:border-0 border-b border-primary-600 capitalize">
+                      <Skeleton />
+                    </div>
+                  </a>
                 ) : (
                   <></>
                 )}
@@ -109,21 +106,27 @@ export default function Home({ grades }) {
           </button>
         </form>
       </div>
-      <div id="content" className="md:px-36 px-4 mb-40">
-        {allCrags.length !== 0 ? (
-          <ListSection title={'Crags'} items={allCrags} grades={grades} />
-        ) : (
-          <CardSkeleton />
-        )}
-        {/* {allSectors.length !== 0 ? (
-          <ListSection title={'Sectors'} items={allSectors} grades={grades} />
-        ) : (
-          <CardSkeleton />
-        )} */}
-        {/* {allRoutes.length !== 0 && (
-          <ListSection title={'Routes'} items={allRoutes} grades={grades} />
-        )} */}
-      </div>
+      {router.query.search && (
+        <div id="content" className="md:px-36 px-4 mb-40">
+          {allCrags.length === 0 && allSectors.length === 0 ? (
+            <h3 className="text-5xl pb-10 pt-16 bold">
+              No results found for:
+              <span className="font-semibold text-primary-400"> {router.query.search}</span>
+            </h3>
+          ) : (
+            <h3 className="text-5xl pb-10 pt-16 bold">
+              Results for:
+              <span className="font-semibold text-primary-400"> {router.query.search}</span>
+            </h3>
+          )}
+          {allCrags.length !== 0 && (
+            <ListSection title={'Crags'} items={allCrags} grades={grades} />
+          )}
+          {allSectors.length !== 0 && (
+            <ListSection title={'Sectors'} items={allSectors} grades={grades} />
+          )}
+        </div>
+      )}
     </>
   );
 }
@@ -133,11 +136,57 @@ Home.getLayout = function getLayout(page) {
 
 // TODO make realmAppUtil.getGrades() async
 export async function getServerSideProps(ctx) {
-  let grades = realmAppUtil.gradesObj();
+  let grades = gradesObj();
+  let crags;
+  let sectors;
+  if (ctx.query.search) {
+    const client = await clientPromise;
+    const db = client.db('Climbing-crags');
+    const cragsCollection = db.collection('crags');
+    const sectorsCollection = db.collection('sectors');
+    const cragsPipeline = [
+      {
+        $search: {
+          index: 'searchCrags',
+          text: {
+            query: ctx.query.search || '',
+            path: ['crag', 'country'],
+            fuzzy: {},
+          },
+        },
+      },
+    ];
+    const sectorsPipeline = [
+      {
+        $search: {
+          index: 'searchSectors',
+          text: {
+            query: ctx.query.search || '',
+            path: 'sector',
+            fuzzy: {},
+          },
+        },
+      },
+    ];
+    const cragCursor = await cragsCollection.aggregate(cragsPipeline);
+    const sectorsCursor = await sectorsCollection.aggregate(sectorsPipeline);
+    crags = await cragCursor
+      .map((crag) => {
+        return { ...crag, _id: crag._id.toString() };
+      })
+      .toArray();
+    sectors = await sectorsCursor
+      .map((sector) => {
+        return { ...sector, _id: sector._id.toString() };
+      })
+      .toArray();
+  }
 
   return {
     props: {
       grades,
+      crags: crags || [],
+      sectors: sectors || [],
     },
   };
 }
