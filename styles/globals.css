@@ -21,7 +21,7 @@
     @apply md:px-6 md:py-4 px-3 py-2 placeholder:text-white bg-dark-card  text-xs md:text-xl rounded-full border-2 border-primary-600 text-white-high shadow-8 focus:outline-none focus:border-primary-300 box-border;
   }
   textarea {
-    @apply md:px-6 md:py-4 px-3 py-2 placeholder:text-white bg-dark-card  text-xs md:text-xl rounded-4xl w-full border-2 border-primary-600 text-white-high shadow-8 focus:outline-none focus:border-primary-300 box-border resize-none;
+    @apply md:px-6 md:py-4 px-3 py-2 placeholder:text-white bg-dark-card  text-xs md:text-xl rounded-2xl md:rounded-4xl w-full border-2 border-primary-600 text-white-high shadow-8 focus:outline-none focus:border-primary-300 box-border resize-none;
   }
 
   .star-container > svg:hover ~ svg .star-empty_svg__star-path,

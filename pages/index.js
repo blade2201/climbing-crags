@@ -73,16 +73,16 @@ export default function Home({ grades, crags, sectors }) {
             />
             {searchTerm.length > 0 && (
               <div
-                className={`absolute w-full top-[70px] overflow-hidden bg-dark-card ${
+                className={`absolute w-full top-[40px] md:top-[70px] overflow-hidden bg-dark-card ${
                   autocomplete.length || autoCompleteLoading ? 'border-2' : ''
-                } border-primary-600 text-white-high shadow-8 rounded-4xl boder-box`}
+                } border-primary-300 text-white-high shadow-8 rounded-3xl md:rounded-4xl boder-box`}
               >
                 {autocomplete.length ? (
                   autocomplete.map((el) => {
                     return (
                       <Link key={el._id} href={'/route/' + el.id}>
                         <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
-                          <div className="last:border-0 border-b border-primary-600 capitalize">
+                          <div className="text-xs md:text-base capitalize">
                             {el.name}, {el.sector}, {el.crag}
                           </div>
                         </a>
@@ -111,12 +111,12 @@ export default function Home({ grades, crags, sectors }) {
       {router.query.search && (
         <div id="content" className="md:px-36 px-4 mb-40">
           {allCrags.length === 0 && allSectors.length === 0 ? (
-            <h3 className="text-5xl pb-10 pt-16 bold">
+            <h3 className="text-2xl md:text-5xl md:pb-10 md:pt-16 bold">
               No results found for:
               <span className="font-semibold text-primary-400"> {router.query.search}</span>
             </h3>
           ) : (
-            <h3 className="text-5xl pb-10 pt-16 bold">
+            <h3 className="text-2xl md:text-5xl md:pb-10 md:pt-16 bold">
               Results for:
               <span className="font-semibold text-primary-400"> {router.query.search}</span>
             </h3>

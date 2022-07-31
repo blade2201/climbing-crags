@@ -46,13 +46,10 @@ export default async function handler(req, res) {
       const client = await clientPromise;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
-      console.log(body.id);
       const commentsCursor = await commentsCollection.findOneAndUpdate(
         { _id: new ObjectId(body.id) },
         { $inc: { comment_rating: body.vote } },
       );
-      // console.log(commentsCursor);
-      /* const comment = await commentsCursor.toArray(); */
       return res.status(200).json(commentsCursor);
     } catch (error) {
       console.error(error);
