@@ -1,4 +1,4 @@
-import { gradesObj } from '../utils/realmApp';
+import { gradesObj } from './grades';
 const grades = gradesObj();
 export function calcRoutesAndDifficulty(item, type) {
   let numberOfRoutes = 0;

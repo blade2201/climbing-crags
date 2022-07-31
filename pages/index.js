@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import CardSkeleton from '../components/cardSkeleton';
 import Layout from '../components/layout';
 import ListSection from '../components/ListSection';
-import * as realmAppUtil from '../utils/realmApp';
+import { gradesObj } from '../utils/grades';
 
 export default function Home({ grades }) {
   const router = useRouter();
