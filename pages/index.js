@@ -89,10 +89,10 @@ export default function Home({ grades, crags, sectors }) {
                     );
                   })
                 ) : autoCompleteLoading ? (
-                  <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
+                  <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card">
                     <div className="last:border-0 border-b border-primary-600 capitalize">
                       <SkeletonTheme baseColor="#333333" highlightColor="#575757">
-                        <Skeleton />
+                        <Skeleton count={6} height={24} className="my-1" />
                       </SkeletonTheme>
                     </div>
                   </a>
