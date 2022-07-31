@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import CardSkeleton from '../components/cardSkeleton';
@@ -11,6 +12,8 @@ export default function Home({ grades }) {
   const [allRoutes, setAllRoutes] = useState([]);
   const [allSectors, setAllSectors] = useState([]);
   const [allCrags, setAllCrags] = useState([]);
+  const [autocomplete, setAutocomplete] = useState([]);
+  const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
   useEffect(() => {
     setAllCrags([]);
@@ -25,18 +28,25 @@ export default function Home({ grades }) {
         setAllSectors(sectors); */
         /* const routes = await user.functions.searchRoutes(router.query.search);
         setAllRoutes(routes); */
+  useEffect(() => {
+    setAutoCompleteLoading(true);
+    async function getAutocomplete() {
+      if (searchTerm.length > 0) {
+        try {
+          const { user } = await realmAppUtil.connectToRealm();
+          const searchAutoComplete = await user.functions.searchAutocomplete(searchTerm);
+          setAutocomplete(searchAutoComplete);
+          setAutoCompleteLoading(false);
+        } catch (error) {
+          console.error(error);
+        }
       } else {
-        setAllCrags([]);
-        setAllSectors([]);
-        setAllRoutes([]);
+        setAutocomplete([]);
       }
     }
-    try {
-      if (router.query.search) getData();
-    } catch (e) {
-      console.log(e);
-    }
-  }, [router.query.search]);
+
+    getAutocomplete();
+  }, [searchTerm]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -57,13 +67,43 @@ export default function Home({ grades }) {
           className="md:mt-20 mt-12 md:w-1/2 w-full flex md:gap-x-6 gap-x-2 px-4"
           onSubmit={handleOnSubmit}
         >
-          <input
-            type="text"
-            placeholder="Type to search..."
-            className="w-full"
-            onChange={(e) => setSearchTerm(e.target.value)}
-            value={searchTerm}
-          />
+          <div className="w-full relative">
+            <input
+              type="text"
+              placeholder="Type to search..."
+              className="w-full"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              value={searchTerm}
+            />
+            {searchTerm.length > 0 && (
+              <div
+                className={`absolute w-full top-[70px] overflow-hidden bg-dark-card ${
+                  autocomplete.length || autoCompleteLoading ? 'border-2' : ''
+                } border-primary-600 text-white-high shadow-8 rounded-4xl boder-box`}
+              >
+                {autocomplete.length ? (
+                  autocomplete.map((el) => {
+                    console.log(el);
+                    return (
+                      <Link key={el._id} href={'/route/' + el.id}>
+                        <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
+                          <div className="last:border-0 border-b border-primary-600 capitalize">
+                            {el.name}, {el.sector}, {el.crag}
+                          </div>
+                        </a>
+                      </Link>
+                    );
+                  })
+                ) : autoCompleteLoading ? (
+                  <div className="bg-dark-card hover:bg-dark py-2 md:px-6 px-3 first:pt-4 last:pb-4 last:border-0 border-b border-primary-600">
+                    Loading...
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            )}
+          </div>
           <button className="button z-10" type="submit">
             Search
           </button>
