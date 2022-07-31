@@ -164,7 +164,7 @@ export async function getServerSideProps(ctx) {
           index: 'searchSectors',
           text: {
             query: ctx.query.search || '',
-            path: 'sector',
+            path: ['sector', 'routes.name'],
             fuzzy: {},
           },
         },
