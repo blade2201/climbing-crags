@@ -86,6 +86,14 @@ export async function getStaticProps(ctx) {
         return { ...route, _id: route._id.toString() };
       })
       .toArray();
+    const commentsCollection = db.collection('comments');
+    const commentsCursor = await commentsCollection.find({ path: `/route/${ctx.params.name}` });
+    comments = await commentsCursor
+      .map((comment) => {
+        return { ...comment, _id: comment._id.toString() };
+      })
+      .toArray();
+    comments.sort((a, b) => b.comment_rating - a.comment_rating);
   } catch (error) {
     console.error(error);
   }

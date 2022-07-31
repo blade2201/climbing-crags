@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Star from '../public/star-empty.svg';
 import { useForm } from 'react-hook-form';
 import Comment from './ui/Comment';
+import Rating from './ui/Rating';
+import { comment } from 'postcss';
 
 export default function CommentSection({ comments }) {
   const {
@@ -18,8 +20,21 @@ export default function CommentSection({ comments }) {
   });
 
   const router = useRouter();
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState();
   const [commentsState, setComments] = useState(comments);
+  const [commentRating, setCommentRating] = useState(0);
+
+  useEffect(() => {
+    let averageRating = 0;
+    console.log(comments);
+    comments.forEach((comment) => {
+      averageRating += comment.rating;
+    });
+    if (comments.length > 0) {
+      averageRating = averageRating / comments.length;
+    }
+    setCommentRating(averageRating);
+  }, [comments]);
 
   function handleClick(value) {
     if (rating === value) {
@@ -73,7 +88,13 @@ export default function CommentSection({ comments }) {
 
   return (
     <section className="px-4 md:px-36 md:pt-12 pb-32">
-      <h2 className="text-5xl pb-10 pt-16 font-bold">Comments</h2>
+      <h2 className="text-5xl pb-10 pt-16 font-bold relative">
+        Comments
+        <span className="absolute top-0 md:top-16 right-0 flex text-sm font-normal items-center gap-x-4">
+          Average comment rating:
+          <Rating rating={commentRating} />
+        </span>
+      </h2>
       <div className="grid md:grid-cols-2 gap-x-6">
         <div className="col-span-1">
           {commentsState.map((comment) => (
