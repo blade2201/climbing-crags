@@ -4,8 +4,3 @@ export function gradesObj() {
   );
   return gradesObj;
 }
-
-// TODO: move gradesObj to different utils
-// const client = app.currentUser.mongoClient('mongodb-atlas');
-// const gradesDb = client.db('Climbing-crags').collection('grades');
-// const grade = await gradesDb.find();

@@ -6,7 +6,7 @@ import Layout from '../components/layout';
 import ListSection from '../components/ListSection';
 import { gradesObj } from '../utils/grades';
 import clientPromise from '../utils/mongodb';
-import Skeleton from 'react-loading-skeleton';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 export default function Home({ grades, crags, sectors }) {
   const router = useRouter();
@@ -92,7 +92,9 @@ export default function Home({ grades, crags, sectors }) {
                 ) : autoCompleteLoading ? (
                   <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
                     <div className="last:border-0 border-b border-primary-600 capitalize">
-                      <Skeleton />
+                      <SkeletonTheme baseColor="#333333" highlightColor="#575757">
+                        <Skeleton />
+                      </SkeletonTheme>
                     </div>
                   </a>
                 ) : (
