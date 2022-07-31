@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import CardSkeleton from '../components/cardSkeleton';
 import Layout from '../components/layout';
 import ListSection from '../components/ListSection';
 import { gradesObj } from '../utils/grades';
