@@ -34,10 +34,11 @@ export default function Home({ grades, crags, sectors }) {
         try {
           const response = await fetch(`/api/routes/autocomplete/${searchTerm}`);
           const autocompletedRoutes = await response.json();
-          setAutocomplete(autocompletedRoutes);
-          setAutoCompleteLoading(false);
         } catch (error) {
           console.error('daosdoasdoiasoidoasodiaos', error);
+        } finally {
+          setAutocomplete(autocompletedRoutes);
+          setAutoCompleteLoading(false);
         }
       } else {
         setAutocomplete([]);
@@ -148,7 +149,7 @@ Home.getLayout = function getLayout(page) {
 };
 
 export async function getServerSideProps(ctx) {
-  let grades = gradesObj();
+  const grades = gradesObj();
   let crags;
   let sectors;
   if (ctx.query.search) {

@@ -8,8 +8,8 @@ import clientPromise from '../../utils/mongodb';
 import cragImage from '../../public/home.jpg';
 
 export default function CragPage({ crag }) {
-  const [cragData] = useState(crag[0]);
-  const [info] = useState(calcRoutesAndDifficulty(cragData, 'crags'));
+  const cragData = crag[0];
+  const info = calcRoutesAndDifficulty(cragData, 'crags');
 
   return (
     <>
@@ -51,17 +51,23 @@ CragPage.getLayout = function getLayout(page) {
 
 // this preloads all the possible paths for the crag page
 export async function getStaticPaths() {
-  const client = await clientPromise;
-  const db = client.db('Climbing-crags');
-  const cragsCollection = db.collection('crags');
-  const cragsCursor = await cragsCollection.find({});
-  const crags = await cragsCursor
-    .map((crag) => {
-      return { crag: crag.crag };
-    })
-    .toArray();
+  let paths;
+  try {
+    const client = await clientPromise;
+    const db = client.db('Climbing-crags');
+    const cragsCollection = db.collection('crags');
+    const cragsCursor = await cragsCollection.find({});
+    const crags = await cragsCursor
+      .map((crag) => {
+        return { crag: crag.crag };
+      })
+      .toArray();
 
-  const paths = crags.map((crag) => ({ params: { name: crag.crag.toLowerCase() } }));
+    paths = crags.map((crag) => ({ params: { name: crag.crag.toLowerCase() } }));
+  } catch (error) {
+    console.log(error);
+  }
+
   return {
     paths,
     fallback: false,
