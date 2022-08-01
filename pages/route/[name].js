@@ -1,4 +1,4 @@
-import Layout from '../../components/layout';
+import Layout from '../../components/Layout';
 import Image from 'next/image';
 import clientPromise from '../../utils/mongodb';
 import { getFrGrade } from '../../utils/infoCalc';
