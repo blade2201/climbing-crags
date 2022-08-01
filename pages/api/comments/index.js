@@ -5,6 +5,7 @@ import { ObjectId } from 'mongodb';
 export default async function handler(req, res) {
   const body = req.body;
   if (req.method === 'POST') {
+    const client = await clientPromise;
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
     }
@@ -13,7 +14,6 @@ export default async function handler(req, res) {
     }
 
     try {
-      const client = await clientPromise;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
       await res.revalidate(body.path);
@@ -24,8 +24,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Internal server error' });
     }
   } else if (req.method === 'GET') {
+    const client = await clientPromise;
     try {
-      const client = await clientPromise;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
       const commentsCursor = await commentsCollection.find({ path: body.path });
@@ -36,6 +36,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Internal server error' });
     }
   } else if (req.method === 'PUT') {
+    const client = await clientPromise;
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
     }
@@ -43,7 +44,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Bad request (Missing fields)' });
     }
     try {
-      const client = await clientPromise;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
       const commentsCursor = await commentsCollection.findOneAndUpdate(

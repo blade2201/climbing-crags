@@ -6,6 +6,7 @@ import ListSection from '../components/ListSection';
 import { gradesObj } from '../utils/grades';
 import clientPromise from '../utils/mongodb';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import CardSkeleton from '../components/CardSkeleton';
 
 export default function Home({ grades, crags, sectors }) {
   const router = useRouter();
@@ -120,11 +121,20 @@ export default function Home({ grades, crags, sectors }) {
               <span className="font-semibold text-primary-400"> {router.query.search}</span>
             </h3>
           )}
-          {allCrags.length !== 0 && (
+
+          {allCrags.length !== 0 && typeof allCrags !== 'string' ? (
             <ListSection title={'Crags'} items={allCrags} grades={grades} />
+          ) : typeof allCrags !== 'string' ? (
+            <CardSkeleton />
+          ) : (
+            <></>
           )}
-          {allSectors.length !== 0 && (
+          {allSectors.length !== 0 && typeof allSectors !== 'string' ? (
             <ListSection title={'Sectors'} items={allSectors} grades={grades} />
+          ) : typeof allSectors !== 'string' ? (
+            <CardSkeleton />
+          ) : (
+            <></>
           )}
         </div>
       )}
@@ -135,7 +145,6 @@ Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-// TODO make realmAppUtil.getGrades() async
 export async function getServerSideProps(ctx) {
   let grades = gradesObj();
   let crags;
@@ -186,8 +195,8 @@ export async function getServerSideProps(ctx) {
   return {
     props: {
       grades,
-      crags: crags || [],
-      sectors: sectors || [],
+      crags: crags.length ? crags : 'no data',
+      sectors: sectors.length ? sectors : 'no data',
     },
   };
 }
