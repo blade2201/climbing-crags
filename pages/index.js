@@ -20,7 +20,7 @@ export default function Home({ grades, crags, sectors }) {
   useEffect(() => {
     setAllCrags(crags);
     setAllSectors(sectors);
-    const content = document.querySelector('#content .list-section');
+    const content = document.querySelector('#content');
     if (content) {
       scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
     } else {
