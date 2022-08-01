@@ -6,7 +6,7 @@ import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongodb';
 import cragImage from '../../public/home.jpg';
-import { cragPagePipeline } from '../../utils/pipelines';
+import { cragPagePipeline, singleCragPipeline } from '../../utils/pipelines';
 
 export default function CragPage({ crag, sectors }) {
   const cragData = crag[0];
@@ -24,7 +24,7 @@ export default function CragPage({ crag, sectors }) {
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
-            src={cragImage}
+            src={cragData.images && cragData.images.length ? cragData.images[0][0].src : cragImage}
             alt="crag image"
             layout="fill"
             objectFit="cover"
@@ -84,9 +84,7 @@ export async function getStaticProps(ctx) {
     const db = client.db('Climbing-crags');
     const cragsCollection = db.collection('crags');
     const sectorsCollection = db.collection('sectors');
-    const cragsCursor = await cragsCollection.find({
-      crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') },
-    });
+    const cragsCursor = await cragsCollection.aggregate(singleCragPipeline(ctx));
     crag = await cragsCursor
       .map((crag) => {
         return { ...crag, _id: crag._id.toString() };

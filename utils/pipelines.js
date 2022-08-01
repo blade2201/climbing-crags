@@ -123,3 +123,40 @@ export const routesWithCommentsPipeline = (ctx) => {
     },
   ];
 };
+
+export const singleCragPipeline = (ctx) => {
+  return [
+    {
+      $match: {
+        crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') },
+      },
+    },
+    {
+      $lookup: {
+        from: 'sectors',
+        localField: 'sectors.sector_id',
+        foreignField: 'sector_id',
+        as: 'sectors',
+      },
+    },
+    {
+      $lookup: {
+        from: 'routes',
+        localField: 'sectors.routes.id',
+        foreignField: 'id',
+        as: 'routes',
+      },
+    },
+    {
+      $addFields: {
+        images: '$routes.images',
+      },
+    },
+    {
+      $project: {
+        'routes._id': 0,
+        'sectors._id': 0,
+      },
+    },
+  ];
+};
