@@ -5,8 +5,10 @@ import { useForm } from 'react-hook-form';
 import Comment from './ui/Comment';
 import Rating from './ui/Rating';
 import { comment } from 'postcss';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function CommentSection({ comments }) {
+  const [parent] = useAutoAnimate();
   const {
     register,
     handleSubmit,
@@ -95,7 +97,7 @@ export default function CommentSection({ comments }) {
         </span>
       </h2>
       <div className="grid md:grid-cols-2 gap-x-6">
-        <div className="col-span-1">
+        <div className="col-span-1" ref={parent}>
           {commentsState.map((comment) => (
             <Comment
               comment={comment}
