@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
     }
-    if (!body.id || !body.imageSrc || !body.path) {
+    if (!body.id || !body.imageSrc || !body.path || !body.cloudinaryId) {
       return res.status(400).json({ error: 'Bad request (Missing fields)' });
     }
     try {
@@ -16,7 +16,11 @@ export default async function handler(req, res) {
       const routesCollection = db.collection('routes');
       const routesCursor = await routesCollection.findOneAndUpdate(
         { id: body.id },
-        { $push: { images: body.imageSrc } },
+        {
+          $push: {
+            images: { $each: [{ src: body.imageSrc, id: body.cloudinaryId }], $position: 0 },
+          },
+        },
       );
       return res.status(200).json(routesCursor);
     } catch (error) {

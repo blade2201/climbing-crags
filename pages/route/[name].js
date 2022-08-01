@@ -14,7 +14,9 @@ export default function RoutePage({ route, comments }) {
   const [imageSrc, setImageSrc] = useState();
   const [uploadImage, setUploadImage] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [routeImage, setRouteImage] = useState(route.images ? route.images[0] : '/home.jpg');
+  const [routeImage, setRouteImage] = useState(
+    route.images && route.images.length ? route.images[0].src : '/home.jpg',
+  );
   const [formDisabled, setFormDisabled] = useState(false);
 
   function handleChange(changeEvent) {
@@ -65,6 +67,7 @@ export default function RoutePage({ route, comments }) {
         },
         body: JSON.stringify({
           imageSrc: json.secure_url,
+          cloudinaryId: json.public_id,
           path: router.asPath,
           id: route.id,
         }),
@@ -149,7 +152,7 @@ export default function RoutePage({ route, comments }) {
           <Image
             className="rounded-4xl"
             src={routeImage}
-            alt="crag image"
+            alt="route image"
             layout="fill"
             objectFit="cover"
             priority={true}
