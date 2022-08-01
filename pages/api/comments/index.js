@@ -16,7 +16,6 @@ export default async function handler(req, res) {
     try {
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
-      await res.revalidate(body.path);
       const commentInsertion = await commentsCollection.insertOne({
         ...body,
         comment_rating: 0,

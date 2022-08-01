@@ -58,6 +58,13 @@ export default function CommentSection({ comments }) {
         },
         body: JSON.stringify({ ...data, path: router.asPath, user: 'default' }),
       });
+      await fetch('/api/revalidate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ path: router.asPath }),
+      });
     } catch (error) {
       console.log(error);
     }

@@ -112,7 +112,7 @@ export default function RoutePage({ route, comments }) {
             }`}
           >
             <form
-              className="bg-dark-card rounded-4xl p-8"
+              className="bg-dark-card rounded-4xl p-8 shadow-8"
               method="post"
               onChange={handleChange}
               onSubmit={handleSubmit}
