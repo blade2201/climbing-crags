@@ -3,7 +3,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 export default function cardSkeleton() {
   return (
     <SkeletonTheme baseColor="#333333" highlightColor="#575757">
-      <div>
+      <div className="list-section">
         <h3 className="text-5xl pb-10 pt-16 w-1/3">
           <Skeleton />
         </h3>

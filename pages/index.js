@@ -19,9 +19,11 @@ export default function Home({ grades, crags, sectors }) {
   useEffect(() => {
     setAllCrags(crags);
     setAllSectors(sectors);
-    const content = document.getElementById('content');
+    const content = document.querySelector('#content .list-section');
     if (content) {
       scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
+    } else {
+      scrollTo({ top: 100, behavior: 'smooth' });
     }
   }, [router.query.search]);
 
@@ -110,7 +112,7 @@ export default function Home({ grades, crags, sectors }) {
       </div>
       {router.query.search && (
         <div id="content" className="md:px-36 px-4 mb-40">
-          {allCrags.length === 0 && allSectors.length === 0 ? (
+          {allCrags === 'no data' && allSectors === 'no data' ? (
             <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
               No results found for:
               <span className="font-semibold text-primary-400"> {router.query.search}</span>
@@ -195,8 +197,8 @@ export async function getServerSideProps(ctx) {
   return {
     props: {
       grades,
-      crags: crags.length ? crags : 'no data',
-      sectors: sectors.length ? sectors : 'no data',
+      crags: crags && crags.length ? crags : 'no data',
+      sectors: crags && sectors.length ? sectors : 'no data',
     },
   };
 }
