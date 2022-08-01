@@ -32,7 +32,12 @@ function Card({ item, type }) {
   return (
     <div className="col-span-1 bg-dark-card rounded-4xl p-5 shadow-8">
       <div className="rounded-3xl overflow-hidden aspect-video relative">
-        <Image src="/home.jpg" alt="card-image" layout="fill" objectFit="cover" />
+        <Image
+          src={item.images && item.images.length ? item.images[0][0] : '/home.jpg'}
+          alt="card-image"
+          layout="fill"
+          objectFit="cover"
+        />
       </div>
       <div className="relative">
         <div className="pt-4 flex gap-x-2.5">
