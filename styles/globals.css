@@ -14,14 +14,21 @@
   }
 
   .button {
-    @apply bg-primary-600 md:px-6 md:py-4 px-3 py-2 rounded-full text-white-true text-xs md:text-xl uppercase font-semibold shadow-8 hover:bg-primary-300 transition-all duration-200 active:shadow-none disabled:cursor-not-allowed disabled:bg-[#888];
+    @apply bg-primary-600 md:px-6 md:py-4 px-3 py-2 rounded-full text-white-true text-xs md:text-xl uppercase font-semibold shadow-8 hover:bg-primary-300 transition-all duration-200 disabled:active:shadow-8 active:shadow-none disabled:cursor-not-allowed disabled:bg-[#888];
   }
 
   input[type='text'] {
     @apply md:px-6 md:py-4 px-3 py-2 placeholder:text-white bg-dark-card  text-xs md:text-xl rounded-full border-2 border-primary-600 text-white-high shadow-8 focus:outline-none focus:border-primary-300 box-border;
   }
+
   textarea {
     @apply md:px-6 md:py-4 px-3 py-2 placeholder:text-white bg-dark-card  text-xs md:text-xl rounded-2xl md:rounded-4xl w-full border-2 border-primary-600 text-white-high shadow-8 focus:outline-none focus:border-primary-300 box-border resize-none;
+  }
+
+  .spinner {
+    border: 2px solid rgba(1, 135, 134, 1);
+    border-top: 2px solid rgba(112, 239, 222, 1);
+    @apply animate-spin;
   }
 
   .star-container > svg:hover ~ svg .star-empty_svg__star-path,
