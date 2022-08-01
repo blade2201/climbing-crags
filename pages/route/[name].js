@@ -18,6 +18,8 @@ export default function RoutePage({ route, comments }) {
     route.images && route.images.length ? route.images[0].src : '/home.jpg',
   );
   const [formDisabled, setFormDisabled] = useState(false);
+  const sum = comments.reduce((acc, cur) => acc + cur.rating, 0);
+  const rating = sum / comments.length || 0;
 
   function handleChange(changeEvent) {
     const reader = new FileReader();
@@ -100,7 +102,7 @@ export default function RoutePage({ route, comments }) {
             </div>
           </div>
           <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
-            Rating: <Rating rating={route.rating} />
+            Rating: <Rating rating={rating ? rating : route.rating} />
           </div>
           <button className="button mt-10" onClick={showUploadForm}>
             + add your own image

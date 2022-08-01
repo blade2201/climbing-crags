@@ -35,7 +35,7 @@ export default function RoutesTable({ routes, crag, sector }) {
                   {item.images ? item.images.length : 0}
                 </div>
                 <div className="col-span-6 md:col-span-2 md:col-start-11 flex justify-center items-center">
-                  <Rating rating={item.rating} notBoxed={true} />
+                  <Rating rating={item.avgRating ? item.avgRating : item.rating} notBoxed={true} />
                 </div>
               </div>
             </a>

@@ -117,6 +117,11 @@ export const routesWithCommentsPipeline = (ctx) => {
       },
     },
     {
+      $addFields: {
+        avgRating: { $avg: '$comments.rating' },
+      },
+    },
+    {
       $project: {
         'comments._id': 0,
       },
@@ -136,26 +141,20 @@ export const singleCragPipeline = (ctx) => {
         from: 'sectors',
         localField: 'sectors.sector_id',
         foreignField: 'sector_id',
-        as: 'sectors',
+        as: 'images',
       },
     },
     {
       $lookup: {
         from: 'routes',
-        localField: 'sectors.routes.id',
+        localField: 'images.routes.id',
         foreignField: 'id',
-        as: 'routes',
+        as: 'images',
       },
     },
     {
       $addFields: {
-        images: '$routes.images',
-      },
-    },
-    {
-      $project: {
-        'routes._id': 0,
-        'sectors._id': 0,
+        images: '$images.images',
       },
     },
   ];
