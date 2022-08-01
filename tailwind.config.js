@@ -25,6 +25,7 @@ module.exports = {
         },
         dark: {
           DEFAULT: 'rgba(41, 41, 41, 1)',
+          60: 'rgba(41, 41, 41, 0.6)',
           card: 'rgba(51, 51, 51, 1)',
         },
       },
