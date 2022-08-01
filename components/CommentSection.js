@@ -49,15 +49,17 @@ export default function CommentSection({ comments }) {
     const data = { title, comment, rating };
     reset();
     setRating(0);
-    setComments([...commentsState, { ...data, comment_rating: 0 }]);
     try {
-      await fetch('/api/comments', {
+      const response = await fetch('/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ ...data, path: router.asPath, user: 'default' }),
       });
+      const json = await response.json();
+      setComments([...commentsState, { ...data, comment_rating: 0, _id: json.insertedId }]);
+
       await fetch('/api/revalidate', {
         method: 'POST',
         headers: {

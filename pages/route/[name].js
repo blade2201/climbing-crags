@@ -132,7 +132,7 @@ export default function RoutePage({ route, comments }) {
               {formDisabled && (
                 <p className="pl-1 text-xs pt-1 text-red-500">file is too big: max-size 1Mb</p>
               )}
-              <div className="aspect-video relative my-10 bg-white flex items-center justify-center">
+              <div className="aspect-video relative my-10 bg-white flex items-center justify-center rounded-2xl">
                 {imageSrc ? (
                   <Image className="object-cover" src={imageSrc} layout="fill" alt="" />
                 ) : (
