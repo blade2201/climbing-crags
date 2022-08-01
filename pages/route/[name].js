@@ -21,13 +21,7 @@ export default function RoutePage({ route, comments }) {
     const reader = new FileReader();
     reader.onload = (onloadEvent) => {
       setImageSrc(onloadEvent.target.result);
-      if (onloadEvent.target.result.length > 1048576) {
-        setFormDisabled(true);
-      } else {
-        setFormDisabled(false);
-      }
     };
-
     reader.readAsDataURL(changeEvent.target.files[0]);
   }
 
@@ -39,11 +33,17 @@ export default function RoutePage({ route, comments }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      setUploadingImage(true);
       const cloudinaryId = process.env.NEXT_PUBLIC_CLOUDINARY_ID;
       const form = e.currentTarget;
       const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
       const formData = new FormData();
+      if (fileInput.files[0].size > 1048576) {
+        setFormDisabled(true);
+        return;
+      } else {
+        setUploadingImage(true);
+        setFormDisabled(false);
+      }
       for (const file of fileInput.files) {
         formData.append('file', file);
       }
