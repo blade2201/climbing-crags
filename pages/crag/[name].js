@@ -7,7 +7,7 @@ import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongodb';
 import cragImage from '../../public/home.jpg';
 
-export default function CragPage({ crag }) {
+export default function CragPage({ crag, sectors }) {
   const cragData = crag[0];
   const info = calcRoutesAndDifficulty(cragData, 'crags');
 
@@ -39,7 +39,7 @@ export default function CragPage({ crag }) {
         />
       </section>
       <section className="px-4 md:px-36 md:pt-12 pb-16">
-        <ListSection title={'Sectors'} items={cragData.sectors} />
+        <ListSection title={'Sectors'} items={sectors} />
       </section>
     </>
   );
@@ -77,16 +77,50 @@ export async function getStaticPaths() {
 // this preloads all the crag info for the specific paths
 export async function getStaticProps(ctx) {
   let crag;
+  let sectors;
   try {
     const client = await clientPromise;
     const db = client.db('Climbing-crags');
     const cragsCollection = db.collection('crags');
+    const sectorsCollection = db.collection('sectors');
     const cragsCursor = await cragsCollection.find({
       crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') },
     });
     crag = await cragsCursor
       .map((crag) => {
         return { ...crag, _id: crag._id.toString() };
+      })
+      .toArray();
+
+    const cragsPipeline = [
+      {
+        $match: {
+          crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') },
+        },
+      },
+      {
+        $lookup: {
+          from: 'routes',
+          localField: 'routes.id',
+          foreignField: 'id',
+          as: 'routes',
+        },
+      },
+      {
+        $addFields: {
+          images: '$routes.images',
+        },
+      },
+      {
+        $project: {
+          'routes._id': 0,
+        },
+      },
+    ];
+    const sectorsCursor = await sectorsCollection.aggregate(cragsPipeline);
+    sectors = await sectorsCursor
+      .map((sector) => {
+        return { ...sector, _id: sector._id.toString() };
       })
       .toArray();
   } catch (error) {
@@ -96,6 +130,7 @@ export async function getStaticProps(ctx) {
   return {
     props: {
       crag,
+      sectors,
     },
   };
 }

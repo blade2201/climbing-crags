@@ -31,9 +31,10 @@ export default function Home({ grades, crags, sectors }) {
     setAutoCompleteLoading(true);
     async function getAutocomplete() {
       if (searchTerm.length > 0) {
+        let autocompletedRoutes;
         try {
           const response = await fetch(`/api/routes/autocomplete/${searchTerm}`);
-          const autocompletedRoutes = await response.json();
+          autocompletedRoutes = await response.json();
         } catch (error) {
           console.error('daosdoasdoiasoidoasodiaos', error);
         } finally {
@@ -168,6 +169,33 @@ export async function getServerSideProps(ctx) {
           },
         },
       },
+      {
+        $lookup: {
+          from: 'sectors',
+          localField: 'sectors.sector_id',
+          foreignField: 'sector_id',
+          as: 'sectors',
+        },
+      },
+      {
+        $lookup: {
+          from: 'routes',
+          localField: 'sectors.routes.id',
+          foreignField: 'id',
+          as: 'routes',
+        },
+      },
+      {
+        $addFields: {
+          images: '$routes.images',
+        },
+      },
+      {
+        $project: {
+          'routes._id': 0,
+          'sectors._id': 0,
+        },
+      },
     ];
     const sectorsPipeline = [
       {
@@ -178,6 +206,24 @@ export async function getServerSideProps(ctx) {
             path: ['sector', 'routes.name'],
             fuzzy: {},
           },
+        },
+      },
+      {
+        $lookup: {
+          from: 'routes',
+          localField: 'routes.id',
+          foreignField: 'id',
+          as: 'routes',
+        },
+      },
+      {
+        $addFields: {
+          images: '$routes.images',
+        },
+      },
+      {
+        $project: {
+          'routes._id': 0,
         },
       },
     ];
