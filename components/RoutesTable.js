@@ -10,7 +10,8 @@ export default function RoutesTable({ routes, crag, sector }) {
         <div className="col-span-1 text-center">GRADE</div>
         <div className="col-span-5">NAME</div>
         {/* <div className="col-span-2">COMMENTS</div>
-        <div className="col-span-2">IMAGES</div> */}
+         */}
+        <div className="col-span-2 col-start-9 hidden md:block text-center">IMAGES</div>
         <div className="col-span-2 col-start-11 text-center">RATING</div>
       </div>
       {routes.map((item, i) => {
@@ -27,8 +28,10 @@ export default function RoutesTable({ routes, crag, sector }) {
                     {crag} ,{sector}
                   </div>
                 </div>
-                {/* <div className="col-span-2">COMMENTS</div>
-        <div className="col-span-2">IMAGES</div> */}
+                <div className="col-span-2">{item.comments ? item.comments.length : 0}</div>
+                <div className="col-span-2 col-start-9 hidden md:flex items-center justify-center">
+                  {item.images ? item.images.length : 0}
+                </div>
                 <div className="col-span-2 col-start-11 flex justify-center items-center">
                   <Rating rating={item.rating} notBoxed={true} />
                 </div>

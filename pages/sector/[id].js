@@ -6,6 +6,7 @@ import InfoCard from '../../components/ui/InfoCard';
 import RoutesTable from '../../components/RoutesTable';
 import clientPromise from '../../utils/mongodb';
 import Link from 'next/link';
+import { routesWithCommentsPipeline } from '../../utils/pipelines';
 
 export default function SectorPage({ routes, sector }) {
   const [sectorData, setSectorData] = useState(sector);
@@ -44,7 +45,7 @@ export default function SectorPage({ routes, sector }) {
         />
       </section>
       <section className="px-4 md:px-36 md:pt-12 pb-32">
-        <RoutesTable routes={sectorData.routes} sector={sectorData.sector} crag={sectorData.crag} />
+        <RoutesTable routes={routes} sector={sectorData.sector} crag={sectorData.crag} />
       </section>
     </>
   );
@@ -102,12 +103,10 @@ export async function getStaticProps(ctx) {
         return { ...sector, _id: sector._id.toString() };
       })
       .toArray();
-    const routesCursor = await routesCollection.find({
-      sector_id: ctx.params.id,
-    });
+    const routesCursor = await routesCollection.aggregate(routesWithCommentsPipeline(ctx));
     routes = await routesCursor
-      .map((crag) => {
-        return { ...crag, _id: crag._id.toString() };
+      .map((route) => {
+        return { ...route, _id: route._id.toString() };
       })
       .toArray();
   } catch (error) {

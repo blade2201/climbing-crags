@@ -26,7 +26,6 @@ export default function CommentSection({ comments }) {
 
   useEffect(() => {
     let averageRating = 0;
-    console.log(comments);
     comments.forEach((comment) => {
       averageRating += comment.rating;
     });

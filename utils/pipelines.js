@@ -100,3 +100,26 @@ export const cragPagePipeline = (ctx) => {
     },
   ];
 };
+
+export const routesWithCommentsPipeline = (ctx) => {
+  return [
+    {
+      $match: {
+        sector_id: ctx.params.id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'comments',
+        localField: 'id',
+        foreignField: 'id',
+        as: 'comments',
+      },
+    },
+    {
+      $project: {
+        'comments._id': 0,
+      },
+    },
+  ];
+};
