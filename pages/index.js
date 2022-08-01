@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 import ListSection from '../components/ListSection';
 import { gradesObj } from '../utils/grades';
 import clientPromise from '../utils/mongodb';

@@ -1,4 +1,4 @@
-import Layout from '../../components/layout';
+import Layout from '../../components/Layout';
 import { useState } from 'react';
 import { calcRoutesAndDifficulty } from '../../utils/infoCalc';
 import Image from 'next/image';
