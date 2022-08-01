@@ -7,6 +7,7 @@ import { gradesObj } from '../utils/grades';
 import clientPromise from '../utils/mongodb';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import CardSkeleton from '../components/CardSkeleton';
+import { searchCragsPipeline, searchSectorsPipeline } from '../utils/pipelines';
 
 export default function Home({ grades, crags, sectors }) {
   const router = useRouter();
@@ -158,77 +159,8 @@ export async function getServerSideProps(ctx) {
     const db = client.db('Climbing-crags');
     const cragsCollection = db.collection('crags');
     const sectorsCollection = db.collection('sectors');
-    const cragsPipeline = [
-      {
-        $search: {
-          index: 'searchCrags',
-          text: {
-            query: ctx.query.search || '',
-            path: ['crag', 'country'],
-            fuzzy: {},
-          },
-        },
-      },
-      {
-        $lookup: {
-          from: 'sectors',
-          localField: 'sectors.sector_id',
-          foreignField: 'sector_id',
-          as: 'sectors',
-        },
-      },
-      {
-        $lookup: {
-          from: 'routes',
-          localField: 'sectors.routes.id',
-          foreignField: 'id',
-          as: 'routes',
-        },
-      },
-      {
-        $addFields: {
-          images: '$routes.images',
-        },
-      },
-      {
-        $project: {
-          'routes._id': 0,
-          'sectors._id': 0,
-        },
-      },
-    ];
-    const sectorsPipeline = [
-      {
-        $search: {
-          index: 'searchSectors',
-          text: {
-            query: ctx.query.search || '',
-            path: ['sector', 'routes.name'],
-            fuzzy: {},
-          },
-        },
-      },
-      {
-        $lookup: {
-          from: 'routes',
-          localField: 'routes.id',
-          foreignField: 'id',
-          as: 'routes',
-        },
-      },
-      {
-        $addFields: {
-          images: '$routes.images',
-        },
-      },
-      {
-        $project: {
-          'routes._id': 0,
-        },
-      },
-    ];
-    const cragCursor = await cragsCollection.aggregate(cragsPipeline);
-    const sectorsCursor = await sectorsCollection.aggregate(sectorsPipeline);
+    const cragCursor = await cragsCollection.aggregate(searchCragsPipeline(ctx));
+    const sectorsCursor = await sectorsCollection.aggregate(searchSectorsPipeline(ctx));
     crags = await cragCursor
       .map((crag) => {
         return { ...crag, _id: crag._id.toString() };

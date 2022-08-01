@@ -6,6 +6,7 @@ import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongodb';
 import cragImage from '../../public/home.jpg';
+import { cragPagePipeline } from '../../utils/pipelines';
 
 export default function CragPage({ crag, sectors }) {
   const cragData = crag[0];
@@ -91,33 +92,7 @@ export async function getStaticProps(ctx) {
         return { ...crag, _id: crag._id.toString() };
       })
       .toArray();
-
-    const cragsPipeline = [
-      {
-        $match: {
-          crag: { $regex: new RegExp('^' + ctx.params.name + '$', 'i') },
-        },
-      },
-      {
-        $lookup: {
-          from: 'routes',
-          localField: 'routes.id',
-          foreignField: 'id',
-          as: 'routes',
-        },
-      },
-      {
-        $addFields: {
-          images: '$routes.images',
-        },
-      },
-      {
-        $project: {
-          'routes._id': 0,
-        },
-      },
-    ];
-    const sectorsCursor = await sectorsCollection.aggregate(cragsPipeline);
+    const sectorsCursor = await sectorsCollection.aggregate(cragPagePipeline(ctx));
     sectors = await sectorsCursor
       .map((sector) => {
         return { ...sector, _id: sector._id.toString() };
