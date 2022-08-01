@@ -65,17 +65,22 @@ SectorPage.getLayout = function getLayout(page) {
 
 // this preloads all the possible paths for the crag page
 export async function getStaticPaths() {
-  const client = await clientPromise;
-  const db = client.db('Climbing-crags');
-  const sectorsCollection = db.collection('sectors');
-  const sectorsCursor = await sectorsCollection.find({});
-  const sectors = await sectorsCursor
-    .map((sector) => {
-      return { sector_id: sector.sector_id };
-    })
-    .toArray();
+  let paths;
+  try {
+    const client = await clientPromise;
+    const db = client.db('Climbing-crags');
+    const sectorsCollection = db.collection('sectors');
+    const sectorsCursor = await sectorsCollection.find({});
+    const sectors = await sectorsCursor
+      .map((sector) => {
+        return { sector_id: sector.sector_id };
+      })
+      .toArray();
 
-  const paths = sectors.map((sector) => ({ params: { id: sector.sector_id } }));
+    paths = sectors.map((sector) => ({ params: { id: sector.sector_id } }));
+  } catch (error) {
+    console.error(error);
+  }
   return {
     paths,
     fallback: false,
