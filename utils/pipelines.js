@@ -159,3 +159,22 @@ export const singleCragPipeline = (ctx) => {
     },
   ];
 };
+
+export const sectorPagePipeline = (ctx) => {
+  return [
+    { $match: { sector_id: ctx.params.id } },
+    {
+      $lookup: {
+        from: 'routes',
+        localField: 'routes.id',
+        foreignField: 'id',
+        as: 'images',
+      },
+    },
+    {
+      $addFields: {
+        images: '$images.images',
+      },
+    },
+  ];
+};

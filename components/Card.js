@@ -37,10 +37,6 @@ function Card({ item, type }) {
           cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_ID,
         },
         transformations: {
-          // effect: {
-          //   name: 'pixelate',
-          //   value: 100,
-          // },
           effect: 'blur:1000',
           quality: 1,
         },
