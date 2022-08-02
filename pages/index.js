@@ -18,14 +18,17 @@ export default function Home({ grades, crags, sectors }) {
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
   useEffect(() => {
-    setAllCrags(crags);
-    setAllSectors(sectors);
     const content = document.querySelector('#content');
     if (content) {
       scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
     } else {
       scrollTo({ top: 100, behavior: 'smooth' });
     }
+  }, [allCrags, allSectors]);
+
+  useEffect(() => {
+    setAllCrags(crags);
+    setAllSectors(sectors);
   }, [router.query.search]);
 
   useEffect(() => {

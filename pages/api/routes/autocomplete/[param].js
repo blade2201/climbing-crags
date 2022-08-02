@@ -18,7 +18,7 @@ export default async function handler(req, res) {
           },
         },
         {
-          $limit: 6,
+          $limit: 5,
         },
         {
           $project: {
