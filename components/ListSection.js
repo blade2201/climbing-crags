@@ -12,7 +12,9 @@ function ListSection({ title, items }) {
   }, [items]);
 
   useEffect(() => {
-    scrollBy({ top: 1000, behavior: 'smooth' });
+    if (shownItems.length > 9) {
+      scrollBy({ top: 1000, behavior: 'smooth' });
+    }
   }, [shownItems]);
 
   return (

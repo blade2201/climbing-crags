@@ -101,7 +101,7 @@ export default function RoutePage({ route, comments }) {
           <div className="hidden md:block">
             <div className="pt-20 text-2xl text-white flex items-center gap-x-4">
               Grade:
-              <div className="border rounded-full aspect-square p-4 border-primary-600">
+              <div className="border rounded-full flex items-center aspect-square p-4 border-primary-600">
                 {getFrGrade(route.grade_id)}
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function RoutePage({ route, comments }) {
             </label>
           </div>
         </div>
-        <div className="absolute w-[150%] h-3/5 top-[30%] -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
+        <div className="absolute w-[150%] h-3/5 top-[30%] -left-32 md:top-10 md:left-[35%] md:w-[70%] md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
             src={routeImage}

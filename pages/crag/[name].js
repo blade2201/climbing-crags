@@ -20,7 +20,7 @@ export default function CragPage({ crag, sectors }) {
           </h1>
           <h4 className="md:text-4xl text-white-high">{cragData.country}</h4>
         </div>
-        <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
+        <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-[70%] md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
             src={
@@ -31,6 +31,7 @@ export default function CragPage({ crag, sectors }) {
             alt="crag image"
             layout="fill"
             objectFit="cover"
+            objectPosition={'right'}
             priority={true}
           />
         </div>

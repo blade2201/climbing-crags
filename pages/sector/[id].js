@@ -47,7 +47,7 @@ export default function SectorPage({ routes, sector }) {
           </h4>
         </div>
         <div
-          className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2 bg-cover bg-center rounded-4xl overflow-hidden"
+          className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-[70%] md:h-full -rotate-2 bg-cover bg-center rounded-4xl overflow-hidden"
           style={{
             backgroundImage: imagePreviewUrl
               ? `url(${imagePreviewUrl})`
