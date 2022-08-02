@@ -8,6 +8,10 @@ function ListSection({ title, items }) {
   };
 
   useEffect(() => {
+    setShownItems(items.slice(0, 9));
+  }, [items]);
+
+  useEffect(() => {
     scrollBy({ top: 1000, behavior: 'smooth' });
   }, [shownItems]);
 
@@ -20,7 +24,7 @@ function ListSection({ title, items }) {
             return <Card key={i} item={item} type={title.toLowerCase()} />;
           })}
         </div>
-        {shownItems.length > 6 ? (
+        {shownItems.length > 6 && items.length > 9 ? (
           <div
             className={`flex justify-center bg-load-more transition-all duration-200 relative py-24 ${
               shownItems.length >= items.length ? 'mt-10' : '-mt-40'

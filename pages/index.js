@@ -12,8 +12,8 @@ import { searchCragsPipeline, searchSectorsPipeline } from '../utils/pipelines';
 export default function Home({ grades, crags, sectors }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [allSectors, setAllSectors] = useState([]);
-  const [allCrags, setAllCrags] = useState([]);
+  const [allSectors, setAllSectors] = useState(sectors);
+  const [allCrags, setAllCrags] = useState(crags);
   const [autocomplete, setAutocomplete] = useState([]);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
@@ -29,7 +29,7 @@ export default function Home({ grades, crags, sectors }) {
   useEffect(() => {
     setAllCrags(crags);
     setAllSectors(sectors);
-  }, [router.query.search]);
+  }, [router.query.search, crags, sectors]);
 
   useEffect(() => {
     setAutoCompleteLoading(true);
@@ -175,7 +175,6 @@ export async function getServerSideProps(ctx) {
       })
       .toArray();
   }
-
   return {
     props: {
       grades,
