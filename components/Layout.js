@@ -6,11 +6,20 @@ import UserPlaceholder from '../public/user.svg';
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
-
+  console.log(children.props);
   return (
     <>
       <Head>
-        <title>Climbing Crags</title>
+        <title>
+          {children.props.crag
+            ? `${children.props.crag[0].crag} - Crag - `
+            : children.props.sector
+            ? `${children.props.sector.sector} - Sector - `
+            : children.props.route
+            ? `${children.props.route.name} - Route - `
+            : ''}
+          Climbing Crags
+        </title>
         <meta name="description" content="Trip advisor for climbing crags" />
         <link rel="icon" href="/logo.svg" />
       </Head>
