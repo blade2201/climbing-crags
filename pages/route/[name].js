@@ -17,7 +17,9 @@ export default function RoutePage({ route, comments }) {
   const [uploadImage, setUploadImage] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [routeImage, setRouteImage] = useState(
-    route.images && route.images.length ? route.images[0].src : '/home.jpg',
+    route.images && route.images.length
+      ? route.images[0].src
+      : 'https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg',
   );
   const [formDisabled, setFormDisabled] = useState(false);
   const sum = comments.reduce((acc, cur) => acc + cur.rating, 0);
@@ -181,7 +183,7 @@ export default function RoutePage({ route, comments }) {
             {imageSrc ? (
               <Image className="object-cover" src={imageSrc} layout="fill" alt="" />
             ) : (
-              'placeolder'
+              'Image Preview'
             )}
           </div>
           <div className="flex items-center gap-x-5">

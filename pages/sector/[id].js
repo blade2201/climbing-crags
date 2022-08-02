@@ -30,7 +30,7 @@ export default function SectorPage({ routes, sector }) {
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
-            src="/home.jpg"
+            src="https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg"
             alt="crag image"
             layout="fill"
             objectFit="cover"

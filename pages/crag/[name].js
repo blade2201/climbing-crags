@@ -5,7 +5,6 @@ import Image from 'next/image';
 import InfoCard from '../../components/ui/InfoCard';
 import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongodb';
-import cragImage from '../../public/home.jpg';
 import { cragPagePipeline, singleCragPipeline } from '../../utils/pipelines';
 
 export default function CragPage({ crag, sectors }) {
@@ -24,7 +23,11 @@ export default function CragPage({ crag, sectors }) {
         <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
-            src={cragData.images && cragData.images.length ? cragData.images[0][0].src : cragImage}
+            src={
+              cragData.images && cragData.images.length
+                ? cragData.images[0][0].src
+                : 'https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg'
+            }
             alt="crag image"
             layout="fill"
             objectFit="cover"

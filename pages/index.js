@@ -63,7 +63,10 @@ export default function Home({ grades, crags, sectors }) {
       <div className="mt-12 h-[66vh] md:h-[80vh] flex items-center justify-center flex-col relative">
         <div
           className="clip-image bg-cover mb-20 bg-[-15rem_center] md:bg-center absolute w-full h-full"
-          style={{ backgroundImage: 'url("/home.jpg")' }}
+          style={{
+            backgroundImage:
+              'url("https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg")',
+          }}
         ></div>
         <h1 className="text-white-true font-semibold md:text-9xl text-4xl z-10">Climbing Crags</h1>
         <form
