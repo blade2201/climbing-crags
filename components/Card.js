@@ -30,7 +30,7 @@ function Card({ item, type }) {
   }, [item, type]);
 
   return (
-    <div className="col-span-1 bg-dark-card rounded-4xl p-5 shadow-8">
+    <div className="col-span-1 bg-dark-card rounded-4xl p-5 shadow-8 relative">
       <div className="rounded-3xl overflow-hidden aspect-video relative">
         <Image
           src={item.images && item.images.length ? item.images[0][0].src : '/home.jpg'}
@@ -39,7 +39,7 @@ function Card({ item, type }) {
           objectFit="cover"
         />
       </div>
-      <div className="relative">
+      <div className="">
         <div className="pt-4 flex gap-x-2.5">
           {difficulty ? <Tag text={difficulty} /> : null}
           {routesCount ? (
@@ -66,7 +66,7 @@ function Card({ item, type }) {
               : '/route/' + item.id
           }
         >
-          <a className="h-min absolute bottom-0 right-0 button">see more</a>
+          <a className="h-min absolute bottom-5 right-5 button">see more</a>
         </Link>
       </div>
     </div>

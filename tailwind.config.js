@@ -10,6 +10,10 @@ module.exports = {
       borderRadius: {
         '4xl': '2rem',
       },
+      backgroundImage: {
+        'load-more':
+          'linear-gradient(180deg, rgba(41,41,41,0) 0%, rgba(41,41,41,0.88) 40%, rgba(41,41,41,1) 100%)',
+      },
       colors: {
         white: {
           DEFAULT: 'rgba(255, 255, 255, 0.6)',
