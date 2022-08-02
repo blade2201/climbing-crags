@@ -44,10 +44,10 @@ export default function Layout({ children }) {
               </div>
             ) : (
               <button
-                onClick={() => signIn()}
+                onClick={() => signIn('google')}
                 className="px-4 py-2 bg-primary-600 text-white-true rounded-3xl hover:bg-primary-400 transition-colors duration-200 font-semibold"
               >
-                Log in
+                LOG IN
               </button>
             )}
           </div>
