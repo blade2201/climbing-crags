@@ -6,7 +6,6 @@ import UserPlaceholder from '../public/user.svg';
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
-  console.log(children.props);
   return (
     <>
       <Head>
@@ -34,7 +33,7 @@ export default function Layout({ children }) {
           <div>
             {session ? (
               <div className="group text-white flex flex-row items-center relative cursor-pointer">
-                {session.user.name}
+                <span className="hidden md:block">{session.user.name}</span>
                 <div className="w-8 h-8 ml-4 relative rounded-3xl overflow-hidden bg-white p-1">
                   {session.user.image ? (
                     <Image alt="Logged User image" layout="fill" src={session.user.image} />

@@ -2,11 +2,11 @@ import Chevron from '../../public/chevron.svg';
 import Rating from './Rating';
 export default function Comment({ comment, onClick, user }) {
   return (
-    <div className="bg-dark-card p-8 rounded-4xl flex items-center shadow-8 gap-x-8 mb-6">
+    <div className="bg-dark-card p-4 md:p-8 rounded-4xl flex items-center shadow-8 gap-x-8 mb-6">
       <div className="gap-y-4 flex flex-col justify-center">
         <Chevron
           onClick={() => onClick(true)}
-          className={`cursor-pointer ${
+          className={`cursor-pointer w-4 md:w-8 ${
             comment.votes && comment.votes[user] === 1
               ? 'stroke-primary-300'
               : user
@@ -37,15 +37,19 @@ export default function Comment({ comment, onClick, user }) {
         />
       </div>
       <div className="flex-grow">
-        <div className="flex justify-between min-w-full items-center mb-3 ">
-          <h3 className="text-2xl font-bold text-white-high ">{comment.title}</h3>
+        <div className="flex justify-between min-w-full items-start mb-3 ">
+          <h3 className="text-2xl font-bold text-white-high">{comment.title}</h3>
           <div>
             {comment.user !== 'default' ? (
               <div className="text-right pr-4">{comment.user}</div>
             ) : (
               <></>
             )}
-            <Rating notBoxed={true} rating={comment.rating} className="max-w-[150px]" />
+            <Rating
+              notBoxed={true}
+              rating={comment.rating}
+              className="max-w-[100px] md:max-w-[150px]"
+            />
           </div>
         </div>
         <p className="text-white">{comment.comment}</p>

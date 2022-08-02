@@ -77,7 +77,6 @@ export default function RoutePage({ route, comments }) {
         }),
       });
       const jsonResponse = await response.json();
-      console.log(jsonResponse);
     } catch (error) {
       console.error(error);
     }
@@ -97,71 +96,31 @@ export default function RoutePage({ route, comments }) {
               <a>{route.crag}</a>
             </Link>
           </h4>
-          <div className="pt-20 text-2xl text-white flex items-center gap-x-4">
-            Grade:
-            <div className="border rounded-full aspect-square p-4 border-primary-600">
-              {getFrGrade(route.grade_id)}
+          <div className="hidden md:block">
+            <div className="pt-20 text-2xl text-white flex items-center gap-x-4">
+              Grade:
+              <div className="border rounded-full aspect-square p-4 border-primary-600">
+                {getFrGrade(route.grade_id)}
+              </div>
             </div>
-          </div>
-          <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
-            Rating: <Rating rating={rating ? rating : route.rating} />
-          </div>
-          <label className="relative group">
-            <button disabled={!session} className="button mt-10" onClick={showUploadForm}>
-              + add your own image
-            </button>
-            {!session ? (
-              <button className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button">
-                Log in to upload
+            <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
+              Rating: <Rating rating={rating ? rating : route.rating} />
+            </div>
+            <label className="relative group">
+              <button disabled={!session} className="button mt-10" onClick={showUploadForm}>
+                + add your own image
               </button>
-            ) : (
-              <></>
-            )}
-          </label>
-          <div
-            id="modal"
-            className={`flex items-center justify-center fixed top-0 left-0 w-screen h-screen bg-dark-60 z-50 px-5 md:px-0 ${
-              uploadImage ? '' : 'hidden'
-            }`}
-          >
-            <form
-              className="bg-dark-card rounded-4xl p-8 shadow-8"
-              method="post"
-              onChange={handleChange}
-              onSubmit={handleSubmit}
-            >
-              <div className="pb-6 text-2xl font-semibold flex justify-between items-center">
-                <h5>Upload your picture </h5>
-                <Close className="w-6 cursor-pointer" onClick={showUploadForm} />
-              </div>
-              <p className="pl-1 text-sm pb-1">Only upload horizontal images</p>
-              <input
-                className="file:bg-primary-600 w-full file:text-white-true file:border-0 rounded-4xl border border-primary-600 file:p-2 file:mr-2 cursor-pointer"
-                type="file"
-                name="file"
-              />
-              {formDisabled && (
-                <p className="pl-1 text-xs pt-1 text-red-500">file is too big: max-size 1Mb</p>
-              )}
-              <div className="aspect-video relative my-10 bg-white flex items-center justify-center rounded-2xl">
-                {imageSrc ? (
-                  <Image className="object-cover" src={imageSrc} layout="fill" alt="" />
-                ) : (
-                  'placeolder'
-                )}
-              </div>
-              <div className="flex items-center gap-x-5">
-                <button disabled={!imageSrc || formDisabled} className="button" type="submit">
-                  {uploadingImage ? 'uploading ' : 'Upload'}
+              {!session ? (
+                <button className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button">
+                  Log in to upload
                 </button>
-                {uploadingImage && (
-                  <div className="spinner md:w-10 md:h-10 w-6 h-6 rounded-full"></div>
-                )}
-              </div>
-            </form>
+              ) : (
+                <></>
+              )}
+            </label>
           </div>
         </div>
-        <div className="absolute w-[150%] h-3/5 top-1/4 -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
+        <div className="absolute w-[150%] h-3/5 top-[30%] -left-32 md:top-10 md:left-[35%] md:w-full md:h-full -rotate-2">
           <Image
             className="rounded-4xl"
             src={routeImage}
@@ -172,7 +131,67 @@ export default function RoutePage({ route, comments }) {
           />
         </div>
       </section>
+      <section className="md:hidden px-4  mb-10">
+        <div className="text-xl text-white flex items-center gap-x-4">
+          Grade:
+          <div className="border rounded-full aspect-square p-2 border-primary-600">
+            {getFrGrade(route.grade_id)}
+          </div>
+        </div>
+        <label className="relative group">
+          <button disabled={!session} className="button mt-6" onClick={showUploadForm}>
+            + add your own image
+          </button>
+          {!session ? (
+            <button className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button">
+              Log in to upload
+            </button>
+          ) : (
+            <></>
+          )}
+        </label>
+      </section>
       <CommentSection comments={comments} />
+      <div
+        id="modal"
+        className={`flex items-center justify-center fixed top-0 left-0 w-screen h-screen bg-dark-60 z-50 px-5 md:px-0 ${
+          uploadImage ? '' : 'hidden'
+        }`}
+      >
+        <form
+          className="bg-dark-card rounded-4xl p-8 shadow-8"
+          method="post"
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+        >
+          <div className="pb-6 text-2xl font-semibold flex justify-between items-center">
+            <h5>Upload your picture </h5>
+            <Close className="w-6 cursor-pointer" onClick={showUploadForm} />
+          </div>
+          <p className="pl-1 text-sm pb-1">Only upload horizontal images</p>
+          <input
+            className="file:bg-primary-600 w-full file:text-white-true file:border-0 rounded-4xl border border-primary-600 file:p-2 file:mr-2 cursor-pointer"
+            type="file"
+            name="file"
+          />
+          {formDisabled && (
+            <p className="pl-1 text-xs pt-1 text-red-500">file is too big: max-size 1Mb</p>
+          )}
+          <div className="aspect-video relative my-10 bg-white flex items-center justify-center rounded-2xl">
+            {imageSrc ? (
+              <Image className="object-cover" src={imageSrc} layout="fill" alt="" />
+            ) : (
+              'placeolder'
+            )}
+          </div>
+          <div className="flex items-center gap-x-5">
+            <button disabled={!imageSrc || formDisabled} className="button" type="submit">
+              {uploadingImage ? 'uploading ' : 'Upload'}
+            </button>
+            {uploadingImage && <div className="spinner md:w-10 md:h-10 w-6 h-6 rounded-full"></div>}
+          </div>
+        </form>
+      </div>
     </>
   );
 }
