@@ -4,10 +4,11 @@ import Star from '../public/star-empty.svg';
 import { useForm } from 'react-hook-form';
 import Comment from './ui/Comment';
 import Rating from './ui/Rating';
-import { comment } from 'postcss';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { useSession } from 'next-auth/react';
 
 export default function CommentSection({ comments }) {
+  const { data: session } = useSession();
   const [parent] = useAutoAnimate();
   const {
     register,
@@ -115,7 +116,7 @@ export default function CommentSection({ comments }) {
             />
           ))}
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 relative group">
           <form
             action="submit"
             className="bg-dark-card shadow-8 rounded-4xl p-8"
@@ -178,6 +179,15 @@ export default function CommentSection({ comments }) {
               </button>
             </div>
           </form>
+          {!session ? (
+            <div className="absolute group-hover:opacity-100 transition-opacity duration-200 opacity-0 top-0 left-0 w-full h-full flex backdrop-blur-sm items-center justify-center rounded-4xl">
+              <button className="button" onClick={() => signIn('google')}>
+                Log in
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </section>

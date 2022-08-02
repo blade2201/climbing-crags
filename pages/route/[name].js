@@ -8,8 +8,10 @@ import CommentSection from '../../components/CommentSection';
 import { useState } from 'react';
 import Close from '../../public/close.svg';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 export default function RoutePage({ route, comments }) {
+  const { data: session } = useSession();
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState();
   const [uploadImage, setUploadImage] = useState(false);
@@ -104,9 +106,18 @@ export default function RoutePage({ route, comments }) {
           <div className="pt-8 text-2xl text-white flex items-center gap-x-4">
             Rating: <Rating rating={rating ? rating : route.rating} />
           </div>
-          <button className="button mt-10" onClick={showUploadForm}>
-            + add your own image
-          </button>
+          <label className="relative group">
+            <button disabled={!session} className="button mt-10" onClick={showUploadForm}>
+              + add your own image
+            </button>
+            {!session ? (
+              <button className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button">
+                Log in to upload
+              </button>
+            ) : (
+              <></>
+            )}
+          </label>
           <div
             id="modal"
             className={`flex items-center justify-center fixed top-0 left-0 w-screen h-screen bg-dark-60 z-50 px-5 md:px-0 ${
