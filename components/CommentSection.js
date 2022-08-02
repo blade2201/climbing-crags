@@ -6,6 +6,7 @@ import Comment from './ui/Comment';
 import Rating from './ui/Rating';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 export default function CommentSection({ comments }) {
   const { data: session } = useSession();
@@ -56,7 +57,11 @@ export default function CommentSection({ comments }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data, path: router.asPath, user: 'default' }),
+        body: JSON.stringify({
+          ...data,
+          path: router.asPath,
+          user: session.user.name || 'default',
+        }),
       });
       const json = await response.json();
       setComments([...commentsState, { ...data, comment_rating: 0, _id: json.insertedId }]);
@@ -74,11 +79,51 @@ export default function CommentSection({ comments }) {
   }
 
   async function handleCommentsClick(id, upvote) {
-    const vote = upvote ? 1 : -1;
+    let vote;
+    let modifyingVote;
     const newComments = commentsState
       .map((comment) => {
         if (comment._id === id) {
-          return { ...comment, comment_rating: comment.comment_rating + vote };
+          if (comment.votes && session) {
+            if (comment.votes[session.user.email] === 1) {
+              if (upvote) {
+                vote = 0;
+                modifyingVote = -1;
+              } else {
+                vote = -1;
+                modifyingVote = -2;
+              }
+            } else if (comment.votes[session.user.email] === 0) {
+              if (upvote) {
+                vote = 1;
+                modifyingVote = 1;
+              } else {
+                vote = -1;
+                modifyingVote = -1;
+              }
+            } else if (comment.votes[session.user.email] === -1) {
+              if (upvote) {
+                vote = 1;
+                modifyingVote = 2;
+              } else {
+                vote = 0;
+                modifyingVote = 1;
+              }
+            }
+          } else {
+            if (upvote) {
+              vote = 1;
+              modifyingVote = 1;
+            } else {
+              vote = -1;
+              modifyingVote = -1;
+            }
+          }
+          return {
+            ...comment,
+            comment_rating: comment.comment_rating + modifyingVote,
+            votes: { ...comment.votes, [session.user.email]: vote },
+          };
         }
         return comment;
       })
@@ -90,7 +135,13 @@ export default function CommentSection({ comments }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, vote, path: router.asPath }),
+        body: JSON.stringify({
+          id,
+          vote: vote,
+          modifyingVote: modifyingVote,
+          path: router.asPath,
+          email: session.user.email,
+        }),
       });
     } catch (error) {
       console.log(error);
@@ -110,6 +161,7 @@ export default function CommentSection({ comments }) {
         <div className="col-span-1" ref={parent}>
           {commentsState.map((comment) => (
             <Comment
+              user={session ? session.user.email : null}
               comment={comment}
               key={comment._id}
               onClick={(upvote) => handleCommentsClick(comment._id, upvote)}
@@ -180,7 +232,8 @@ export default function CommentSection({ comments }) {
             </div>
           </form>
           {!session ? (
-            <div className="absolute group-hover:opacity-100 transition-opacity duration-200 opacity-0 top-0 left-0 w-full h-full flex backdrop-blur-sm items-center justify-center rounded-4xl">
+            <div className="absolute group-hover:opacity-100 transition-opacity duration-200 opacity-0 top-0 left-0 w-full h-full flex flex-col backdrop-blur-sm items-center justify-center rounded-4xl">
+              <h3 className="text-3xl pb-10 text-center">Log in to leave a comment</h3>
               <button className="button" onClick={() => signIn('google')}>
                 Log in
               </button>

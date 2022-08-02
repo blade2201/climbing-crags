@@ -9,7 +9,13 @@ export default async function handler(req, res) {
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
     }
-    if (!body.title || !body.comment || !body.rating || !body.path || !body.user) {
+    if (
+      !body.title ||
+      !body.comment ||
+      (typeof body.rating !== 'number' && body.rating !== NaN) ||
+      !body.path ||
+      !body.user
+    ) {
       return res.status(400).json({ error: 'Bad request (Missing fields)' });
     }
 
@@ -43,15 +49,29 @@ export default async function handler(req, res) {
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
     }
-    if (!body.id || !body.vote || !body.path) {
+    if (
+      !body.id ||
+      (typeof body.modifyingVote !== 'number' && body.modifyingVote !== NaN) ||
+      (typeof body.vote !== 'number' && body.vote !== NaN) ||
+      !body.path ||
+      !body.email
+    ) {
       return res.status(400).json({ error: 'Bad request (Missing fields)' });
     }
     try {
+      const email = body.email;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
       const commentsCursor = await commentsCollection.findOneAndUpdate(
         { _id: new ObjectId(body.id) },
-        { $inc: { comment_rating: body.vote } },
+        {
+          $inc: { comment_rating: body.modifyingVote },
+          $set: {
+            votes: {
+              [`${email}`]: body.vote,
+            },
+          },
+        },
       );
       return res.status(200).json(commentsCursor);
     } catch (error) {
