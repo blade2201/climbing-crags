@@ -1,9 +1,7 @@
 import NextAuth from 'next-auth';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '../../../utils/mongodb';
-import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
-// import Auth0Provider from 'next-auth/providers/auth0';
 
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
