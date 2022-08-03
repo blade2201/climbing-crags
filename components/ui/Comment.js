@@ -27,7 +27,7 @@ export default function Comment({ comment, onClick, user }) {
         </p>
         <Chevron
           onClick={() => onClick(false)}
-          className={`cursor-pointer rotate-180 ${
+          className={`cursor-pointer  w-4 md:w-8 rotate-180 ${
             comment.votes && comment.votes[user] === -1
               ? 'stroke-red-500'
               : user
