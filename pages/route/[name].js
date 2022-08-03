@@ -8,7 +8,7 @@ import CommentSection from '../../components/CommentSection';
 import { useState } from 'react';
 import Close from '../../public/close.svg';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 
 export default function RoutePage({ route, comments }) {
   const { data: session } = useSession();
@@ -113,7 +113,10 @@ export default function RoutePage({ route, comments }) {
                 + add your own image
               </button>
               {!session ? (
-                <button className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button">
+                <button
+                  onClick={() => signIn('google')}
+                  className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button"
+                >
                   Log in to upload
                 </button>
               ) : (
