@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Climbing Crags
 
-## Getting Started
+Climbing crags is a simple social platform that works on desktop and mobile, used to search and review climbing routes.
 
-First, run the development server:
+## Screenshots
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+<p align="center">
+  <img src="./readme/desktop.png" />
+</p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Just visit the deployed version [here](https://climbing-crags.vercel.app/)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Build with
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- [Next.js](https://nextjs.org/) - Backend React framework
+- [TailwindCSS](https://tailwindcss.com/) - CSS framework
+- [MongoDB](https://www.mongodb.com/) - Database and Atlas for DB hosting
+- [React](https://reactjs.org/) - Main front end framework
+- [Cloudinary](https://cloudinary.com/) - Image hosting and resizing
 
-## Learn More
+## Cool features
 
-To learn more about Next.js, take a look at the following resources:
+- ### Next Features
+  - Server-side rendering for the homepage
+  - Static rendering for all the rest of the pages
+  - Incremental static regeneration in the routes page that gets triggered when a new comment gets sent
+- ### MongoDB
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  - Fuzzy search for the homepage
+  - Autosuggestion for the search in the homepage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- ### Cloudinary
+  - Pre-render of low quality images ~ 30Kb before loading the high quality one
 
-## Deploy on Vercel
+## Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Samuele Venier - [Github](https://github.com/blade2201) - [LinkedIn](https://www.linkedin.com/in/samuele-venier/)
