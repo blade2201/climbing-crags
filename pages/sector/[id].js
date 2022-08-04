@@ -35,10 +35,10 @@ export default function SectorPage({ routes, sector }) {
     <>
       <section className="px-4 md:px-36 pt-12 relative min-h-[70vh]">
         <div>
-          <h1 className="text-3xl md:text-6xl font-semibold md:font-bold mb-4 text-white-high">
+          <h1 className="relative z-30 text-3xl md:text-6xl font-semibold md:font-bold mb-4 text-white-high">
             {sectorData.sector}
           </h1>
-          <h4 className="md:text-4xl text-white-high">
+          <h4 className="relative z-30 md:text-4xl text-white-high">
             <Link href={`/crag/${sectorData.crag.toLowerCase()}`}>
               <a>
                 {sectorData.crag}, {sectorData.country}
