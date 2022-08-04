@@ -37,7 +37,9 @@ export default function Home({ grades, crags, sectors }) {
       if (searchTerm.length > 0) {
         let autocompletedRoutes;
         try {
-          const response = await fetch(`/api/routes/autocomplete/${searchTerm}`);
+          const response = await fetch(
+            `/api/routes/autocomplete/${searchTerm}`
+          );
           autocompletedRoutes = await response.json();
         } catch (error) {
           console.error('daosdoasdoiasoidoasodiaos', error);
@@ -60,25 +62,27 @@ export default function Home({ grades, crags, sectors }) {
 
   return (
     <>
-      <div className="mt-12 h-[66vh] md:h-[80vh] flex items-center justify-center flex-col relative">
+      <div className='mt-12 h-[66vh] md:h-[80vh] flex items-center justify-center flex-col relative'>
         <div
-          className="clip-image bg-cover mb-20 bg-[-15rem_center] md:bg-center absolute w-full h-full"
+          className='clip-image bg-cover mb-20 bg-[-15rem_center] md:bg-center absolute w-full h-full'
           style={{
             backgroundImage:
               'url("https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg")',
           }}
         ></div>
-        <h1 className="text-white-true font-semibold md:text-9xl text-4xl z-10">Climbing Crags</h1>
+        <h1 className='text-white-true font-semibold md:text-9xl text-4xl z-10'>
+          Climbing Crags
+        </h1>
         <form
-          action="submit"
-          className="md:mt-20 mt-12 md:w-1/2 w-full flex md:gap-x-6 gap-x-2 px-4"
+          action='submit'
+          className='md:mt-20 mt-12 md:w-1/2 w-full flex md:gap-x-6 gap-x-2 px-4'
           onSubmit={handleOnSubmit}
         >
-          <div className="w-full relative">
+          <div className='w-full relative'>
             <input
-              type="text"
-              placeholder="Type to search..."
-              className="w-full"
+              type='text'
+              placeholder='Type to search...'
+              className='w-full'
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
             />
@@ -92,8 +96,8 @@ export default function Home({ grades, crags, sectors }) {
                   autocomplete.map((el) => {
                     return (
                       <Link key={el._id} href={'/route/' + el.id}>
-                        <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
-                          <div className="text-xs md:text-base capitalize">
+                        <a className='py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer'>
+                          <div className='text-xs md:text-base capitalize'>
                             {el.name}, {el.sector}, {el.crag}
                           </div>
                         </a>
@@ -101,10 +105,13 @@ export default function Home({ grades, crags, sectors }) {
                     );
                   })
                 ) : autoCompleteLoading ? (
-                  <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card">
-                    <div className="last:border-0 border-b border-primary-600 capitalize">
-                      <SkeletonTheme baseColor="#333333" highlightColor="#575757">
-                        <Skeleton count={6} height={24} className="my-1" />
+                  <a className='py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card'>
+                    <div className='last:border-0 border-b border-primary-600 capitalize'>
+                      <SkeletonTheme
+                        baseColor='#333333'
+                        highlightColor='#575757'
+                      >
+                        <Skeleton count={6} height={24} className='my-1' />
                       </SkeletonTheme>
                     </div>
                   </a>
@@ -114,22 +121,28 @@ export default function Home({ grades, crags, sectors }) {
               </div>
             )}
           </div>
-          <button className="button z-10" type="submit">
+          <button className='button z-10' type='submit'>
             Search
           </button>
         </form>
       </div>
       {router.query.search && (
-        <div id="content" className="md:px-36 px-4 mb-40">
+        <div id='content' className='md:px-36 px-4 mb-40'>
           {allCrags === 'no data' && allSectors === 'no data' ? (
-            <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
+            <h3 className='text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold'>
               No results found for:
-              <span className="font-semibold text-primary-400"> {router.query.search}</span>
+              <span className='font-semibold text-primary-400'>
+                {' '}
+                {router.query.search}
+              </span>
             </h3>
           ) : (
-            <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
+            <h3 className='text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold'>
               Results for:
-              <span className="font-semibold text-primary-400"> {router.query.search}</span>
+              <span className='font-semibold text-primary-400'>
+                {' '}
+                {router.query.search}
+              </span>
             </h3>
           )}
 
@@ -152,6 +165,7 @@ export default function Home({ grades, crags, sectors }) {
     </>
   );
 }
+
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
@@ -165,8 +179,12 @@ export async function getServerSideProps(ctx) {
     const db = client.db('Climbing-crags');
     const cragsCollection = db.collection('crags');
     const sectorsCollection = db.collection('sectors');
-    const cragCursor = await cragsCollection.aggregate(searchCragsPipeline(ctx));
-    const sectorsCursor = await sectorsCollection.aggregate(searchSectorsPipeline(ctx));
+    const cragCursor = await cragsCollection.aggregate(
+      searchCragsPipeline(ctx)
+    );
+    const sectorsCursor = await sectorsCollection.aggregate(
+      searchSectorsPipeline(ctx)
+    );
     crags = await cragCursor
       .map((crag) => {
         return { ...crag, _id: crag._id.toString() };

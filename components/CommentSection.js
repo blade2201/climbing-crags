@@ -4,13 +4,11 @@ import Star from '../public/star-empty.svg';
 import { useForm } from 'react-hook-form';
 import Comment from './ui/Comment';
 import Rating from './ui/Rating';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 
 export default function CommentSection({ comments }) {
   const { data: session } = useSession();
-  const [parent] = useAutoAnimate();
   const {
     register,
     handleSubmit,
@@ -64,7 +62,10 @@ export default function CommentSection({ comments }) {
         }),
       });
       const json = await response.json();
-      setComments([...commentsState, { ...data, comment_rating: 0, _id: json.insertedId }]);
+      setComments([
+        ...commentsState,
+        { ...data, comment_rating: 0, _id: json.insertedId },
+      ]);
 
       await fetch('/api/revalidate', {
         method: 'POST',
@@ -149,16 +150,16 @@ export default function CommentSection({ comments }) {
   }
 
   return (
-    <section className="px-4 md:px-36 md:pt-12 pb-32">
-      <h2 className="text-5xl pb-10 pt-16 font-bold relative">
+    <section className='px-4 md:px-36 md:pt-12 pb-32'>
+      <h2 className='text-5xl pb-10 pt-16 font-bold relative'>
         Comments
-        <span className="absolute top-0 md:top-16 right-0 flex text-sm font-normal items-center gap-x-4">
+        <span className='absolute top-0 md:top-16 right-0 flex text-sm font-normal items-center gap-x-4'>
           Average comment rating:
           <Rating rating={commentRating} />
         </span>
       </h2>
-      <div className="grid md:grid-cols-2 gap-x-6">
-        <div className="col-span-1" ref={parent}>
+      <div className='grid md:grid-cols-2 gap-x-6'>
+        <div className='col-span-1'>
           {commentsState.map((comment) => (
             <Comment
               user={session ? session.user.email : null}
@@ -168,33 +169,42 @@ export default function CommentSection({ comments }) {
             />
           ))}
         </div>
-        <div className="col-span-1 relative group">
+        <div className='col-span-1 relative group'>
           <form
-            action="submit"
-            className="bg-dark-card shadow-8 rounded-4xl p-8"
+            action='submit'
+            className='bg-dark-card shadow-8 rounded-4xl p-8'
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h3 className="text-white-high text-4xl font-bold pb-8">How was it ?</h3>
+            <h3 className='text-white-high text-4xl font-bold pb-8'>
+              How was it ?
+            </h3>
             <input
               {...register('title', { required: 'Please fill in this field' })}
-              type="text"
-              placeholder="Title..."
-              className="w-full"
+              type='text'
+              placeholder='Title...'
+              className='w-full'
             />
-            <p className="pl-2 text-red-500 mt-2 text-sm">{errors.title?.comment}</p>
+            <p className='pl-2 text-red-500 mt-2 text-sm'>
+              {errors.title?.comment}
+            </p>
             <textarea
-              {...register('comment', { required: 'Please fill in this field' })}
-              className="md:mt-8 mt-2"
-              name="comment"
-              placeholder="Comment"
-              id=""
-              cols="30"
-              rows="7"
+              {...register('comment', {
+                required: 'Please fill in this field',
+              })}
+              className='md:mt-8 mt-2'
+              name='comment'
+              placeholder='Comment'
+              ext
+              id=''
+              cols='30'
+              rows='7'
             />
-            <p className="pl-2 text-red-500 mt-1 text-sm">{errors.comment?.comment}</p>
-            <p className="text-sm md:text-xl mb-2 mt-8">Rating</p>
-            <div className="flex justify-between">
-              <div className="origin-left scale-75 md:scale-100 star-container cursor-pointer flex flex-row-reverse bg-[#474747] rounded-2xl px-4 py-2 items-center shadow-8">
+            <p className='pl-2 text-red-500 mt-1 text-sm'>
+              {errors.comment?.comment}
+            </p>
+            <p className='text-sm md:text-xl mb-2 mt-8'>Rating</p>
+            <div className='flex justify-between'>
+              <div className='origin-left scale-75 md:scale-100 star-container cursor-pointer flex flex-row-reverse bg-[#474747] rounded-2xl px-4 py-2 items-center shadow-8'>
                 <Star
                   onClick={() => {
                     handleClick(5);
@@ -226,15 +236,17 @@ export default function CommentSection({ comments }) {
                   className={rating > 0 ? 'filled' : ''}
                 />
               </div>
-              <button className="button" type="submit">
+              <button className='button' type='submit'>
                 SEND
               </button>
             </div>
           </form>
           {!session ? (
-            <div className="absolute group-hover:opacity-100 transition-opacity duration-200 opacity-0 top-0 left-0 w-full h-full flex flex-col backdrop-blur-sm items-center justify-center rounded-4xl">
-              <h3 className="text-3xl pb-10 text-center">Log in to leave a comment</h3>
-              <button className="button" onClick={() => signIn('google')}>
+            <div className='absolute group-hover:opacity-100 transition-opacity duration-200 opacity-0 top-0 left-0 w-full h-full flex flex-col backdrop-blur-sm items-center justify-center rounded-4xl'>
+              <h3 className='text-3xl pb-10 text-center'>
+                Log in to leave a comment
+              </h3>
+              <button className='button' onClick={() => signIn('google')}>
                 Log in
               </button>
             </div>
