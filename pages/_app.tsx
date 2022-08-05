@@ -1,10 +1,10 @@
-import 'react-loading-skeleton/dist/skeleton.css';
-import '../styles/globals.css';
-import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
-import * as React from 'react';
-import type { NextComponentType } from 'next';
-import { ReactElement, ReactNode } from 'react';
+import "react-loading-skeleton/dist/skeleton.css";
+import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
+import type { AppProps } from "next/app";
+import * as React from "react";
+import type { NextComponentType } from "next";
+import { ReactElement, ReactNode } from "react";
 
 type CustomAppProps = AppProps & {
   Component: CustomComponent;
