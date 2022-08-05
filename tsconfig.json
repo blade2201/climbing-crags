@@ -24,7 +24,8 @@
     "components/**/*",
     "pages/*",
     "public/*",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "types/*"
   ],
   "exclude": ["node_modules"]
 }
