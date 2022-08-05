@@ -4,52 +4,20 @@ import { useEffect, useState } from "react";
 import { calcRoutesAndDifficulty } from "../utils/infoCalc";
 import { buildUrl } from "cloudinary-build-url";
 import Tag from "./ui/Tag";
-
-type route = {
-  _id: string;
-  grade_id: string;
-  sector_id: string;
-  crag_id: string;
-  name: string;
-  rating: string;
-  id: string;
-  sector: string;
-  crag: string;
-  images: [
-    {
-      src: string;
-      id: string;
-    }
-  ];
-};
-
-type sector = {
-  _id: string;
-  sector: string;
-  sector_id: string;
-  crag_id: string;
-  crag: string;
-  country: string;
-  routes: [route];
-};
-
-type crag = {
-  _id: string;
-  crag: string;
-  country: string;
-  sectors: [sector];
-};
+import { Sector, Crag } from "../types/mattTypes";
 
 type cardProps = {
-  item: crag | sector | route;
+  item: Crag | Sector;
   type: string;
 };
 
 function Card({ item, type }: cardProps) {
+  //THESE TYPES MAY NEED TO BE UPDATED (THE UNDEFINED ONES)
   const [routesCount, setRoutesCount] = useState<string>("");
-  const [difficulty, setDifficulty] = useState<string | undefined>("");
-  const [rating, setRating] = useState<number | string | undefined>(0);
+  const [difficulty, setDifficulty] = useState<string>("");
+  const [rating, setRating] = useState<number | string>(0);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+  console.log(item);
 
   useEffect(() => {
     if (item) {
@@ -67,17 +35,17 @@ function Card({ item, type }: cardProps) {
           setRoutesCount(routes);
           setRating(rating);
           setDifficulty(difficulties);
-          //CHECK THIS LOGIC
-          if ("routes" in item) setRoutesCount(item.routes.length + "+");
+          //CHANGED BACK
+          setRoutesCount(item.routes.length + "+");
           break;
         default:
           break;
       }
     }
-    //CHECK THIS LOGIC
-    if ("images" in item && item.images.length) {
-      const imageId = item.images[0][0].id;
-      const url = buildUrl(imageId, {
+    //CHANGED BACK
+    if (item.images.length) {
+      const imageId: string = item.images[0][0].id;
+      const url: string = buildUrl(imageId, {
         cloud: {
           cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_ID,
         },
@@ -119,32 +87,15 @@ function Card({ item, type }: cardProps) {
               text={routesCount + (type === "crags" ? " sectors" : " routes")}
             />
           ) : null}
-          {true ? (
-            <Tag
-              text={rating.toString() || parseInt(item.rating).toFixed(1)}
-              star={true}
-            />
-          ) : null}
+          {true ? <Tag text={rating.toString()} star={true} /> : null}
         </div>
         <h4 className="pt-4 font-bold text-2xl text-white-high max-w-[60%] capitalize">
-          {type === "crags"
-            ? item.crag
-            : type === "sectors"
-            ? item.sector
-            : item.name}
+          {type === "crags" ? item.crag : (item as Sector).sector}
         </h4>
         <h5>
-          {type === "crags"
-            ? item.country
-            : type === "sectors"
-            ? item.crag + ", "
-            : item.sector}
-          {(type === "sectors" || type === "routes") && <br />}
-          {type === "sectors"
-            ? item.country
-            : type === "routes"
-            ? item.crag
-            : ""}
+          {type === "crags" ? item.country : (item as Sector).crag + ", "}
+          {type === "sectors" && <br />}
+          {type === "sectors" ? item.country : ""}
           <br />
         </h5>
 
@@ -152,9 +103,7 @@ function Card({ item, type }: cardProps) {
           href={
             type === "crags"
               ? "/crag/" + item.crag.toLowerCase()
-              : type === "sectors"
-              ? "/sector/" + item.sector_id
-              : "/route/" + item.id
+              : "/sector/" + (item as Sector).sector_id
           }
         >
           <a className="h-min absolute bottom-5 right-5 button">see more</a>

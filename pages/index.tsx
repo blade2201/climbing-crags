@@ -1,28 +1,32 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import ListSection from '../components/ListSection';
-import { gradesObj } from '../utils/grades';
-import clientPromise from '../utils/mongodb';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import CardSkeleton from '../components/CardSkeleton';
-import { searchCragsPipeline, searchSectorsPipeline } from '../utils/pipelines';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import Layout from "../components/Layout";
+import ListSection from "../components/ListSection";
+import { gradesObj } from "../utils/grades";
+import clientPromise from "../utils/mongodb";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import CardSkeleton from "../components/CardSkeleton";
+import { searchCragsPipeline, searchSectorsPipeline } from "../utils/pipelines";
 
 export default function Home({ grades, crags, sectors }) {
+  // console.log("grades: ", grades);
+  // console.log("crags: ", crags);
+  // console.log("sectors: ", sectors);
+
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [allSectors, setAllSectors] = useState(sectors);
   const [allCrags, setAllCrags] = useState(crags);
   const [autocomplete, setAutocomplete] = useState<Array<{}>>([]);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
   useEffect(() => {
-    const content = document.querySelector('#content');
+    const content = document.querySelector("#content");
     if (content) {
-      scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
+      scrollTo({ top: window.innerHeight - 100, behavior: "smooth" });
     } else {
-      scrollTo({ top: 100, behavior: 'smooth' });
+      scrollTo({ top: 100, behavior: "smooth" });
     }
   }, [allCrags, allSectors]);
 
@@ -42,7 +46,7 @@ export default function Home({ grades, crags, sectors }) {
           );
           autocompletedRoutes = await response.json();
         } catch (error) {
-          console.error('daosdoasdoiasoidoasodiaos', error);
+          console.error("daosdoasdoiasoidoasodiaos", error);
         } finally {
           setAutocomplete(autocompletedRoutes);
           setAutoCompleteLoading(false);
@@ -57,48 +61,48 @@ export default function Home({ grades, crags, sectors }) {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     router.push(`/?search=${searchTerm.toLowerCase()}`);
-    setSearchTerm('');
+    setSearchTerm("");
   };
 
   return (
     <>
-      <div className='mt-12 h-[66vh] md:h-[80vh] flex items-center justify-center flex-col relative'>
+      <div className="mt-12 h-[66vh] md:h-[80vh] flex items-center justify-center flex-col relative">
         <div
-          className='clip-image bg-cover mb-20 bg-[-15rem_center] md:bg-center absolute w-full h-full'
+          className="clip-image bg-cover mb-20 bg-[-15rem_center] md:bg-center absolute w-full h-full"
           style={{
             backgroundImage:
               'url("https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg")',
           }}
         ></div>
-        <h1 className='text-white-true font-semibold md:text-9xl text-4xl z-10'>
+        <h1 className="text-white-true font-semibold md:text-9xl text-4xl z-10">
           Climbing Crags
         </h1>
         <form
-          action='submit'
-          className='md:mt-20 mt-12 md:w-1/2 w-full flex md:gap-x-6 gap-x-2 px-4'
+          action="submit"
+          className="md:mt-20 mt-12 md:w-1/2 w-full flex md:gap-x-6 gap-x-2 px-4"
           onSubmit={handleOnSubmit}
         >
-          <div className='w-full relative'>
+          <div className="w-full relative">
             <input
-              type='text'
-              placeholder='Type to search...'
-              className='w-full'
+              type="text"
+              placeholder="Type to search..."
+              className="w-full"
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
             />
             {searchTerm.length > 0 && (
               <div
                 className={`absolute w-full top-[40px] md:top-[70px] overflow-hidden bg-dark-card ${
-                  autocomplete.length || autoCompleteLoading ? 'border-2' : ''
+                  autocomplete.length || autoCompleteLoading ? "border-2" : ""
                 } border-primary-300 text-white-high shadow-8 rounded-3xl md:rounded-4xl boder-box`}
               >
                 {autocomplete.length ? (
                   autocomplete.map((el: any) => {
                     //refactor
                     return (
-                      <Link key={el._id} href={'/route/' + el.id}>
-                        <a className='py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer'>
-                          <div className='text-xs md:text-base capitalize'>
+                      <Link key={el._id} href={"/route/" + el.id}>
+                        <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer">
+                          <div className="text-xs md:text-base capitalize">
                             {el.name}, {el.sector}, {el.crag}
                           </div>
                         </a>
@@ -106,13 +110,13 @@ export default function Home({ grades, crags, sectors }) {
                     );
                   })
                 ) : autoCompleteLoading ? (
-                  <a className='py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card'>
-                    <div className='last:border-0 border-b border-primary-600 capitalize'>
+                  <a className="py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card">
+                    <div className="last:border-0 border-b border-primary-600 capitalize">
                       <SkeletonTheme
-                        baseColor='#333333'
-                        highlightColor='#575757'
+                        baseColor="#333333"
+                        highlightColor="#575757"
                       >
-                        <Skeleton count={6} height={24} className='my-1' />
+                        <Skeleton count={6} height={24} className="my-1" />
                       </SkeletonTheme>
                     </div>
                   </a>
@@ -122,41 +126,41 @@ export default function Home({ grades, crags, sectors }) {
               </div>
             )}
           </div>
-          <button className='button z-10' type='submit'>
+          <button className="button z-10" type="submit">
             Search
           </button>
         </form>
       </div>
       {router.query.search && (
-        <div id='content' className='md:px-36 px-4 mb-40'>
-          {allCrags === 'no data' && allSectors === 'no data' ? (
-            <h3 className='text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold'>
+        <div id="content" className="md:px-36 px-4 mb-40">
+          {allCrags === "no data" && allSectors === "no data" ? (
+            <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
               No results found for:
-              <span className='font-semibold text-primary-400'>
-                {' '}
+              <span className="font-semibold text-primary-400">
+                {" "}
                 {router.query.search}
               </span>
             </h3>
           ) : (
-            <h3 className='text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold'>
+            <h3 className="text-2xl md:text-5xl md:pb-10 pt-24 md:pt-16 bold">
               Results for:
-              <span className='font-semibold text-primary-400'>
-                {' '}
+              <span className="font-semibold text-primary-400">
+                {" "}
                 {router.query.search}
               </span>
             </h3>
           )}
 
-          {allCrags.length !== 0 && typeof allCrags !== 'string' ? (
-            <ListSection title={'Crags'} items={allCrags} />
-          ) : typeof allCrags !== 'string' ? (
+          {allCrags.length !== 0 && typeof allCrags !== "string" ? (
+            <ListSection title={"Crags"} items={allCrags} />
+          ) : typeof allCrags !== "string" ? (
             <CardSkeleton />
           ) : (
             <></>
           )}
-          {allSectors.length !== 0 && typeof allSectors !== 'string' ? (
-            <ListSection title={'Sectors'} items={allSectors} />
-          ) : typeof allSectors !== 'string' ? (
+          {allSectors.length !== 0 && typeof allSectors !== "string" ? (
+            <ListSection title={"Sectors"} items={allSectors} />
+          ) : typeof allSectors !== "string" ? (
             <CardSkeleton />
           ) : (
             <></>
@@ -177,9 +181,9 @@ export async function getServerSideProps(ctx) {
   let sectors;
   if (ctx.query.search) {
     const client = await clientPromise;
-    const db = client.db('Climbing-crags');
-    const cragsCollection = db.collection('crags');
-    const sectorsCollection = db.collection('sectors');
+    const db = client.db("Climbing-crags");
+    const cragsCollection = db.collection("crags");
+    const sectorsCollection = db.collection("sectors");
     const cragCursor = await cragsCollection.aggregate(
       searchCragsPipeline(ctx)
     );
@@ -200,8 +204,8 @@ export async function getServerSideProps(ctx) {
   return {
     props: {
       grades,
-      crags: crags && crags.length ? crags : 'no data',
-      sectors: crags && sectors.length ? sectors : 'no data',
+      crags: crags && crags.length ? crags : "no data",
+      sectors: crags && sectors.length ? sectors : "no data",
     },
   };
 }
