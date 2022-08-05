@@ -1,14 +1,14 @@
-import Layout from '../../components/Layout';
-import Image from 'next/image';
-import clientPromise from '../../utils/mongodb';
-import { getFrGrade } from '../../utils/infoCalc';
-import Rating from '../../components/ui/Rating';
-import Link from 'next/link';
-import CommentSection from '../../components/CommentSection';
-import { useState } from 'react';
-import Close from '../../public/close.svg';
-import { useRouter } from 'next/router';
-import { useSession, signIn } from 'next-auth/react';
+import Layout from "../../components/Layout";
+import Image from "next/image";
+import clientPromise from "../../utils/mongodb";
+import { getFrGrade } from "../../utils/infoCalc";
+import Rating from "../../components/ui/Rating";
+import Link from "next/link";
+import CommentSection from "../../components/CommentSection";
+import { useState } from "react";
+import Close from "../../public/close.svg";
+import { useRouter } from "next/router";
+import { useSession, signIn } from "next-auth/react";
 
 export default function RoutePage({ route, comments }) {
   const { data: session } = useSession();
@@ -19,7 +19,7 @@ export default function RoutePage({ route, comments }) {
   const [routeImage, setRouteImage] = useState(
     route.images && route.images.length
       ? route.images[0].src
-      : 'https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg',
+      : "https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg"
   );
   const [formDisabled, setFormDisabled] = useState(false);
   const sum = comments.reduce((acc, cur) => acc + cur.rating, 0);
@@ -34,7 +34,7 @@ export default function RoutePage({ route, comments }) {
   }
 
   function showUploadForm() {
-    setImageSrc('');
+    setImageSrc("");
     setUploadImage((prevState) => !prevState);
   }
 
@@ -43,7 +43,9 @@ export default function RoutePage({ route, comments }) {
     try {
       const cloudinaryId = process.env.NEXT_PUBLIC_CLOUDINARY_ID;
       const form = e.currentTarget;
-      const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
+      const fileInput = Array.from(form.elements).find(
+        ({ name }) => name === "file"
+      );
       const formData = new FormData();
       if (fileInput.files[0].size > 1048576) {
         setFormDisabled(true);
@@ -53,23 +55,26 @@ export default function RoutePage({ route, comments }) {
         setFormDisabled(false);
       }
       for (const file of fileInput.files) {
-        formData.append('file', file);
+        formData.append("file", file);
       }
-      formData.append('upload_preset', 'climbing-crags');
-      const data = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryId}/upload`, {
-        method: 'POST',
-        body: formData,
-      });
+      formData.append("upload_preset", "climbing-crag");
+      const data = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudinaryId}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const json = await data.json();
-      setImageSrc('');
+      setImageSrc("");
       setUploadingImage(false);
       setUploadImage(false);
       setRouteImage(json.secure_url);
       e.target.reset();
       const response = await fetch(`/api/routes/`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           imageSrc: json.secure_url,
@@ -109,12 +114,16 @@ export default function RoutePage({ route, comments }) {
               Rating: <Rating rating={rating ? rating : route.rating} />
             </div>
             <label className="relative group">
-              <button disabled={!session} className="button mt-10" onClick={showUploadForm}>
+              <button
+                disabled={!session}
+                className="button mt-10"
+                onClick={showUploadForm}
+              >
                 + add your own image
               </button>
               {!session ? (
                 <button
-                  onClick={() => signIn('google')}
+                  onClick={() => signIn("google")}
                   className="absolute -top-[1.3rem] w-full flex justify-center left-0 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 button"
                 >
                   Log in to upload
@@ -144,7 +153,11 @@ export default function RoutePage({ route, comments }) {
           </div>
         </div>
         <label className="relative group">
-          <button disabled={!session} className="button mt-6" onClick={showUploadForm}>
+          <button
+            disabled={!session}
+            className="button mt-6"
+            onClick={showUploadForm}
+          >
             + add your own image
           </button>
           {!session ? (
@@ -160,7 +173,7 @@ export default function RoutePage({ route, comments }) {
       <div
         id="modal"
         className={`flex items-center justify-center fixed top-0 left-0 w-screen h-screen bg-dark-60 z-50 px-5 md:px-0 ${
-          uploadImage ? '' : 'hidden'
+          uploadImage ? "" : "hidden"
         }`}
       >
         <form
@@ -180,20 +193,33 @@ export default function RoutePage({ route, comments }) {
             name="file"
           />
           {formDisabled && (
-            <p className="pl-1 text-xs pt-1 text-red-500">file is too big: max-size 1Mb</p>
+            <p className="pl-1 text-xs pt-1 text-red-500">
+              file is too big: max-size 1Mb
+            </p>
           )}
           <div className="aspect-video relative my-10 bg-white flex items-center justify-center rounded-2xl">
             {imageSrc ? (
-              <Image className="object-cover" src={imageSrc} layout="fill" alt="" />
+              <Image
+                className="object-cover"
+                src={imageSrc}
+                layout="fill"
+                alt=""
+              />
             ) : (
-              'Image Preview'
+              "Image Preview"
             )}
           </div>
           <div className="flex items-center gap-x-5">
-            <button disabled={!imageSrc || formDisabled} className="button" type="submit">
-              {uploadingImage ? 'uploading ' : 'Upload'}
+            <button
+              disabled={!imageSrc || formDisabled}
+              className="button"
+              type="submit"
+            >
+              {uploadingImage ? "uploading " : "Upload"}
             </button>
-            {uploadingImage && <div className="spinner md:w-10 md:h-10 w-6 h-6 rounded-full"></div>}
+            {uploadingImage && (
+              <div className="spinner md:w-10 md:h-10 w-6 h-6 rounded-full"></div>
+            )}
           </div>
         </form>
       </div>
@@ -208,8 +234,8 @@ RoutePage.getLayout = function getLayout(page) {
 // this preloads all the possible paths for the crag page
 export async function getStaticPaths() {
   const client = await clientPromise;
-  const db = client.db('Climbing-crags');
-  const routesCollection = db.collection('routes');
+  const db = client.db("Climbing-crags");
+  const routesCollection = db.collection("routes");
   const routesCursor = await routesCollection.find({});
   const routes = await routesCursor
     .map((route) => {
@@ -231,8 +257,8 @@ export async function getStaticProps(ctx) {
   let client;
   try {
     client = await clientPromise;
-    const db = client.db('Climbing-crags');
-    const routesCollection = db.collection('routes');
+    const db = client.db("Climbing-crags");
+    const routesCollection = db.collection("routes");
     const routesCursor = await routesCollection.find({
       id: ctx.params.name,
     });
@@ -241,8 +267,10 @@ export async function getStaticProps(ctx) {
         return { ...route, _id: route._id.toString() };
       })
       .toArray();
-    const commentsCollection = db.collection('comments');
-    const commentsCursor = await commentsCollection.find({ path: `/route/${ctx.params.name}` });
+    const commentsCollection = db.collection("comments");
+    const commentsCursor = await commentsCollection.find({
+      path: `/route/${ctx.params.name}`,
+    });
     comments = await commentsCursor
       .map((comment) => {
         return { ...comment, _id: comment._id.toString() };
