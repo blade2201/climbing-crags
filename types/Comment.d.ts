@@ -8,7 +8,7 @@ export declare type CommentType = {
   comment_rating: number;
   id: string;
   votes: {
-    [value]: number;
+    [propName: string]: number;
   };
 };
 

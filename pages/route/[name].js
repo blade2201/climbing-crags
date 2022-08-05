@@ -277,7 +277,7 @@ export async function getStaticProps(ctx) {
       })
       .toArray();
     comments.sort((a, b) => b.comment_rating - a.comment_rating);
-    console.log(comments);
+
   } catch (error) {
     console.error(error);
   }
