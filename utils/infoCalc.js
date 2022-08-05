@@ -1,10 +1,10 @@
-import { gradesObj } from './grades';
+import { gradesObj } from "./grades";
 const grades = gradesObj();
 export function calcRoutesAndDifficulty(item, type) {
   let numberOfRoutes = 0;
   let rating = 0;
   switch (type) {
-    case 'crags':
+    case "crags":
       let difficulties;
       item.sectors.forEach((sector) => {
         let sectorDifficulties = sector.routes.reduce(
@@ -17,7 +17,7 @@ export function calcRoutesAndDifficulty(item, type) {
             }
             return prev;
           },
-          { high: 0, low: 1000 },
+          { high: 0, low: 1000 }
         );
         if (!difficulties) {
           difficulties = { ...sectorDifficulties };
@@ -37,7 +37,7 @@ export function calcRoutesAndDifficulty(item, type) {
         rating: (rating / numberOfRoutes).toFixed(1),
         difficulties: stringifyDifficulties(difficulties),
       };
-    case 'sectors':
+    case "sectors":
       let sectorDifficulties = item.routes.reduce(
         (prev, curr) => {
           if (prev.high < parseInt(curr.grade_id)) {
@@ -48,14 +48,14 @@ export function calcRoutesAndDifficulty(item, type) {
           }
           return prev;
         },
-        { high: 0, low: 1000 },
+        { high: 0, low: 1000 }
       );
       item.routes.forEach((route) => {
         numberOfRoutes++;
         rating += parseInt(route.rating);
       });
       return {
-        routes: item.routes.length + '+',
+        routes: item.routes.length + "+",
         rating: (rating / numberOfRoutes).toFixed(1),
         difficulties: stringifyDifficulties(sectorDifficulties),
       };
