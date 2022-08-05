@@ -18,6 +18,6 @@
     "moduleResolution": "node",
     "isolatedModules": true
   },
-  "include": ["./src/"],
+  "include": ["utils/", "styles/", "components/", "pages/", "public/"],
   "exclude": ["node_modules"]
 }
