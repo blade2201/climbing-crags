@@ -1,23 +1,21 @@
-// type SvgInHtml = HTMLElement & SVGElement;
-// const Chevron = require('../../public/chevron.svg') as string;
-import { JSXElementConstructor } from 'react';
 import Chevron from '../../public/chevron.svg';
-// import Chevron from '../../public/chevron.svg';
-// import {reactComponent Chevron from '../../public/chevron.svg';
 import Rating from './Rating';
+import { CommentType, onClickType } from '../../types/Comment';
 
-type onClick = (arg0: boolean) => void;
-interface Chevron {
-  comment: any;
-  onClick: onClick;
+export default function Comment({
+  comment,
+  onClickFunction,
+  user,
+}: {
+  comment: CommentType;
+  onClickFunction: onClickType;
   user: string;
-}
-export default function Comment({ comment, onClick, user }): any {
+}) {
   return (
     <div className='bg-dark-card p-4 md:p-8 rounded-4xl flex items-center shadow-8 gap-x-8 mb-6'>
       <div className='gap-y-4 flex flex-col justify-center'>
         <Chevron
-          onClick={() => onClick(true)}
+          onClick={() => onClickFunction(true)}
           className={`cursor-pointer w-4 md:w-8 ${
             comment.votes && comment.votes[user] === 1
               ? 'stroke-primary-300'
@@ -38,7 +36,7 @@ export default function Comment({ comment, onClick, user }): any {
           {comment.comment_rating}
         </p>
         <Chevron
-          onClick={() => onClick(false)}
+          onClick={() => onClickFunction(false)}
           className={`cursor-pointer  w-4 md:w-8 rotate-180 ${
             comment.votes && comment.votes[user] === -1
               ? 'stroke-red-500'
