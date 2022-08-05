@@ -4,13 +4,53 @@ import { useEffect, useState } from "react";
 import { calcRoutesAndDifficulty } from "../utils/infoCalc";
 import { buildUrl } from "cloudinary-build-url";
 import Tag from "./ui/Tag";
-function Card({ item, type }) {
-  const [routesCount, setRoutesCount] = useState("");
-  const [difficulty, setDifficulty] = useState("");
-  const [rating, setRating] = useState(0);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  console.log("test branch");
+type route = {
+  _id: string;
+  grade_id: string;
+  sector_id: string;
+  crag_id: string;
+  name: string;
+  rating: string;
+  id: string;
+  sector: string;
+  crag: string;
+  images: [
+    {
+      src: string;
+      id: string;
+    }
+  ];
+};
+
+type sector = {
+  _id: string;
+  sector: string;
+  sector_id: string;
+  crag_id: string;
+  crag: string;
+  country: string;
+  routes: [route];
+};
+
+type crag = {
+  _id: string;
+  crag: string;
+  country: string;
+  sectors: [sector];
+};
+
+type cardProps = {
+  item: crag | sector | route;
+  type: string;
+};
+
+function Card({ item, type }: cardProps) {
+  const [routesCount, setRoutesCount] = useState<string>("");
+  const [difficulty, setDifficulty] = useState<string | undefined>("");
+  const [rating, setRating] = useState<number | string | undefined>(0);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
+
   useEffect(() => {
     if (item) {
       let { routes, rating, difficulties } = calcRoutesAndDifficulty(
@@ -27,14 +67,15 @@ function Card({ item, type }) {
           setRoutesCount(routes);
           setRating(rating);
           setDifficulty(difficulties);
-          setRoutesCount(item.routes.length + "+");
+          //CHECK THIS LOGIC
+          if ("routes" in item) setRoutesCount(item.routes.length + "+");
           break;
         default:
           break;
       }
     }
-
-    if (item.images.length) {
+    //CHECK THIS LOGIC
+    if ("images" in item && item.images.length) {
       const imageId = item.images[0][0].id;
       const url = buildUrl(imageId, {
         cloud: {
@@ -80,7 +121,7 @@ function Card({ item, type }) {
           ) : null}
           {true ? (
             <Tag
-              text={rating || parseInt(item.rating).toFixed(1)}
+              text={rating.toString() || parseInt(item.rating).toFixed(1)}
               star={true}
             />
           ) : null}
