@@ -1,15 +1,9 @@
-export declare type InfoCard = {
-  _id: string;
-  title: string;
-  comment: string;
+export declare type InfoCardType = {
   rating: number;
-  path: string;
-  user: string;
-  comment_rating: number;
-  id: string;
-  votes: {
-    [value]: number;
-  };
+  routes: string;
+  difficulties: string;
+  classes: string;
+  type: 'crag' | 'lapollarecords';
 };
 
 export declare type onClickType = (arg0: boolean) => any;
