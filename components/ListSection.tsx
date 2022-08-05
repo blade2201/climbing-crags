@@ -1,10 +1,19 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Card from './Card';
 
-function ListSection({ title, items }) {
+function ListSection({
+  title,
+  items,
+}: {
+  title: string;
+  items: Array<any>;
+}): ReactElement {
   const [shownItems, setShownItems] = useState(items.slice(0, 9));
   const handleClick = () => {
-    setShownItems([...shownItems, ...items.slice(shownItems.length, shownItems.length + 6)]);
+    setShownItems([
+      ...shownItems,
+      ...items.slice(shownItems.length, shownItems.length + 6),
+    ]);
   };
 
   useEffect(() => {
@@ -19,9 +28,9 @@ function ListSection({ title, items }) {
 
   return (
     <>
-      <div className="list-section">
-        <h3 className="text-5xl pb-10 pt-16 bold">{title}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10">
+      <div className='list-section'>
+        <h3 className='text-5xl pb-10 pt-16 bold'>{title}</h3>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10'>
           {shownItems.map((item, i) => {
             return <Card key={i} item={item} type={title.toLowerCase()} />;
           })}
@@ -32,7 +41,7 @@ function ListSection({ title, items }) {
               shownItems.length >= items.length ? 'mt-10' : '-mt-40'
             }`}
           >
-            <button className="button" onClick={handleClick}>
+            <button className='button' onClick={handleClick}>
               Load More
             </button>
           </div>

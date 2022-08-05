@@ -18,7 +18,7 @@ function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: CustomAppProps) {
-  const getLayout = Component.getLayout || ((page) => page);
+  const getLayout = Component.getLayout || ((page: ReactElement) => page);
 
   return (
     <SessionProvider session={session}>

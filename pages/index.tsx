@@ -14,7 +14,7 @@ export default function Home({ grades, crags, sectors }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [allSectors, setAllSectors] = useState(sectors);
   const [allCrags, setAllCrags] = useState(crags);
-  const [autocomplete, setAutocomplete] = useState([]);
+  const [autocomplete, setAutocomplete] = useState<Array<{}>>([]);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
   useEffect(() => {
@@ -147,14 +147,14 @@ export default function Home({ grades, crags, sectors }) {
           )}
 
           {allCrags.length !== 0 && typeof allCrags !== 'string' ? (
-            <ListSection title={'Crags'} items={allCrags} grades={grades} />
+            <ListSection title={'Crags'} items={allCrags} />
           ) : typeof allCrags !== 'string' ? (
             <CardSkeleton />
           ) : (
             <></>
           )}
           {allSectors.length !== 0 && typeof allSectors !== 'string' ? (
-            <ListSection title={'Sectors'} items={allSectors} grades={grades} />
+            <ListSection title={'Sectors'} items={allSectors} />
           ) : typeof allSectors !== 'string' ? (
             <CardSkeleton />
           ) : (
