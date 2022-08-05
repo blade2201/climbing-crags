@@ -165,7 +165,9 @@ export default function CommentSection({ comments }) {
               user={session ? session.user.email : null}
               comment={comment}
               key={comment._id}
-              onClick={(upvote) => handleCommentsClick(comment._id, upvote)}
+              onClickFunction={(upvote) =>
+                handleCommentsClick(comment._id, upvote)
+              }
             />
           ))}
         </div>
