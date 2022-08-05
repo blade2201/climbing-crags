@@ -3,11 +3,11 @@ export declare type CommentType = {
   title: string;
   comment: string;
   rating: number;
-  path: string;
-  user: string;
+  path?: string;
+  user?: string;
   comment_rating: number;
-  id: string;
-  votes: {
+  id?: string;
+  votes?: {
     [propName: string]: number;
   };
 };

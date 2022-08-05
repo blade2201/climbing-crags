@@ -7,7 +7,13 @@ import Rating from './ui/Rating';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 
-export default function CommentSection({ comments }) {
+import { CommentType } from '../types/Comment';
+
+export default function CommentSection({
+  comments,
+}: {
+  comments: CommentType[];
+}) {
   const { data: session } = useSession();
   const {
     register,
@@ -22,7 +28,7 @@ export default function CommentSection({ comments }) {
   });
 
   const router = useRouter();
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(0);
   const [commentsState, setComments] = useState(comments);
   const [commentRating, setCommentRating] = useState(0);
 
@@ -37,7 +43,7 @@ export default function CommentSection({ comments }) {
     setCommentRating(averageRating);
   }, [comments]);
 
-  function handleClick(value) {
+  function handleClick(value: number): void {
     if (rating === value) {
       setRating(0);
     } else {
@@ -45,7 +51,13 @@ export default function CommentSection({ comments }) {
     }
   }
 
-  async function onSubmit({ comment, title }) {
+  async function onSubmit({
+    comment,
+    title,
+  }: {
+    comment: string;
+    title: string;
+  }) {
     const data = { title, comment, rating };
     reset();
     setRating(0);
@@ -58,7 +70,7 @@ export default function CommentSection({ comments }) {
         body: JSON.stringify({
           ...data,
           path: router.asPath,
-          user: session.user.name || 'default',
+          user: session?.user?.name || 'default',
         }),
       });
       const json = await response.json();
@@ -79,13 +91,13 @@ export default function CommentSection({ comments }) {
     }
   }
 
-  async function handleCommentsClick(id, upvote) {
-    let vote;
-    let modifyingVote;
+  async function handleCommentsClick(id: string, upvote: boolean) {
+    let vote = 0;
+    let modifyingVote = 0;
     const newComments = commentsState
       .map((comment) => {
         if (comment._id === id) {
-          if (comment.votes && session) {
+          if (comment.votes && session?.user?.email) {
             if (comment.votes[session.user.email] === 1) {
               if (upvote) {
                 vote = 0;
@@ -123,7 +135,10 @@ export default function CommentSection({ comments }) {
           return {
             ...comment,
             comment_rating: comment.comment_rating + modifyingVote,
-            votes: { ...comment.votes, [session.user.email]: vote },
+            votes: {
+              ...comment.votes,
+              [session?.user?.email ? session.user.email : 'undefined']: vote,
+            },
           };
         }
         return comment;
@@ -141,7 +156,7 @@ export default function CommentSection({ comments }) {
           vote: vote,
           modifyingVote: modifyingVote,
           path: router.asPath,
-          email: session.user.email,
+          email: session?.user?.email,
         }),
       });
     } catch (error) {
@@ -162,7 +177,7 @@ export default function CommentSection({ comments }) {
         <div className='col-span-1'>
           {commentsState.map((comment) => (
             <Comment
-              user={session ? session.user.email : null}
+              user={session?.user?.email ? session.user.email : 'default'}
               comment={comment}
               key={comment._id}
               onClickFunction={(upvote) =>
@@ -187,7 +202,7 @@ export default function CommentSection({ comments }) {
               className='w-full'
             />
             <p className='pl-2 text-red-500 mt-2 text-sm'>
-              {errors.title?.comment}
+              {errors.title && errors.title.message}
             </p>
             <textarea
               {...register('comment', {
@@ -196,13 +211,12 @@ export default function CommentSection({ comments }) {
               className='md:mt-8 mt-2'
               name='comment'
               placeholder='Comment'
-              ext
               id=''
-              cols='30'
-              rows='7'
+              cols={30}
+              rows={7}
             />
             <p className='pl-2 text-red-500 mt-1 text-sm'>
-              {errors.comment?.comment}
+              {errors.comment && errors.comment.message}
             </p>
             <p className='text-sm md:text-xl mb-2 mt-8'>Rating</p>
             <div className='flex justify-between'>
