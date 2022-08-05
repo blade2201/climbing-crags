@@ -18,6 +18,13 @@
     "moduleResolution": "node",
     "isolatedModules": true
   },
-  "include": ["utils/", "styles/", "components/", "pages/", "public/"],
+  "include": [
+    "utils/*",
+    "styles/*",
+    "components/**/*",
+    "pages/*",
+    "public/*",
+    "next-env.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

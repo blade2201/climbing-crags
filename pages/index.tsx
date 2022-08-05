@@ -93,7 +93,8 @@ export default function Home({ grades, crags, sectors }) {
                 } border-primary-300 text-white-high shadow-8 rounded-3xl md:rounded-4xl boder-box`}
               >
                 {autocomplete.length ? (
-                  autocomplete.map((el) => {
+                  autocomplete.map((el: any) => {
+                    //refactor
                     return (
                       <Link key={el._id} href={'/route/' + el.id}>
                         <a className='py-2 md:px-6 px-3 first:pt-4 last:pb-4 block bg-dark-card hover:bg-dark cursor-pointer'>
