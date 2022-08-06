@@ -1,8 +1,15 @@
 import clientPromise from '../../../utils/mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { HandleRouteBody } from '../../../types/Routes';
+import { Collection } from 'mongodb';
+import { Route } from '../../../types/mattTypes';
 
 //TODO Add secret key to prevent unauthorized access
-export default async function handler(req, res) {
-  const body = req.body;
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const body: HandleRouteBody = req.body;
   if (req.method === 'PUT') {
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
@@ -13,14 +20,17 @@ export default async function handler(req, res) {
     try {
       const client = await clientPromise;
       const db = client.db('Climbing-crags');
-      const routesCollection = db.collection('routes');
+      const routesCollection: Collection<Route> = db.collection('routes');
       const routesCursor = await routesCollection.findOneAndUpdate(
         { id: body.id },
         {
           $push: {
-            images: { $each: [{ src: body.imageSrc, id: body.cloudinaryId }], $position: 0 },
+            images: {
+              $each: [{ src: body.imageSrc, id: body.cloudinaryId }],
+              $position: 0,
+            },
           },
-        },
+        }
       );
       return res.status(200).json(routesCursor);
     } catch (error) {

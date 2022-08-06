@@ -13,7 +13,8 @@ import * as React from 'react';
 import { CommentType } from '../../types/Comment';
 import { Route } from '../../types/mattTypes';
 import { Collection, MongoClient } from 'mongodb';
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
+import { CloudinaryResponse } from '../../types/Cloudinary';
 
 export default function RoutePage({
   route,
@@ -78,7 +79,8 @@ export default function RoutePage({
           body: formData,
         }
       );
-      const json = await data.json();
+
+      const json: CloudinaryResponse = await data.json();
       setImageSrc('');
       setUploadingImage(false);
       setUploadImage(false);
