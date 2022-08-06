@@ -10,7 +10,10 @@ export default function cardSkeleton() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10">
           {[0, 0, 0].map((item, i) => {
             return (
-              <div className="col-span-1 bg-dark-card rounded-4xl p-5 shadow-8" key={i}>
+              <div
+                className="col-span-1 bg-dark-card rounded-4xl p-5 shadow-8"
+                key={i}
+              >
                 <Skeleton className="pb-[56.25%] rounded-3xl" />
                 <div className="relative">
                   <div className="pt-4 flex gap-x-2.5">
