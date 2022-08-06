@@ -1,6 +1,7 @@
 import { gradesObj } from './grades';
 const grades = gradesObj();
-export function calcRoutesAndDifficulty(item, type) {
+export function calcRoutesAndDifficulty(item: Object, type: String) {
+  console.log('HAHAHAHAHAHA', item, 'MUAHAHAHAHAHAH', type)
   let numberOfRoutes = 0;
   let rating = 0;
   switch (type) {
