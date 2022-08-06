@@ -49,7 +49,11 @@ export default function RoutesTable({
                 </div>
                 <div className='col-span-6 md:col-span-2 md:col-start-11 flex justify-center items-center'>
                   <Rating
-                    rating={item.avgRating ? item.avgRating : item.rating}
+                    rating={
+                      item.avgRating
+                        ? parseInt(item.avgRating)
+                        : parseInt(item.rating)
+                    }
                     notBoxed={true}
                   />
                 </div>

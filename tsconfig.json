@@ -22,6 +22,7 @@
     "utils/*",
     "styles/*",
     "components/**/*",
+    "pages/**/*",
     "pages/*",
     "public/*",
     "next-env.d.ts",
