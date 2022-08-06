@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { ReactElement, ReactNode, useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import ListSection from "../components/ListSection";
 import { gradesObj } from "../utils/grades";
@@ -8,21 +8,34 @@ import clientPromise from "../utils/mongodb";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import CardSkeleton from "../components/CardSkeleton";
 import { searchCragsPipeline, searchSectorsPipeline } from "../utils/pipelines";
+import { Grade, Route, Crag, Sector } from "../types/mattTypes";
+import { GetServerSideProps } from "next";
 
-export default function Home({ grades, crags, sectors }) {
+type homeProps = {
+  grades: Grade[];
+  crags: Crag[];
+  sectors: Sector[];
+};
+
+export default function Home({
+  grades,
+  crags,
+  sectors,
+}: homeProps): ReactElement {
   // console.log("grades: ", grades);
   // console.log("crags: ", crags);
   // console.log("sectors: ", sectors);
 
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [allSectors, setAllSectors] = useState(sectors);
-  const [allCrags, setAllCrags] = useState(crags);
-  const [autocomplete, setAutocomplete] = useState<Array<{}>>([]);
-  const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [allSectors, setAllSectors] = useState<Sector[] | string>(sectors);
+  const [allCrags, setAllCrags] = useState<Crag[] | string>(crags);
+  const [autocomplete, setAutocomplete] = useState<Route[]>([]);
+  const [autoCompleteLoading, setAutoCompleteLoading] =
+    useState<boolean>(false);
 
   useEffect(() => {
-    const content = document.querySelector("#content");
+    const content: Element | null = document.querySelector("#content");
     if (content) {
       scrollTo({ top: window.innerHeight - 100, behavior: "smooth" });
     } else {
@@ -37,9 +50,9 @@ export default function Home({ grades, crags, sectors }) {
 
   useEffect(() => {
     setAutoCompleteLoading(true);
-    async function getAutocomplete() {
+    async function getAutocomplete(): Promise<void> {
       if (searchTerm.length > 0) {
-        let autocompletedRoutes;
+        let autocompletedRoutes: Route[] = [];
         try {
           const response = await fetch(
             `/api/routes/autocomplete/${searchTerm}`
@@ -58,7 +71,7 @@ export default function Home({ grades, crags, sectors }) {
     getAutocomplete();
   }, [searchTerm]);
 
-  const handleOnSubmit = async (e) => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push(`/?search=${searchTerm.toLowerCase()}`);
     setSearchTerm("");
@@ -87,6 +100,7 @@ export default function Home({ grades, crags, sectors }) {
               type="text"
               placeholder="Type to search..."
               className="w-full"
+              //TYPE THIS
               onChange={(e) => setSearchTerm(e.target.value)}
               value={searchTerm}
             />
@@ -171,14 +185,49 @@ export default function Home({ grades, crags, sectors }) {
   );
 }
 
-Home.getLayout = function getLayout(page) {
+Home.getLayout = function getLayout(page: ReactElement): ReactNode {
   return <Layout>{page}</Layout>;
 };
 
-export async function getServerSideProps(ctx) {
-  const grades = gradesObj();
-  let crags;
-  let sectors;
+// export async function getServerSideProps(ctx) {
+//   const grades: Grade[] = gradesObj();
+//   let crags: Crag[] = [];
+//   let sectors: Sector[] = [];
+//   if (ctx.query.search) {
+//     const client = await clientPromise;
+//     const db = client.db("Climbing-crags");
+//     const cragsCollection = db.collection("crags");
+//     const sectorsCollection = db.collection("sectors");
+//     const cragCursor = await cragsCollection.aggregate(
+//       searchCragsPipeline(ctx)
+//     );
+//     const sectorsCursor = await sectorsCollection.aggregate(
+//       searchSectorsPipeline(ctx)
+//     );
+//     crags = await cragCursor
+//       .map((crag) => {
+//         return { ...crag, _id: crag._id.toString() };
+//       })
+//       .toArray();
+//     sectors = await sectorsCursor
+//       .map((sector) => {
+//         return { ...sector, _id: sector._id.toString() };
+//       })
+//       .toArray();
+//   }
+//   return {
+//     props: {
+//       grades,
+//       crags: crags && crags.length ? crags : "no data",
+//       sectors: crags && sectors.length ? sectors : "no data",
+//     },
+//   };
+// }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const grades: Grade[] = gradesObj();
+  let crags: Crag[] = [];
+  let sectors: Sector[] = [];
   if (ctx.query.search) {
     const client = await clientPromise;
     const db = client.db("Climbing-crags");
@@ -208,4 +257,4 @@ export async function getServerSideProps(ctx) {
       sectors: crags && sectors.length ? sectors : "no data",
     },
   };
-}
+};

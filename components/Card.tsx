@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { calcRoutesAndDifficulty } from "../utils/infoCalc";
 import { buildUrl } from "cloudinary-build-url";
 import Tag from "./ui/Tag";
@@ -11,8 +11,7 @@ type cardProps = {
   type: string;
 };
 
-function Card({ item, type }: cardProps) {
-  //THESE TYPES MAY NEED TO BE UPDATED (THE UNDEFINED ONES)
+function Card({ item, type }: cardProps): ReactElement {
   const [routesCount, setRoutesCount] = useState<string>("");
   const [difficulty, setDifficulty] = useState<string>("");
   const [rating, setRating] = useState<number | string>(0);
@@ -35,14 +34,12 @@ function Card({ item, type }: cardProps) {
           setRoutesCount(routes);
           setRating(rating);
           setDifficulty(difficulties);
-          //CHANGED BACK
           setRoutesCount(item.routes.length + "+");
           break;
         default:
           break;
       }
     }
-    //CHANGED BACK
     if (item.images.length) {
       const imageId: string = item.images[0][0].id;
       const url: string = buildUrl(imageId, {

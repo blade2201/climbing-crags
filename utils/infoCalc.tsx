@@ -1,7 +1,7 @@
 import { gradesObj } from './grades';
 import { Grade, Crag, Sector } from '../types/mattTypes';
 
-const grades: [Grade] = gradesObj();
+const grades: Grade[] = gradesObj();
 
 export function calcRoutesAndDifficulty(
   item: Crag | Sector,
