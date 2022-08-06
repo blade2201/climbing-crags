@@ -5,10 +5,11 @@ function Rating({
   notBoxed,
   className,
 }: {
-  rating: number;
+  rating: string;
   notBoxed?: boolean;
   className?: string;
 }) {
+  const ratingInt = parseInt(rating);
   return (
     <div
       className={
@@ -19,7 +20,7 @@ function Rating({
     >
       <Image
         src={`/star-${
-          rating >= 1 ? 'full' : rating > 0.5 ? 'half' : 'empty'
+          ratingInt >= 1 ? 'full' : ratingInt > 0.5 ? 'half' : 'empty'
         }.svg`}
         alt='star svg'
         width={32}
@@ -27,7 +28,7 @@ function Rating({
       />
       <Image
         src={`/star-${
-          rating >= 2 ? 'full' : rating > 1.5 ? 'half' : 'empty'
+          ratingInt >= 2 ? 'full' : ratingInt > 1.5 ? 'half' : 'empty'
         }.svg`}
         alt='star svg'
         width={32}
@@ -35,7 +36,7 @@ function Rating({
       />
       <Image
         src={`/star-${
-          rating >= 3 ? 'full' : rating > 2.5 ? 'half' : 'empty'
+          ratingInt >= 3 ? 'full' : ratingInt > 2.5 ? 'half' : 'empty'
         }.svg`}
         alt='star svg'
         width={32}
@@ -43,7 +44,7 @@ function Rating({
       />
       <Image
         src={`/star-${
-          rating >= 4 ? 'full' : rating > 3.5 ? 'half' : 'empty'
+          ratingInt >= 4 ? 'full' : ratingInt > 3.5 ? 'half' : 'empty'
         }.svg`}
         alt='star svg'
         width={32}
@@ -51,7 +52,7 @@ function Rating({
       />
       <Image
         src={`/star-${
-          rating >= 5 ? 'full' : rating > 4.5 ? 'half' : 'empty'
+          ratingInt >= 5 ? 'full' : ratingInt > 4.5 ? 'half' : 'empty'
         }.svg`}
         alt='star svg'
         width={32}
