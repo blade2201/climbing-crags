@@ -7,8 +7,8 @@ export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
       authorization: {
         params: {
           prompt: 'consent',
@@ -20,7 +20,7 @@ export default NextAuth({
   ],
   secret: process.env.SECRET,
   session: {
-    jwt: true,
+    strategy: 'jwt',
   },
   theme: {
     colorScheme: 'dark',
