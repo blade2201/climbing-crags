@@ -6,17 +6,6 @@ import GoogleProvider from 'next-auth/providers/google';
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
   providers: [
-    /*     EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      },
-      from: process.env.EMAIL_FROM,
-    }), */
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
@@ -28,12 +17,6 @@ export default NextAuth({
         },
       },
     }),
-    /*
-    Auth0Provider({
-      clientId: process.env.AUTH0_ID,
-      clientSecret: process.env.AUTH0_SECRET,
-      issuer: process.env.AUTH0_ISSUER,
-    }), */
   ],
   secret: process.env.SECRET,
   session: {
