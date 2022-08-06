@@ -1,5 +1,5 @@
-import { gradesObj } from "./grades";
-import { Grade, Crag, Sector } from "../types/mattTypes";
+import { gradesObj } from './grades';
+import { Grade, Crag, Sector } from '../types/mattTypes';
 
 const grades: Grade[] = gradesObj();
 
@@ -10,9 +10,9 @@ export function calcRoutesAndDifficulty(
   let numberOfRoutes: number = 0;
   let rating: number = 0;
   switch (type) {
-    case "crags":
+    case 'crags':
       //CONFIRM LOGIC
-      if ("sectors" in item) {
+      if ('sectors' in item) {
         let difficulties: { high: number; low: number } | undefined;
 
         item.sectors.forEach((sector) => {
@@ -41,14 +41,15 @@ export function calcRoutesAndDifficulty(
             rating += parseInt(route.rating);
           });
         });
+
         return {
-          routes: item.sectors.length + "",
+          routes: item.sectors.length + '',
           rating: (rating / numberOfRoutes).toFixed(1),
           difficulties: stringifyDifficulties(difficulties),
         };
       }
-    case "sectors":
-      if ("sector_id" in item) {
+    case 'sectors':
+      if ('sector_id' in item) {
         let sectorDifficulties = item.routes.reduce(
           (prev, curr) => {
             if (prev.high < parseInt(curr.grade_id)) {
@@ -66,16 +67,16 @@ export function calcRoutesAndDifficulty(
           rating += parseInt(route.rating);
         });
         return {
-          routes: item.routes.length + "+",
+          routes: item.routes.length + '+',
           rating: (rating / numberOfRoutes).toFixed(1),
           difficulties: stringifyDifficulties(sectorDifficulties),
         };
       }
     default:
       return {
-        routes: "",
-        rating: "",
-        difficulties: "",
+        routes: '',
+        rating: '',
+        difficulties: '',
       };
   }
 }
@@ -84,6 +85,6 @@ function stringifyDifficulties(difficulty): string {
   return `${getFrGrade(difficulty.low)} - ${getFrGrade(difficulty.high)}`;
 }
 
-export function getFrGrade(grade: number): string {
-  return (grades[grade] as [string])[0];
+export function getFrGrade(grade: string): string {
+  return (grades[parseInt(grade)] as [string])[0];
 }

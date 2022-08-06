@@ -9,6 +9,15 @@ import { useState } from 'react';
 import Close from '../../public/close.svg';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
+import * as React from 'react';
+
+interface FileReaderEventTarget extends EventTarget {
+  result: string;
+}
+
+interface FileReaderEvent extends Event {
+  target: FileReaderEventTarget;
+}
 
 export default function RoutePage({ route, comments }) {
   const { data: session } = useSession();
@@ -27,7 +36,7 @@ export default function RoutePage({ route, comments }) {
 
   function handleChange(changeEvent) {
     const reader = new FileReader();
-    reader.onload = (onloadEvent) => {
+    reader.onload = (onloadEvent: FileReaderEvent) => {
       setImageSrc(onloadEvent.target.result);
     };
     reader.readAsDataURL(changeEvent.target.files[0]);
@@ -237,7 +246,7 @@ export async function getStaticPaths() {
   const db = client.db('Climbing-crags');
   const routesCollection = db.collection('routes');
   const routesCursor = await routesCollection.find({});
-  const routes = await routesCursor
+  const routes: { id: string }[] = await routesCursor
     .map((route) => {
       return { id: route.id };
     })
@@ -277,7 +286,6 @@ export async function getStaticProps(ctx) {
       })
       .toArray();
     comments.sort((a, b) => b.comment_rating - a.comment_rating);
-
   } catch (error) {
     console.error(error);
   }
