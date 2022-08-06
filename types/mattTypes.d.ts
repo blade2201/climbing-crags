@@ -14,6 +14,8 @@ export declare type Route = {
       id: string;
     }
   ];
+  avgRating?: string;
+  comments?: Object[];
 };
 
 export declare type Sector = {
