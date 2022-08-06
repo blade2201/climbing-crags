@@ -16,7 +16,6 @@ function Card({ item, type }: cardProps): ReactElement {
   const [difficulty, setDifficulty] = useState<string>("");
   const [rating, setRating] = useState<number | string>(0);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
-  console.log(item);
 
   useEffect(() => {
     if (item) {

@@ -3,29 +3,20 @@ import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import ListSection from "../components/ListSection";
-import { gradesObj } from "../utils/grades";
 import clientPromise from "../utils/mongodb";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import CardSkeleton from "../components/CardSkeleton";
 import { searchCragsPipeline, searchSectorsPipeline } from "../utils/pipelines";
-import { Grade, Route, Crag, Sector } from "../types/mattTypes";
+import { Route, Crag, Sector } from "../types/mattTypes";
 import { GetServerSideProps } from "next";
+import { AggregationCursor, MongoClient } from "mongodb";
 
 type homeProps = {
-  grades: Grade[];
   crags: Crag[];
   sectors: Sector[];
 };
 
-export default function Home({
-  grades,
-  crags,
-  sectors,
-}: homeProps): ReactElement {
-  // console.log("grades: ", grades);
-  // console.log("crags: ", crags);
-  // console.log("sectors: ", sectors);
-
+export default function Home({ crags, sectors }: homeProps): ReactElement {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [allSectors, setAllSectors] = useState<Sector[] | string>(sectors);
@@ -189,70 +180,33 @@ Home.getLayout = function getLayout(page: ReactElement): ReactNode {
   return <Layout>{page}</Layout>;
 };
 
-// export async function getServerSideProps(ctx) {
-//   const grades: Grade[] = gradesObj();
-//   let crags: Crag[] = [];
-//   let sectors: Sector[] = [];
-//   if (ctx.query.search) {
-//     const client = await clientPromise;
-//     const db = client.db("Climbing-crags");
-//     const cragsCollection = db.collection("crags");
-//     const sectorsCollection = db.collection("sectors");
-//     const cragCursor = await cragsCollection.aggregate(
-//       searchCragsPipeline(ctx)
-//     );
-//     const sectorsCursor = await sectorsCollection.aggregate(
-//       searchSectorsPipeline(ctx)
-//     );
-//     crags = await cragCursor
-//       .map((crag) => {
-//         return { ...crag, _id: crag._id.toString() };
-//       })
-//       .toArray();
-//     sectors = await sectorsCursor
-//       .map((sector) => {
-//         return { ...sector, _id: sector._id.toString() };
-//       })
-//       .toArray();
-//   }
-//   return {
-//     props: {
-//       grades,
-//       crags: crags && crags.length ? crags : "no data",
-//       sectors: crags && sectors.length ? sectors : "no data",
-//     },
-//   };
-// }
-
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const grades: Grade[] = gradesObj();
   let crags: Crag[] = [];
   let sectors: Sector[] = [];
   if (ctx.query.search) {
-    const client = await clientPromise;
+    const client: MongoClient = await clientPromise;
     const db = client.db("Climbing-crags");
     const cragsCollection = db.collection("crags");
     const sectorsCollection = db.collection("sectors");
-    const cragCursor = await cragsCollection.aggregate(
+    const cragCursor: AggregationCursor = await cragsCollection.aggregate(
       searchCragsPipeline(ctx)
     );
-    const sectorsCursor = await sectorsCollection.aggregate(
+    const sectorsCursor: AggregationCursor = await sectorsCollection.aggregate(
       searchSectorsPipeline(ctx)
     );
     crags = await cragCursor
-      .map((crag) => {
+      .map((crag: Crag) => {
         return { ...crag, _id: crag._id.toString() };
       })
       .toArray();
     sectors = await sectorsCursor
-      .map((sector) => {
+      .map((sector: Sector) => {
         return { ...sector, _id: sector._id.toString() };
       })
       .toArray();
   }
   return {
     props: {
-      grades,
       crags: crags && crags.length ? crags : "no data",
       sectors: crags && sectors.length ? sectors : "no data",
     },

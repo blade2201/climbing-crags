@@ -11,7 +11,6 @@ export function calcRoutesAndDifficulty(
   let rating: number = 0;
   switch (type) {
     case "crags":
-      //CONFIRM LOGIC
       if ("sectors" in item) {
         let difficulties: { high: number; low: number } | undefined;
 
