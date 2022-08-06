@@ -1,23 +1,10 @@
 import React from 'react';
+import { CommentsType } from '../../additional';
 import Chevron from '../../public/chevron.svg';
 import Rating from './Rating';
 
-type CommentType = {
-  _id: string;
-  title: string;
-  comment: string;
-  rating: number;
-  path: string;
-  user: string;
-  comment_rating: number;
-  id: string;
-  votes: {
-    [key: string]: number;
-  };
-};
-
 type CommentProps = {
-  comment: CommentType;
+  comment: CommentsType;
   onClick: (upvote: boolean) => void;
   user: string;
 };
