@@ -21,7 +21,8 @@
     "types/additional.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/comments/index.js"
+    "pages/api/comments/index.js",
+    "pages/api/routes/index.js"
   ],
   "exclude": ["node_modules"]
 }

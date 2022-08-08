@@ -18,9 +18,12 @@ export default async function handler(req, res) {
         { id: body.id },
         {
           $push: {
-            images: { $each: [{ src: body.imageSrc, id: body.cloudinaryId }], $position: 0 },
+            images: {
+              $each: [{ src: body.imageSrc, id: body.cloudinaryId }],
+              $position: 0,
+            },
           },
-        },
+        }
       );
       return res.status(200).json(routesCursor);
     } catch (error) {
