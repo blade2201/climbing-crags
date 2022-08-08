@@ -1,6 +1,7 @@
 import { gradesObj } from './grades';
 const grades = gradesObj();
-export function calcRoutesAndDifficulty(item, type) {
+export function calcRoutesAndDifficulty(item: any, type: string) {
+  console.log('JALALALALALALALALHAHAHAHAHAHAHHAHAHAHA', item, 'type:', type);
   let numberOfRoutes = 0;
   let rating = 0;
   switch (type) {
@@ -17,7 +18,7 @@ export function calcRoutesAndDifficulty(item, type) {
             }
             return prev;
           },
-          { high: 0, low: 1000 },
+          { high: 0, low: 1000 }
         );
         if (!difficulties) {
           difficulties = { ...sectorDifficulties };
@@ -48,7 +49,7 @@ export function calcRoutesAndDifficulty(item, type) {
           }
           return prev;
         },
-        { high: 0, low: 1000 },
+        { high: 0, low: 1000 }
       );
       item.routes.forEach((route) => {
         numberOfRoutes++;
