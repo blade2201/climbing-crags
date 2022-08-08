@@ -40,11 +40,12 @@ export function calcRoutesAndDifficulty(item: any, type: string) {
     case 'sectors':
       let sectorDifficulties = item.routes.reduce(
         (prev: Difficulty, curr: Route) => {
-          if (prev.high < parseInt(curr.grade_id)) {
-            prev.high = parseInt(curr.grade_id);
+          const current = parseInt(curr.grade_id);
+          if (prev.high < current) {
+            prev.high = current;
           }
-          if (prev.low > parseInt(curr.grade_id)) {
-            prev.low = parseInt(curr.grade_id);
+          if (prev.low > current) {
+            prev.low = current;
           }
           return prev;
         },

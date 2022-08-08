@@ -106,13 +106,8 @@ declare global {
   };
 
   type ResponseData = {
-    message?: string;
+    data?: string;
     error?: string;
-    title?: string;
-    comment?: string;
-    rating?: number;
-    path?: string;
-    user?: string;
   };
 }
 

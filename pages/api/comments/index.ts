@@ -27,11 +27,11 @@ export default async function handler(
     try {
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
-      const commentInsertion = (await commentsCollection.insertOne({
+      const commentInsertion = await commentsCollection.insertOne({
         ...body,
         comment_rating: 0,
         id: body.path.split('/')[2],
-      })) as ResponseData;
+      });
       return res.status(200).json(commentInsertion);
     } catch (error) {
       console.error(error);
@@ -67,7 +67,7 @@ export default async function handler(
       const email = body.email;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
-      const commentsCursor = (await commentsCollection.findOneAndUpdate(
+      const commentsCursor = await commentsCollection.findOneAndUpdate(
         { _id: new ObjectId(body.id) },
         {
           $inc: { comment_rating: body.modifyingVote },
@@ -77,7 +77,7 @@ export default async function handler(
             },
           },
         }
-      )) as ResponseData;
+      );
       return res.status(200).json(commentsCursor);
     } catch (error) {
       console.error(error);
