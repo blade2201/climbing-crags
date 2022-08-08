@@ -87,6 +87,8 @@ declare global {
       sectors?: SectorsType[];
       sector?: SectorsType;
     };
+  };
+
   type Route = {
     grade_id: string;
     sector_id: string;
@@ -101,6 +103,16 @@ declare global {
   type Difficulty = {
     high: number;
     low: number;
+  };
+
+  type ResponseData = {
+    message?: string;
+    error?: string;
+    title?: string;
+    comment?: string;
+    rating?: number;
+    path?: string;
+    user?: string;
   };
 }
 
