@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import Layout from '../../components/Layout';
 import Image from 'next/image';
 import clientPromise from '../../utils/mongodb';
@@ -10,25 +12,34 @@ import Close from '../../public/close.svg';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
 
-export default function RoutePage({ route, comments }) {
+type RoutePage = {
+  route: RoutesType;
+  comments: CommentsType[];
+};
+
+export default function RoutePage({ route, comments }: RoutePage) {
   const { data: session } = useSession();
   const router = useRouter();
-  const [imageSrc, setImageSrc] = useState();
+  const [imageSrc, setImageSrc] = useState('');
   const [uploadImage, setUploadImage] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [routeImage, setRouteImage] = useState(
     route.images && route.images.length
       ? route.images[0].src
-      : 'https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg',
+      : 'https://res.cloudinary.com/blade2201/image/upload/c_crop,h_949,w_1920/v1659337484/routes/wd5qupjyrgkmtwcuhoe9.jpg'
   );
   const [formDisabled, setFormDisabled] = useState(false);
   const sum = comments.reduce((acc, cur) => acc + cur.rating, 0);
   const rating = sum / comments.length || 0;
 
-  function handleChange(changeEvent) {
+  function handleChange(changeEvent: { target: { files: Blob[] } }) {
     const reader = new FileReader();
     reader.onload = (onloadEvent) => {
-      setImageSrc(onloadEvent.target.result);
+      setImageSrc(
+        typeof onloadEvent.target!.result === 'string'
+          ? onloadEvent.target!.result
+          : ''
+      );
     };
     reader.readAsDataURL(changeEvent.target.files[0]);
   }
@@ -43,7 +54,9 @@ export default function RoutePage({ route, comments }) {
     try {
       const cloudinaryId = process.env.NEXT_PUBLIC_CLOUDINARY_ID;
       const form = e.currentTarget;
-      const fileInput = Array.from(form.elements).find(({ name }) => name === 'file');
+      const fileInput = Array.from(form.elements).find(
+        ({ name }) => name === 'file'
+      );
       const formData = new FormData();
       if (fileInput.files[0].size > 1048576) {
         setFormDisabled(true);
@@ -56,10 +69,13 @@ export default function RoutePage({ route, comments }) {
         formData.append('file', file);
       }
       formData.append('upload_preset', 'climbing-crags');
-      const data = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryId}/upload`, {
-        method: 'POST',
-        body: formData,
-      });
+      const data = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudinaryId}/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
       const json = await data.json();
       setImageSrc('');
       setUploadingImage(false);
@@ -109,7 +125,11 @@ export default function RoutePage({ route, comments }) {
               Rating: <Rating rating={rating ? rating : route.rating} />
             </div>
             <label className="relative group">
-              <button disabled={!session} className="button mt-10" onClick={showUploadForm}>
+              <button
+                disabled={!session}
+                className="button mt-10"
+                onClick={showUploadForm}
+              >
                 + add your own image
               </button>
               {!session ? (
@@ -144,7 +164,11 @@ export default function RoutePage({ route, comments }) {
           </div>
         </div>
         <label className="relative group">
-          <button disabled={!session} className="button mt-6" onClick={showUploadForm}>
+          <button
+            disabled={!session}
+            className="button mt-6"
+            onClick={showUploadForm}
+          >
             + add your own image
           </button>
           {!session ? (
@@ -180,20 +204,33 @@ export default function RoutePage({ route, comments }) {
             name="file"
           />
           {formDisabled && (
-            <p className="pl-1 text-xs pt-1 text-red-500">file is too big: max-size 1Mb</p>
+            <p className="pl-1 text-xs pt-1 text-red-500">
+              file is too big: max-size 1Mb
+            </p>
           )}
           <div className="aspect-video relative my-10 bg-white flex items-center justify-center rounded-2xl">
             {imageSrc ? (
-              <Image className="object-cover" src={imageSrc} layout="fill" alt="" />
+              <Image
+                className="object-cover"
+                src={imageSrc}
+                layout="fill"
+                alt=""
+              />
             ) : (
               'Image Preview'
             )}
           </div>
           <div className="flex items-center gap-x-5">
-            <button disabled={!imageSrc || formDisabled} className="button" type="submit">
+            <button
+              disabled={!imageSrc || formDisabled}
+              className="button"
+              type="submit"
+            >
               {uploadingImage ? 'uploading ' : 'Upload'}
             </button>
-            {uploadingImage && <div className="spinner md:w-10 md:h-10 w-6 h-6 rounded-full"></div>}
+            {uploadingImage && (
+              <div className="spinner md:w-10 md:h-10 w-6 h-6 rounded-full"></div>
+            )}
           </div>
         </form>
       </div>
@@ -242,7 +279,9 @@ export async function getStaticProps(ctx) {
       })
       .toArray();
     const commentsCollection = db.collection('comments');
-    const commentsCursor = await commentsCollection.find({ path: `/route/${ctx.params.name}` });
+    const commentsCursor = await commentsCollection.find({
+      path: `/route/${ctx.params.name}`,
+    });
     comments = await commentsCursor
       .map((comment) => {
         return { ...comment, _id: comment._id.toString() };
