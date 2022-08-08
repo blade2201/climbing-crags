@@ -16,6 +16,7 @@ export default function Comment({
       <div className='gap-y-4 flex flex-col justify-center'>
         <Chevron
           onClick={() => onClickFunction(true)}
+          data-testid='upvote'
           className={`cursor-pointer w-4 md:w-8 ${
             comment.votes && comment.votes[user] === 1
               ? 'stroke-primary-300'
@@ -25,6 +26,7 @@ export default function Comment({
           }`}
         />
         <p
+          data-testid='rating'
           className={`text-center font-semibold text-2xl select-none ${
             comment.votes && comment.votes[user] === 1
               ? 'text-primary-300'
@@ -37,6 +39,7 @@ export default function Comment({
         </p>
         <Chevron
           onClick={() => onClickFunction(false)}
+          data-testid='downvote'
           className={`cursor-pointer  w-4 md:w-8 rotate-180 ${
             comment.votes && comment.votes[user] === -1
               ? 'stroke-red-500'

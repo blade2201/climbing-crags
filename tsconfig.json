@@ -26,7 +26,8 @@
     "pages/*",
     "public/*",
     "next-env.d.ts",
-    "types/*"
+    "types/*",
+    "tests/components/Rating.spec.tsx"
   ],
   "exclude": ["node_modules"]
 }

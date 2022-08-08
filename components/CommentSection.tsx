@@ -92,75 +92,82 @@ export default function CommentSection({
   }
 
   async function handleCommentsClick(id: string, upvote: boolean) {
+    console.log(id, upvote);
     let vote = 0;
     let modifyingVote = 0;
-    const newComments = commentsState
-      .map((comment) => {
-        if (comment._id === id) {
-          if (comment.votes && session?.user?.email) {
-            if (comment.votes[session.user.email] === 1) {
-              if (upvote) {
-                vote = 0;
-                modifyingVote = -1;
-              } else {
-                vote = -1;
-                modifyingVote = -2;
+    if (session !== null) {
+      const newComments = commentsState
+        .map((comment) => {
+          if (comment._id === id) {
+            if (
+              comment.votes &&
+              session?.user?.email !== null &&
+              session?.user?.email !== undefined
+            ) {
+              if (comment.votes[session?.user?.email] === 1) {
+                if (upvote) {
+                  vote = 0;
+                  modifyingVote = -1;
+                } else {
+                  vote = -1;
+                  modifyingVote = -2;
+                }
+              } else if (comment.votes[session.user.email] === 0) {
+                if (upvote) {
+                  vote = 1;
+                  modifyingVote = 1;
+                } else {
+                  vote = -1;
+                  modifyingVote = -1;
+                }
+              } else if (comment.votes[session.user.email] === -1) {
+                if (upvote) {
+                  vote = 1;
+                  modifyingVote = 2;
+                } else {
+                  vote = 0;
+                  modifyingVote = 1;
+                }
               }
-            } else if (comment.votes[session.user.email] === 0) {
-              if (upvote) {
-                vote = 1;
-                modifyingVote = 1;
-              } else {
-                vote = -1;
-                modifyingVote = -1;
-              }
-            } else if (comment.votes[session.user.email] === -1) {
-              if (upvote) {
-                vote = 1;
-                modifyingVote = 2;
-              } else {
-                vote = 0;
-                modifyingVote = 1;
-              }
-            }
-          } else {
-            if (upvote) {
-              vote = 1;
-              modifyingVote = 1;
             } else {
-              vote = -1;
-              modifyingVote = -1;
+              if (upvote) {
+                vote = 1;
+                modifyingVote = 1;
+              } else {
+                vote = -1;
+                modifyingVote = -1;
+              }
             }
+            return {
+              ...comment,
+              comment_rating: comment.comment_rating + modifyingVote,
+              votes: {
+                ...comment.votes,
+                [session?.user?.email ? session.user.email : 'undefined']: vote,
+              },
+            };
           }
-          return {
-            ...comment,
-            comment_rating: comment.comment_rating + modifyingVote,
-            votes: {
-              ...comment.votes,
-              [session?.user?.email ? session.user.email : 'undefined']: vote,
-            },
-          };
-        }
-        return comment;
-      })
-      .sort((a, b) => b.comment_rating - a.comment_rating);
-    setComments(newComments);
-    try {
-      await fetch('/api/comments', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id,
-          vote: vote,
-          modifyingVote: modifyingVote,
-          path: router.asPath,
-          email: session?.user?.email,
-        }),
-      });
-    } catch (error) {
-      console.log(error);
+          return comment;
+        })
+        .sort((a, b) => b.comment_rating - a.comment_rating);
+      setComments(newComments);
+      try {
+        await fetch('/api/comments', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id,
+            vote: vote,
+            modifyingVote: modifyingVote,
+            path: router.asPath,
+            email: session?.user?.email,
+          }),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 

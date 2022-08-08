@@ -24,6 +24,7 @@ function Rating({
         alt='star svg'
         width={32}
         height={32}
+        data-testid='star-1'
       />
       <Image
         src={`/star-${
@@ -32,6 +33,7 @@ function Rating({
         alt='star svg'
         width={32}
         height={32}
+        data-testid='star-2'
       />
       <Image
         src={`/star-${
@@ -40,6 +42,7 @@ function Rating({
         alt='star svg'
         width={32}
         height={32}
+        data-testid='star-2'
       />
       <Image
         src={`/star-${
@@ -48,6 +51,7 @@ function Rating({
         alt='star svg'
         width={32}
         height={32}
+        data-testid='star-4'
       />
       <Image
         src={`/star-${
@@ -56,6 +60,7 @@ function Rating({
         alt='star svg'
         width={32}
         height={32}
+        data-testid='star-5'
       />
     </div>
   );
