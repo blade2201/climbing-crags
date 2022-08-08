@@ -65,11 +65,9 @@ export function calcRoutesAndDifficulty(item: any, type: string) {
 }
 
 function stringifyDifficulties(difficulties: Difficulty) {
-  console.log('BONGIORGNO', difficulties);
   return `${getFrGrade(difficulties.low)} - ${getFrGrade(difficulties.high)}`;
 }
 
 export function getFrGrade(grade: number) {
-  console.log(grades[grade][0]);
   return grades[grade][0];
 }
