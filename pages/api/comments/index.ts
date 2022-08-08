@@ -1,11 +1,16 @@
 import clientPromise from '../../../utils/mongodb';
 import { ObjectId } from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 //TODO Add secret key to prevent unauthorized access
-export default async function handler(req: Request, res: Response) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
   const body = req.body;
   if (req.method === 'POST') {
     const client = await clientPromise;
+    console.log(req.body);
     if (!body) {
       return res.status(400).json({ error: 'Bad request (No body)' });
     }
@@ -22,11 +27,11 @@ export default async function handler(req: Request, res: Response) {
     try {
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
-      const commentInsertion = await commentsCollection.insertOne({
+      const commentInsertion = (await commentsCollection.insertOne({
         ...body,
         comment_rating: 0,
         id: body.path.split('/')[2],
-      });
+      })) as ResponseData;
       return res.status(200).json(commentInsertion);
     } catch (error) {
       console.error(error);
@@ -38,7 +43,7 @@ export default async function handler(req: Request, res: Response) {
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
       const commentsCursor = await commentsCollection.find({ path: body.path });
-      const comments = await commentsCursor.toArray();
+      const comments = (await commentsCursor.toArray()) as ResponseData;
       return res.status(200).json(comments);
     } catch (error) {
       console.error(error);
@@ -62,7 +67,7 @@ export default async function handler(req: Request, res: Response) {
       const email = body.email;
       const db = client.db('Climbing-crags');
       const commentsCollection = db.collection('comments');
-      const commentsCursor = await commentsCollection.findOneAndUpdate(
+      const commentsCursor = (await commentsCollection.findOneAndUpdate(
         { _id: new ObjectId(body.id) },
         {
           $inc: { comment_rating: body.modifyingVote },
@@ -72,7 +77,7 @@ export default async function handler(req: Request, res: Response) {
             },
           },
         }
-      );
+      )) as ResponseData;
       return res.status(200).json(commentsCursor);
     } catch (error) {
       console.error(error);
