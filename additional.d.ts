@@ -37,6 +37,7 @@ export type RoutesType = {
 };
 
 export type SectorsType = {
+  id: number;
   sector: string;
   _id: string;
   crag: string;
@@ -49,6 +50,7 @@ export type SectorsType = {
 };
 
 export type CragsType = {
+  name: string;
   country: string;
   crag: string;
   images: any[];

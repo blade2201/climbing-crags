@@ -4,7 +4,7 @@ import Card from './Card';
 
 type ListSectionProps = {
   title: string;
-  items: (CragsType | SectorsType)[];
+  items: (CragsType & SectorsType)[];
 };
 
 function ListSection({ title, items }: ListSectionProps) {
