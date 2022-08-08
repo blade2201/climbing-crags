@@ -42,7 +42,7 @@ function Rating({
         alt='star svg'
         width={32}
         height={32}
-        data-testid='star-2'
+        data-testid='star-3'
       />
       <Image
         src={`/star-${

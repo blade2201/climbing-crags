@@ -22,6 +22,5 @@ describe('Comment', () => {
     const comment_rating = screen.getByTestId('rating');
 
     expect(upvote).toHaveClass('half');
-    expect(fifthStar).toHaveClass('empty');
   });
 });
