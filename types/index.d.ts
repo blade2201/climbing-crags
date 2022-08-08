@@ -64,11 +64,11 @@ declare global {
   };
 
   export type CragsType = {
-    name: string;
+    name?: string;
     country: string;
     crag: string;
     images: any[];
-    sectors: SectorsType[];
+    sectors?: SectorsType[];
     _id: string;
   };
 
