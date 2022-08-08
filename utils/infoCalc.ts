@@ -1,13 +1,12 @@
 import { gradesObj } from './grades';
 const grades = gradesObj();
 export function calcRoutesAndDifficulty(item: any, type: string) {
-  console.log('JALALALALALALALALHAHAHAHAHAHAHHAHAHAHA', item, 'type:', type);
   let numberOfRoutes = 0;
   let rating = 0;
   switch (type) {
     case 'crags':
-      let difficulties;
-      item.sectors.forEach((sector) => {
+      let difficulties: Difficulty = { high: 0, low: 1000 };
+      item.sectors.forEach((sector: Sector) => {
         let sectorDifficulties = sector.routes.reduce(
           (prev, curr) => {
             if (prev.high < parseInt(curr.grade_id)) {
@@ -40,18 +39,18 @@ export function calcRoutesAndDifficulty(item: any, type: string) {
       };
     case 'sectors':
       let sectorDifficulties = item.routes.reduce(
-        (prev, curr) => {
+        (prev: Difficulty, curr: Route) => {
           if (prev.high < parseInt(curr.grade_id)) {
-            prev.high = curr.grade_id;
+            prev.high = parseInt(curr.grade_id);
           }
           if (prev.low > parseInt(curr.grade_id)) {
-            prev.low = curr.grade_id;
+            prev.low = parseInt(curr.grade_id);
           }
           return prev;
         },
         { high: 0, low: 1000 }
       );
-      item.routes.forEach((route) => {
+      item.routes.forEach((route: Route) => {
         numberOfRoutes++;
         rating += parseInt(route.rating);
       });
@@ -65,10 +64,12 @@ export function calcRoutesAndDifficulty(item: any, type: string) {
   }
 }
 
-function stringifyDifficulties(difficulties) {
+function stringifyDifficulties(difficulties: Difficulty) {
+  console.log('BONGIORGNO', difficulties);
   return `${getFrGrade(difficulties.low)} - ${getFrGrade(difficulties.high)}`;
 }
 
-export function getFrGrade(grade) {
-  return grades[parseInt(grade)][0];
+export function getFrGrade(grade: number) {
+  console.log(grades[grade][0]);
+  return grades[grade][0];
 }
