@@ -7,7 +7,6 @@ import Rating from './ui/Rating';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
-import { CommentsType } from '../additional';
 
 export default function CommentSection({
   comments,

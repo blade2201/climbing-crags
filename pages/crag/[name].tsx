@@ -7,7 +7,12 @@ import ListSection from '../../components/ListSection';
 import clientPromise from '../../utils/mongodb';
 import { cragPagePipeline, singleCragPipeline } from '../../utils/pipelines';
 
-export default function CragPage({ crag, sectors }) {
+type CragPageProps = {
+  crag: CragsType[];
+  sectors: SectorsType[];
+};
+
+export default function CragPage({ crag, sectors }: CragPageProps) {
   const cragData = crag[0];
   const info = calcRoutesAndDifficulty(cragData, 'crags');
 
@@ -37,10 +42,12 @@ export default function CragPage({ crag, sectors }) {
         </div>
         <InfoCard
           routes={info.routes}
-          difficulties={info.difficulties}
-          rating={info.rating}
+          difficulties={info.difficulties ? info.difficulties : ''}
+          rating={info.rating ? parseFloat(info.rating) : 0}
           type={'crag'}
-          classes={'absolute z-10 md:left-[23%] md:top-[40%] top-2/3 left-[10%]'}
+          classes={
+            'absolute z-10 md:left-[23%] md:top-[40%] top-2/3 left-[10%]'
+          }
         />
       </section>
       <section className="px-4 md:px-36 md:pt-12 pb-16">
@@ -50,7 +57,7 @@ export default function CragPage({ crag, sectors }) {
   );
 }
 
-CragPage.getLayout = function getLayout(page) {
+CragPage.getLayout = function getLayout(page: CragPageProps) {
   return <Layout>{page}</Layout>;
 };
 
@@ -68,7 +75,9 @@ export async function getStaticPaths() {
       })
       .toArray();
 
-    paths = crags.map((crag) => ({ params: { name: crag.crag.toLowerCase() } }));
+    paths = crags.map((crag) => ({
+      params: { name: crag.crag.toLowerCase() },
+    }));
   } catch (error) {
     console.log(error);
   }
@@ -80,7 +89,7 @@ export async function getStaticPaths() {
 }
 
 // this preloads all the crag info for the specific paths
-export async function getStaticProps(ctx) {
+export async function getStaticProps(ctx: any) {
   let crag;
   let sectors;
   try {
@@ -88,13 +97,17 @@ export async function getStaticProps(ctx) {
     const db = client.db('Climbing-crags');
     const cragsCollection = db.collection('crags');
     const sectorsCollection = db.collection('sectors');
-    const cragsCursor = await cragsCollection.aggregate(singleCragPipeline(ctx));
+    const cragsCursor = await cragsCollection.aggregate(
+      singleCragPipeline(ctx)
+    );
     crag = await cragsCursor
       .map((crag) => {
         return { ...crag, _id: crag._id.toString() };
       })
       .toArray();
-    const sectorsCursor = await sectorsCollection.aggregate(cragPagePipeline(ctx));
+    const sectorsCursor = await sectorsCollection.aggregate(
+      cragPagePipeline(ctx)
+    );
     sectors = await sectorsCursor
       .map((sector) => {
         return { ...sector, _id: sector._id.toString() };

@@ -1,7 +1,6 @@
 import Rating from './ui/Rating';
 import { getFrGrade } from '../utils/infoCalc';
 import Link from 'next/link';
-import { RoutesType } from '../additional';
 
 type RoutesTableType = {
   routes: RoutesType[];

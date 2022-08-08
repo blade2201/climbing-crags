@@ -1,5 +1,4 @@
 import React from 'react';
-import { CommentsType } from '../../additional';
 import Chevron from '../../public/chevron.svg';
 import Rating from './Rating';
 

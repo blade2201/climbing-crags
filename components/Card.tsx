@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react';
 import { calcRoutesAndDifficulty } from '../utils/infoCalc';
 import { buildUrl } from 'cloudinary-build-url';
 import Tag from './ui/Tag';
-function Card({ item, type }) {
+
+type CardProps = {
+  item: CragsType & SectorsType;
+  type: string;
+};
+
+function Card({ item, type }: CardProps) {
   const [routesCount, setRoutesCount] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [rating, setRating] = useState(0);
@@ -12,17 +18,25 @@ function Card({ item, type }) {
 
   useEffect(() => {
     if (item) {
-      let { routes, rating, difficulties } = calcRoutesAndDifficulty(item, type);
+      let { routes, rating, difficulties } = calcRoutesAndDifficulty(
+        item,
+        type
+      );
       switch (type) {
         case 'crags':
           setRoutesCount(routes);
-          setRating(rating);
-          setDifficulty(difficulties);
+          // needs to be fixed when InfoCalc.ts is finished
+          // -----------------------------------------------
+          setRating(rating as unknown as number);
+          setDifficulty(difficulties as unknown as string);
+          // -----------------------------------------------
           break;
         case 'sectors':
           setRoutesCount(routes);
-          setRating(rating);
-          setDifficulty(difficulties);
+          // -----------------------------------------------
+          setRating(rating as unknown as number);
+          setDifficulty(difficulties as unknown as string);
+          // -----------------------------------------------
           setRoutesCount(item.routes.length + '+');
           break;
         default:
@@ -68,19 +82,41 @@ function Card({ item, type }) {
       </div>
       <div className="">
         <div className="pt-4 flex gap-x-2.5">
-          {difficulty ? <Tag text={difficulty} /> : null}
+          {difficulty ? <Tag text={difficulty} star={false} /> : null}
           {routesCount ? (
-            <Tag text={routesCount + (type === 'crags' ? ' sectors' : ' routes')} />
+            <Tag
+              text={routesCount + (type === 'crags' ? ' sectors' : ' routes')}
+              star={false}
+            />
           ) : null}
-          {true ? <Tag text={rating || parseInt(item.rating).toFixed(1)} star={true} /> : null}
+          {true ? (
+            <Tag
+              //@ts-ignore: "Property 'routes' does not exist on type 'CragsType | SectorsType'."
+              // => routes property does in fact exist on SectorsType, how to solve this?
+              text={rating || parseInt(item.rating).toFixed(1)}
+              star={true}
+            />
+          ) : null}
         </div>
         <h4 className="pt-4 font-bold text-2xl text-white-high max-w-[60%] capitalize">
-          {type === 'crags' ? item.crag : type === 'sectors' ? item.sector : item.name}
+          {type === 'crags'
+            ? item.crag
+            : type === 'sectors'
+            ? item.sector
+            : item.name}
         </h4>
         <h5>
-          {type === 'crags' ? item.country : type === 'sectors' ? item.crag + ', ' : item.sector}
+          {type === 'crags'
+            ? item.country
+            : type === 'sectors'
+            ? item.crag + ', '
+            : item.sector}
           {(type === 'sectors' || type === 'routes') && <br />}
-          {type === 'sectors' ? item.country : type === 'routes' ? item.crag : ''}
+          {type === 'sectors'
+            ? item.country
+            : type === 'routes'
+            ? item.crag
+            : ''}
           <br />
         </h5>
 
