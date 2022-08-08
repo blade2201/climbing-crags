@@ -24,7 +24,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/api/comments/index.js"  ],
+, "pages/api/comments/index.ts"  ],
   "exclude": [
     "node_modules"
   ]

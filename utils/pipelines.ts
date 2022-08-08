@@ -1,4 +1,5 @@
-export const searchCragsPipeline = (ctx) => {
+
+export const searchCragsPipeline = (ctx: any) => {
   return [
     {
       $search: {
@@ -40,7 +41,7 @@ export const searchCragsPipeline = (ctx) => {
   ];
 };
 
-export const searchSectorsPipeline = (ctx) => {
+export const searchSectorsPipeline = (ctx: any) => {
   return [
     {
       $search: {
@@ -73,7 +74,7 @@ export const searchSectorsPipeline = (ctx) => {
   ];
 };
 
-export const cragPagePipeline = (ctx) => {
+export const cragPagePipeline = (ctx: any) => {
   return [
     {
       $match: {
@@ -101,7 +102,7 @@ export const cragPagePipeline = (ctx) => {
   ];
 };
 
-export const routesWithCommentsPipeline = (ctx) => {
+export const routesWithCommentsPipeline = (ctx: any) => {
   return [
     {
       $match: {
@@ -129,7 +130,7 @@ export const routesWithCommentsPipeline = (ctx) => {
   ];
 };
 
-export const singleCragPipeline = (ctx) => {
+export const singleCragPipeline = (ctx: any) => {
   return [
     {
       $match: {
@@ -160,7 +161,7 @@ export const singleCragPipeline = (ctx) => {
   ];
 };
 
-export const sectorPagePipeline = (ctx) => {
+export const sectorPagePipeline = (ctx: any) => {
   return [
     { $match: { sector_id: ctx.params.id } },
     {
