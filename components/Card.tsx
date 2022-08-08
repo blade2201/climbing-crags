@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { calcRoutesAndDifficulty } from '../utils/infoCalc';
 import { buildUrl } from 'cloudinary-build-url';
 import Tag from './ui/Tag';
-import { CragsType, SectorsType } from '../additional';
 
 type CardProps = {
   item: CragsType & SectorsType;

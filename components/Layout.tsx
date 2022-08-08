@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import UserPlaceholder from '../public/user.svg';
 import React from 'react';
-import { ReactNodeWithProps } from '../additional';
 
 export default function Layout({ children }: { children: ReactNodeWithProps }) {
   const { data: session } = useSession();

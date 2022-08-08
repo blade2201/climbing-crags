@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { CragsType, SectorsType } from '../additional';
 import Card from './Card';
 
 type ListSectionProps = {
