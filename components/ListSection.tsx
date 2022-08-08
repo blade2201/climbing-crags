@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
+import { CragsType, SectorsType } from '../additional';
 import Card from './Card';
 
-function ListSection({ title, items }) {
+type ListSectionProps = {
+  title: string;
+  items: (CragsType | SectorsType)[];
+};
+
+function ListSection({ title, items }: ListSectionProps) {
   const [shownItems, setShownItems] = useState(items.slice(0, 9));
   const handleClick = () => {
-    setShownItems([...shownItems, ...items.slice(shownItems.length, shownItems.length + 6)]);
+    setShownItems([
+      ...shownItems,
+      ...items.slice(shownItems.length, shownItems.length + 6),
+    ]);
   };
 
   useEffect(() => {
