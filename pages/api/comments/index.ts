@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import clientPromise from '../../../utils/mongodb';
 import { ObjectId } from 'mongodb';
 
@@ -73,7 +71,7 @@ export default async function handler(req: Request, res: Response) {
               [`${email}`]: body.vote,
             },
           },
-        },
+        }
       );
       return res.status(200).json(commentsCursor);
     } catch (error) {
