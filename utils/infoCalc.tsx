@@ -1,5 +1,5 @@
 import { gradesObj } from "./grades";
-import { Grade, Crag, Sector } from "../types/mattTypes";
+import { Grade, Crag, Sector } from "../types/commonTypes";
 
 const grades: Grade[] = gradesObj();
 

@@ -1,22 +1,20 @@
-
-import Layout from '../../components/Layout';
-import Image from 'next/image';
-import clientPromise from '../../utils/mongodb';
-import { getFrGrade } from '../../utils/infoCalc';
-import Rating from '../../components/ui/Rating';
-import Link from 'next/link';
-import CommentSection from '../../components/CommentSection';
-import { useState } from 'react';
-import Close from '../../public/close.svg';
-import { useRouter } from 'next/router';
-import { useSession, signIn } from 'next-auth/react';
-import * as React from 'react';
-import { CommentType } from '../../types/Comment';
-import { Route } from '../../types/mattTypes';
-import { Collection, MongoClient } from 'mongodb';
-import { GetStaticProps } from 'next';
-import { CloudinaryResponse } from '../../types/Cloudinary';
-
+import Layout from "../../components/Layout";
+import Image from "next/image";
+import clientPromise from "../../utils/mongodb";
+import { getFrGrade } from "../../utils/infoCalc";
+import Rating from "../../components/ui/Rating";
+import Link from "next/link";
+import CommentSection from "../../components/CommentSection";
+import { useState } from "react";
+import Close from "../../public/close.svg";
+import { useRouter } from "next/router";
+import { useSession, signIn } from "next-auth/react";
+import * as React from "react";
+import { CommentType } from "../../types/Comment";
+import { Route } from "../../types/commonTypes";
+import { Collection, MongoClient } from "mongodb";
+import { GetStaticProps } from "next";
+import { CloudinaryResponse } from "../../types/Cloudinary";
 
 export default function RoutePage({
   route,
@@ -82,9 +80,8 @@ export default function RoutePage({
         }
       );
 
-
       const json: CloudinaryResponse = await data.json();
-      setImageSrc('');
+      setImageSrc("");
 
       setUploadingImage(false);
       setUploadImage(false);

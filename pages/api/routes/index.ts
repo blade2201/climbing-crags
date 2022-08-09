@@ -1,8 +1,8 @@
-import clientPromise from '../../../utils/mongodb';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { HandleRouteBody } from '../../../types/Routes';
-import { Collection } from 'mongodb';
-import { Route } from '../../../types/mattTypes';
+import clientPromise from "../../../utils/mongodb";
+import { NextApiRequest, NextApiResponse } from "next";
+import { HandleRouteBody } from "../../../types/Routes";
+import { Collection } from "mongodb";
+import { Route } from "../../../types/commonTypes";
 
 //TODO Add secret key to prevent unauthorized access
 export default async function handler(
@@ -10,17 +10,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body: HandleRouteBody = req.body;
-  if (req.method === 'PUT') {
+  if (req.method === "PUT") {
     if (!body) {
-      return res.status(400).json({ error: 'Bad request (No body)' });
+      return res.status(400).json({ error: "Bad request (No body)" });
     }
     if (!body.id || !body.imageSrc || !body.path || !body.cloudinaryId) {
-      return res.status(400).json({ error: 'Bad request (Missing fields)' });
+      return res.status(400).json({ error: "Bad request (Missing fields)" });
     }
     try {
       const client = await clientPromise;
-      const db = client.db('Climbing-crags');
-      const routesCollection: Collection<Route> = db.collection('routes');
+      const db = client.db("Climbing-crags");
+      const routesCollection: Collection<Route> = db.collection("routes");
       const routesCursor = await routesCollection.findOneAndUpdate(
         { id: body.id },
         {
@@ -35,9 +35,9 @@ export default async function handler(
       return res.status(200).json(routesCursor);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 
-  return res.status(400).json({ error: 'Bad request (Wrong method)' });
+  return res.status(400).json({ error: "Bad request (Wrong method)" });
 }

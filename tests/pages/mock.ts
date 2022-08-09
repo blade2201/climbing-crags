@@ -1,4 +1,4 @@
-import { Crag, Route, Sector } from "../../types/mattTypes";
+import { Crag, Route, Sector } from "../../types/commonTypes";
 import { CommentType } from "../../types/Comment";
 
 export const mockComment: CommentType = {
