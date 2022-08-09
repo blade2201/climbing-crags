@@ -1,4 +1,4 @@
-import { Grade } from "../types/mattTypes";
+import { Grade } from "../types/commonTypes";
 
 export function gradesObj(): Grade[] {
   const gradesObj = JSON.parse(
