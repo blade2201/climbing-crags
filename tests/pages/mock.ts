@@ -1,5 +1,5 @@
-import { Crag, Route, Sector } from '../types/mattTypes';
-import { CommentType } from '../types/Comment';
+import { Crag, Route, Sector } from '../../types/mattTypes';
+import { CommentType } from '../../types/Comment';
 
 export const mockComment: CommentType = {
   _id: 'Test _id',
