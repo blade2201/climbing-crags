@@ -1,7 +1,8 @@
-describe('Testing Crag page', () => {
+describe('Home page', () => {
   it('Home page loads', () => {
     cy.visit('/');
   });
+
   it('Search "par" and click the search button', () => {
     cy.get('form').within(() => {
       cy.get('input').type('par');
