@@ -7,7 +7,7 @@ import clientPromise from "../utils/mongodb";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import CardSkeleton from "../components/CardSkeleton";
 import { searchCragsPipeline, searchSectorsPipeline } from "../utils/pipelines";
-import { Route, Crag, Sector } from "../types/mattTypes";
+import { Route, Crag, Sector } from "../types/commonTypes";
 import { GetServerSideProps } from "next";
 import { AggregationCursor, MongoClient } from "mongodb";
 

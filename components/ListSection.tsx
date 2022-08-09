@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { Crag, Sector } from "../types/mattTypes";
+import { Crag, Sector } from "../types/commonTypes";
 import Card from "./Card";
 
 function ListSection({

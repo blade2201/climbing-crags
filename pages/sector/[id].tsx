@@ -12,7 +12,7 @@ import {
 } from "../../utils/pipelines";
 import { buildUrl } from "cloudinary-build-url";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { Route, Sector } from "../../types/mattTypes";
+import { Route, Sector } from "../../types/commonTypes";
 import {
   AggregationCursor,
   Collection,
