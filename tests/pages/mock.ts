@@ -1,21 +1,22 @@
-import { Crag, Route, Sector } from "../../types/commonTypes";
-import { CommentType } from "../../types/Comment";
+import { Crag, Route, Sector } from '../../types/mattTypes';
+import { CommentType } from '../../types/Comment';
 
 export const mockComment: CommentType = {
-  _id: "Test _id",
-  title: "Test title",
-  comment: "Test comment",
-  rating: 0,
-  path: "Test path",
-  user: "Test user",
-  comment_rating: 0,
-  id: "Test id",
+  _id: 'Test _id',
+  title: 'Test title',
+  comment: 'Test comment',
+  rating: 2.5,
+  path: 'Test path',
+  user: 'Test user',
+  comment_rating: 3,
+  id: 'Test id',
   votes: {
-    Test: 0,
+    'test@test.com': 1,
   },
 };
 
 export const mockRoute: Route = {
+
   _id: "Test _id",
   grade_id: "1",
   sector_id: "Test sector_id",
