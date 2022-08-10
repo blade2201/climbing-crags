@@ -27,7 +27,9 @@
     "public/*",
     "next-env.d.ts",
     "types/*",
-    "tests/components/Rating.spec.tsx"
+    "tests/components/Rating.spec.tsx",
+    "tests/components/Card.spec.tsx",
+    "tests/components/Tag.spec.tsx"
   ],
   "exclude": ["node_modules"]
 }
