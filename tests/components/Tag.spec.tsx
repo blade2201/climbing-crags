@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Tag from "./Tag";
+import Tag from "../../components/ui/Tag";
 
 it("renders the input text", () => {
   render(<Tag text={"Hello"} star={true} />);
