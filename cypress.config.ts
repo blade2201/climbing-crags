@@ -10,4 +10,9 @@ export default defineConfig({
     },
     baseUrl: "http://localhost:3000",
   },
+  env: {
+    googleId: process.env.GOOGLE_ID,
+    googleSecret: process.env.GOOGLE_SECRET,
+    googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+  },
 });

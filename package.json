@@ -12,9 +12,11 @@
   "dependencies": {
     "@next-auth/mongodb-adapter": "^1.0.4",
     "@svgr/webpack": "^6.3.1",
+    "@testing-library/cypress": "^8.0.3",
     "@types/next-auth": "^3.15.0",
     "@types/react": "^18.0.15",
     "cloudinary-build-url": "^0.2.4",
+    "cypress-social-logins": "^1.14.0",
     "mongodb": "^4.8.1",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
