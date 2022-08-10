@@ -6,7 +6,6 @@ import Comment from './ui/Comment';
 import Rating from './ui/Rating';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
-
 import { CommentType } from '../types/Comment';
 
 export default function CommentSection({
@@ -14,7 +13,16 @@ export default function CommentSection({
 }: {
   comments: CommentType[];
 }) {
-  const { data: session } = useSession();
+  const { data: session } = {
+    data: {
+      user: {
+        email: 'test@test.com',
+      },
+    },
+  };
+  // useSession();
+  console.log(process.env);
+  console.log(useSession());
   const {
     register,
     handleSubmit,
