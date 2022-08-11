@@ -4,4 +4,3 @@ export declare type HandleRouteBody = {
   path: string;
   id: string;
 };
-export {};

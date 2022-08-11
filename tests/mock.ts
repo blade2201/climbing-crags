@@ -1,17 +1,17 @@
-import { Crag, Route, Sector } from '../../types/commonTypes';
-import { CommentType } from '../../types/Comment';
+import { Crag, Route, Sector } from '../types/commonTypes';
+import { CommentType } from '../types/Comment';
 
 export const mockComment: CommentType = {
-  _id: "Test _id",
-  title: "Test title",
-  comment: "Test comment",
+  _id: 'Test _id',
+  title: 'Test title',
+  comment: 'Test comment',
   rating: 2.5,
-  path: "Test path",
-  user: "Test user",
+  path: 'Test path',
+  user: 'Test user',
   comment_rating: 3,
-  id: "Test id",
+  id: 'Test id',
   votes: {
-    "test@test.com": 1,
+    'test@test.com': 1,
   },
 };
 

@@ -20,5 +20,3 @@ export declare type CloudinaryResponse = {
   version_id: string;
   width: number;
 };
-
-export {};

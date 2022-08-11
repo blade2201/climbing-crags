@@ -3,9 +3,7 @@ export declare type InfoCardType = {
   routes: string;
   difficulties: string;
   classes: string;
-  type: "crag" | "sector";
+  type: 'crag' | 'sector';
 };
 
 export declare type onClickType = (arg0: boolean) => any;
-
-export {};

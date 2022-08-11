@@ -13,5 +13,3 @@ export declare type CommentType = {
 };
 
 export declare type onClickType = (arg0: boolean) => any;
-
-export {};

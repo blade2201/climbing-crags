@@ -60,10 +60,3 @@ export declare type Grade =
     }
   | string[]
   | null;
-
-// export declare function processEnv(loadedEnvFiles: LoadedEnvFiles, dir?: string, log?: Log): Env;
-// export declare function loadEnvConfig(dir: string, dev?: boolean, log?: Log): {
-//   combinedEnv: Env;
-//   loadedEnvFiles: LoadedEnvFiles;
-// };
-// export {};
