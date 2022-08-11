@@ -1,4 +1,4 @@
-import clientPromise from "../../../utils/mongodb";
+import clientPromise from '../../../utils/mongodb';
 import {
   Collection,
   Db,
@@ -7,9 +7,9 @@ import {
   ModifyResult,
   MongoClient,
   ObjectId,
-} from "mongodb";
-import { NextApiRequest, NextApiResponse } from "next";
-import { CommentType } from "../../../types/Comment";
+} from 'mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { CommentType } from '../../../types/Comment';
 
 type voteProps = {
   id: string;
@@ -34,11 +34,11 @@ export default async function handler(
 ): Promise<void> {
   // const body: voteProps | commentProps = req.body;
   // console.log(body);
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     const body: commentProps = req.body;
     const client: MongoClient = await clientPromise;
     if (!body) {
-      return res.status(400).json({ error: "Bad request (No body)" });
+      return res.status(400).json({ error: 'Bad request (No body)' });
     }
     if (
       !body.title ||
@@ -49,30 +49,30 @@ export default async function handler(
       !body.path ||
       !body.user
     ) {
-      return res.status(400).json({ error: "Bad request (Missing fields)" });
+      return res.status(400).json({ error: 'Bad request (Missing fields)' });
     }
 
     try {
-      const db: Db = client.db("Climbing-crags");
-      const commentsCollection: Collection = db.collection("comments");
+      const db: Db = client.db('Climbing-crags');
+      const commentsCollection: Collection = db.collection('comments');
       const commentInsertion: InsertOneResult =
         await commentsCollection.insertOne({
           ...body,
           comment_rating: 0,
-          id: body.path.split("/")[2],
+          id: body.path.split('/')[2],
         });
       return res.status(200).json(commentInsertion);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: "Internal server error" });
+      return res.status(500).json({ error: 'Internal server error' });
     }
-  } else if (req.method === "GET") {
+  } else if (req.method === 'GET') {
     const body: commentProps = req.body;
     const client: MongoClient = await clientPromise;
     try {
-      const db: Db = client.db("Climbing-crags");
+      const db: Db = client.db('Climbing-crags');
       const commentsCollection: Collection<CommentType> =
-        db.collection("comments");
+        db.collection('comments');
       const commentsCursor: FindCursor<CommentType> =
         await commentsCollection.find({
           path: body.path,
@@ -81,28 +81,28 @@ export default async function handler(
       return res.status(200).json(comments);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: "Internal server error" });
+      return res.status(500).json({ error: 'Internal server error' });
     }
-  } else if (req.method === "PUT") {
+  } else if (req.method === 'PUT') {
     const body: voteProps = req.body;
 
     const client: MongoClient = await clientPromise;
     if (!body) {
-      return res.status(400).json({ error: "Bad request (No body)" });
+      return res.status(400).json({ error: 'Bad request (No body)' });
     }
     if (
       !body.id ||
-      (typeof body.modifyingVote !== "number" && body.modifyingVote !== NaN) ||
-      (typeof body.vote !== "number" && body.vote !== NaN) ||
+      (typeof body.modifyingVote !== 'number' && body.modifyingVote !== NaN) ||
+      (typeof body.vote !== 'number' && body.vote !== NaN) ||
       !body.path ||
       !body.email
     ) {
-      return res.status(400).json({ error: "Bad request (Missing fields)" });
+      return res.status(400).json({ error: 'Bad request (Missing fields)' });
     }
     try {
       const email: string = body.email;
-      const db: Db = client.db("Climbing-crags");
-      const commentsCollection: Collection = db.collection("comments");
+      const db: Db = client.db('Climbing-crags');
+      const commentsCollection: Collection = db.collection('comments');
       const commentsCursor: ModifyResult =
         await commentsCollection.findOneAndUpdate(
           { _id: new ObjectId(body.id) },
@@ -118,9 +118,9 @@ export default async function handler(
       return res.status(200).json(commentsCursor);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: "Internal server error" });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 
-  return res.status(400).json({ error: "Bad request (Wrong method)" });
+  return res.status(400).json({ error: 'Bad request (Wrong method)' });
 }
