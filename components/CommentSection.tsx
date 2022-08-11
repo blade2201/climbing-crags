@@ -13,14 +13,18 @@ export default function CommentSection({
 }: {
   comments: CommentType[];
 }) {
-  const { data: session } = {
-    data: {
-      user: {
-        email: 'test@test.com',
-      },
-    },
-  };
-  // useSession();
+  const { data: session } = useSession();
+
+  // To be able to test the comment section, we need to be able to sign in.
+  // This is a temporary solution until we find a better solution.
+  // {
+  //   data: {
+  //     user: {
+  //       email: 'test@test.com',
+  //     },
+  //   },
+  // };
+  //
   console.log(process.env);
   console.log(useSession());
   const {
