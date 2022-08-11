@@ -1,14 +1,14 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 const generateName = (rating: number, index: number) => {
   if (rating > index - 1) {
     if (index - rating > 0) {
-      return '/star-half.svg';
+      return "/star-half.svg";
     } else {
-      return '/star-full.svg';
+      return "/star-full.svg";
     }
   }
-  return '/star-empty.svg';
+  return "/star-empty.svg";
 };
 
 function Rating({
@@ -23,50 +23,56 @@ function Rating({
   return (
     <div
       className={
-        'md:px-4 md:py-2 p-2 md:rounded-2xl w-max max-h-10 md:max-h-12 flex items-center gap-x-1 ' +
-        (notBoxed === true ? '' : 'shadow-8 bg-[#474747] rounded-lg ') +
+        "md:px-4 md:py-2 p-2 md:rounded-2xl w-max max-h-10 md:max-h-12 flex items-center gap-x-1 " +
+        (notBoxed === true ? "" : "shadow-8 bg-[#474747] rounded-lg ") +
         className
       }
+      id="starContainer"
     >
       <Image
         src={generateName(rating, 1)}
-        alt='star svg'
+        alt="star svg"
         width={32}
         height={32}
-        data-testid='star-1'
+        data-testid="star-1"
         className={generateName(rating, 1)}
+        id="firstStar"
       />
       <Image
         src={generateName(rating, 2)}
-        alt='star svg'
+        alt="star svg"
         width={32}
         height={32}
-        data-testid='star-2'
+        data-testid="star-2"
         className={generateName(rating, 2)}
+        id="secondStar"
       />
       <Image
         src={generateName(rating, 3)}
-        alt='star svg'
+        alt="star svg"
         width={32}
         height={32}
-        data-testid='star-3'
+        data-testid="star-3"
         className={generateName(rating, 3)}
+        id="thirdStar"
       />
       <Image
         src={generateName(rating, 4)}
-        alt='star svg'
+        alt="star svg"
         width={32}
         height={32}
-        data-testid='star-4'
+        data-testid="star-4"
         className={generateName(rating, 4)}
+        id="fourthStar"
       />
       <Image
         src={generateName(rating, 5)}
-        alt='star svg'
+        alt="star svg"
         width={32}
         height={32}
-        data-testid='star-5'
+        data-testid="star-5"
         className={generateName(rating, 5)}
+        id="fithStar"
       />
     </div>
   );
