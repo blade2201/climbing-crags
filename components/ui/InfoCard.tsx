@@ -15,11 +15,11 @@ export default function InfoCard({
         classes
       }
     >
-      <p className="md:text-2xl">
+      <p className="md:text-2xl" id="numberOfRoutes">
         N° {type === "crag" ? "Sectors" : "Routes"}:{" "}
         <span className="font-bold text-primary-400">{routes}</span>
       </p>
-      <p className="md:text-2xl md:pb-10 pb-6">
+      <p className="md:text-2xl md:pb-10 pb-6" id="grades">
         Grades:{" "}
         <span className="font-bold text-primary-400">{difficulties}</span>
       </p>
