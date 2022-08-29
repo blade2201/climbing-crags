@@ -15,9 +15,13 @@ Just visit the deployed version [here](https://climbing-crags.vercel.app/)
 ## Build with
 
 - [Next.js](https://nextjs.org/) - Backend React framework
+  - [Typescript](https://www.typescriptlang.org/) - Strongly typed language for JavaScript
 - [TailwindCSS](https://tailwindcss.com/) - CSS framework
 - [MongoDB](https://www.mongodb.com/) - Database and Atlas for DB hosting
 - [React](https://reactjs.org/) - Main front end framework
+  - [Jest](https://jestjs.io/) - JavaScript testing framework
+  - [Testing-library/React](https://testing-library.com/) - Testing utilities for React
+  - [Cypress](https://www.cypress.io/) - E2E testing for React
 - [Cloudinary](https://cloudinary.com/) - Image hosting and resizing
 
 ## Cool features
@@ -37,3 +41,9 @@ Just visit the deployed version [here](https://climbing-crags.vercel.app/)
 ## Author
 
 Samuele Venier - [Github](https://github.com/blade2201) - [LinkedIn](https://www.linkedin.com/in/samuele-venier/)
+
+## Contributors
+
+Matthew D'Agostino - [Github](https://github.com/mattdags982) - [LinkedIn](https://www.linkedin.com/in/matthewgregorydagostino/)
+<br/>
+Gonzalo Salvador - [Github](https://github.com/sgt-hudson) - [LinkedIn](https://www.linkedin.com/in/gonzalo-salvador/)
